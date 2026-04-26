@@ -1,0 +1,50 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-icon">
+            <i class="bi bi-speedometer2"></i>
+        </div>
+        <div>
+            <h1>Smart Sit-In <span class="subtitle">Lab Management</span></h1>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a asp-controller="Student" asp-action="Dashboard" title="Dashboard">
+            <i class="bi bi-speedometer2"></i>
+            <span>Dashboard</span>
+        </a>
+        <a asp-controller="Student" asp-action="RequestSitIn" title="Request Sit-In">
+            <i class="bi bi-plus-circle"></i>
+            <span>Request Sit-In</span>
+        </a>
+        <a asp-controller="Student" asp-action="MyRequests" title="My Requests">
+            <i class="bi bi-clock-history"></i>
+            <span>My Requests</span>
+        </a>
+        <a asp-controller="Student" asp-action="Notifications" title="Notifications">
+            <i class="bi bi-bell"></i>
+            <span>Notifications</span>
+            <span class="notification-badge">@(ViewData["NotificationCount"] ?? "0")</span>
+        </a>
+        <a asp-controller="Student" asp-action="Announcements" title="Announcements">
+            <i class="bi bi-megaphone"></i>
+            <span>Announcements</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <a onclick="logout();" title="Logout">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+</aside>
+
+<script>
+    function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            // Add your logout logic here
+            window.location.href = '/Account/Logout';
+        }
+    }
+</script>

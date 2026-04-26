@@ -1,0 +1,47 @@
+@model IEnumerable<ELNETFINALPROJECT.Models.Notification>
+@{
+    ViewData["Title"] = "Notifications";
+    Layout = "_StudentLayout";
+}
+
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Notifications</h1>
+    <p class="dashboard-subtitle">Stay updated with your requests and announcements</p>
+    </div>
+
+<div class="card-custom">
+    <div class="card-title">
+        All Notifications
+        <button class="btn-action btn-action-secondary" onclick="markAllAsRead()" style="width: auto; margin: 0;">
+            <i class="bi bi-check-all"></i> Mark All as Read
+        </button>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div style="padding:20px;">No notifications available</div>
+    }
+    else
+    {
+        <ul class="notification-list">
+            @foreach (var n in Model)
+            {
+                <li class="notification-item" style="padding: 10px 0;">
+                    <div class="notification-icon @(n.IsRead ? "info" : "success")">
+                        <i class="bi bi-bell"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4 class="notification-title">@n.Message</h4>
+                        <div class="notification-time">@(n.IsRead ? "Read" : "New")</div>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+<script>
+    function markAllAsRead() {
+        alert('All notifications marked as read');
+    }
+</script>

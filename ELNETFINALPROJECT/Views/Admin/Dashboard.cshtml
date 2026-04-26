@@ -1,0 +1,115 @@
+@model ELNETFINALPROJECT.Models.ViewModels.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Admin Dashboard</h1>
+    <p class="dashboard-subtitle">Manage lab requests and system operations</p>
+    </div>
+
+<div class="summary-cards">
+    <div class="summary-card">
+        <div class="summary-card-icon icon-primary">
+            <i class="bi bi-chat-dots"></i>
+        </div>
+        <div class="summary-card-content">
+            <h3 class="summary-card-number">@Model.TotalRequests</h3>
+            <p class="summary-card-label">Total Requests</p>
+        </div>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-card-icon icon-warning">
+            <i class="bi bi-clock"></i>
+        </div>
+        <div class="summary-card-content">
+            <h3 class="summary-card-number">@Model.PendingRequests</h3>
+            <p class="summary-card-label">Pending Requests</p>
+        </div>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-card-icon icon-success">
+            <i class="bi bi-check-circle"></i>
+        </div>
+        <div class="summary-card-content">
+            <h3 class="summary-card-number">@Model.ApprovedRequests</h3>
+            <p class="summary-card-label">Approved Requests</p>
+        </div>
+    </div>
+</div>
+
+<div class="content-grid" style="grid-template-columns: 1fr;">
+    <div class="card-custom">
+        <div class="card-title">
+            Pending Requests
+            <a href="/Admin/ManageRequests" class="view-all">View All</a>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table class="requests-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Room</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.RecentPendingRequests == null || !Model.RecentPendingRequests.Any())
+                    {
+                        <tr>
+                            <td colspan="5">No pending requests found</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var r in Model.RecentPendingRequests)
+                        {
+                            <tr>
+                                <td>@r.StudentId</td>
+                                <td>@("Room " + r.Room)</td>
+                                <td>@r.DateTime.ToString("MMM dd, yyyy")</td>
+                                <td>
+                                    <span class="status-badge status-pending">@r.Status</span>
+                                </td>
+                                <td>
+                                    <button class="btn-approve" onclick="approveRequest(this)">
+                                        <i class="bi bi-check"></i> Approve
+                                    </button>
+                                    <button class="btn-reject" onclick="rejectRequest(this)">
+                                        <i class="bi bi-x"></i> Reject
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function approveRequest(button) {
+        const row = button.closest('tr');
+        const statusCell = row.querySelector('.status-badge');
+        statusCell.textContent = 'Approved';
+        statusCell.className = 'status-badge status-approved';
+        button.closest('td').innerHTML = '<button class="btn-edit"><i class="bi bi-eye"></i> View</button>';
+        alert('Request approved successfully');
+    }
+
+    function rejectRequest(button) {
+        const row = button.closest('tr');
+        const statusCell = row.querySelector('.status-badge');
+        statusCell.textContent = 'Rejected';
+        statusCell.className = 'status-badge status-rejected';
+        button.closest('td').innerHTML = '<button class="btn-edit"><i class="bi bi-eye"></i> View</button>';
+        alert('Request rejected successfully');
+    }
+</script>

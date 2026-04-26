@@ -1,0 +1,99 @@
+@{
+    ViewData["Title"] = "Reports";
+    Layout = "_AdminLayout";
+}
+
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Reports</h1>
+    <p class="dashboard-subtitle">View and download lab usage reports</p>
+</div>
+
+<div class="content-grid" style="grid-template-columns: 1fr;">
+    <div class="card-custom">
+        <div class="card-title">Generate Report</div>
+        <form method="post" style="max-width: 500px;">
+            <div class="form-group">
+                <label for="reportType" class="form-label">Report Type</label>
+                <select id="reportType" class="form-control" required>
+                    <option value="">Select Report Type</option>
+                    <option value="usage">Lab Usage Report</option>
+                    <option value="requests">Requests Summary</option>
+                    <option value="students">Student Activity</option>
+                    <option value="equipment">Equipment Status</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" id="startDate" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" id="endDate" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="format" class="form-label">Export Format</label>
+                <select id="format" class="form-control">
+                    <option value="pdf">PDF</option>
+                    <option value="excel">Excel</option>
+                    <option value="csv">CSV</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="bi bi-download"></i> Generate Report
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="card-custom" style="margin-top: 25px;">
+    <div class="card-title">Recent Reports</div>
+
+    <div style="overflow-x: auto;">
+        <table class="requests-table">
+            <thead>
+                <tr>
+                    <th>Report Name</th>
+                    <th>Date Range</th>
+                    <th>Created</th>
+                    <th>Format</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.Reports == null || !((IEnumerable<dynamic>)ViewBag.Reports).Any())
+                {
+                    <tr><td colspan="5">No reports available</td></tr>
+                }
+                else
+                {
+                    foreach (var rpt in (IEnumerable<dynamic>)ViewBag.Reports)
+                    {
+                        <tr>
+                            <td>@rpt.Name</td>
+                            <td>@rpt.DateRange</td>
+                            <td>@rpt.Created</td>
+                            <td><span class="status-badge">@rpt.Format</span></td>
+                            <td>
+                                <button class="btn-edit" title="Download"><i class="bi bi-download"></i> Download</button>
+                                <button class="btn-delete" onclick="deleteReport(this)" title="Delete"><i class="bi bi-trash"></i> Delete</button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function deleteReport(button) {
+        if (confirm('Are you sure you want to delete this report?')) {
+            button.closest('tr').remove();
+            alert('Report deleted successfully');
+        }
+    }
+</script>

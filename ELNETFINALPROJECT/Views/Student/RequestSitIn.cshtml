@@ -1,0 +1,74 @@
+@{
+    ViewData["Title"] = "Request Sit-In";
+    Layout = "_StudentLayout";
+}
+
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Request Sit-In</h1>
+    <p class="dashboard-subtitle">Submit a new request to use a computer lab</p>
+</div>
+
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="card-custom">
+        <form class="request-form" method="post">
+            <div class="form-group">
+                <label for="roomSelect" class="form-label">Select Room</label>
+                <select id="roomSelect" name="room" class="form-control" required>
+                    <option value="">Choose a room...</option>
+                    @if (ViewBag.Rooms == null)
+                    {
+                        <option disabled>No rooms available</option>
+                    }
+                    else
+                    {
+                        foreach (var lab in (IEnumerable<ELNETFINALPROJECT.Models.Lab>)ViewBag.Rooms)
+                        {
+                            <option value="@lab.Room">Room @lab.Room (@lab.Status)</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="requestDate" class="form-label">Date</label>
+                <input type="date" id="requestDate" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="startTime" class="form-label">Start Time</label>
+                <input type="time" id="startTime" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="endTime" class="form-label">End Time</label>
+                <input type="time" id="endTime" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="purpose" class="form-label">Purpose (Optional)</label>
+                <textarea id="purpose" class="form-control" rows="4" placeholder="Enter the purpose of your sit-in request..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="bi bi-check-circle"></i> Submit Request
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('requestDate').setAttribute('min', today);
+
+    // Form validation
+    document.querySelector('.request-form').addEventListener('submit', function(e) {
+        const startTime = document.getElementById('startTime').value;
+        const endTime = document.getElementById('endTime').value;
+
+        if (startTime >= endTime) {
+            e.preventDefault();
+            alert('End time must be after start time');
+        }
+    });
+</script>
