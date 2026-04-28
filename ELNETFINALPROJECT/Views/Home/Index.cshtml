@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Smart Sit-In - Login/Register";
+    ViewData["Title"] = "GameTime Management System";
     Layout = null;
 }
 
@@ -12,16 +12,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
-        :root {
-            --primary-blue: #4a7fd7;
-            --secondary-blue: #357abd;
-            --dark-blue: #2c5aa0;
-            --light-gray: #f8f9fa;
-            --border-gray: #e9ecef;
-            --text-dark: #2d3748;
-            --text-light: #718096;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -30,629 +20,531 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            background: linear-gradient(135deg, #0d1f2d 0%, #1a2f3f 50%, #0d2438 100%);
+            color: #ffffff;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            overflow-x: hidden;
         }
 
-        .auth-container {
-            width: 100%;
-            max-width: 900px;
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: 600px;
-        }
-
-        /* Branding Section */
-        .branding-section {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-            color: white;
-            padding: 60px 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .branding-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .branding-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            line-height: 1.2;
-        }
-
-        .branding-subtitle {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 25px;
-            opacity: 0.9;
-        }
-
-        .branding-description {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 40px;
-        }
-
-        .feature-list {
-            list-style: none;
-            text-align: left;
-            display: inline-block;
-        }
-
-        .feature-list li {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .feature-list i {
-            font-size: 1.2rem;
-        }
-
-        /* Form Section */
-        .form-section {
-            padding: 60px 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .form-header {
-            margin-bottom: 35px;
-        }
-
-        .form-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-        }
-
-        .form-subtitle {
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        /* Tab Toggles */
-        .auth-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--border-gray);
-        }
-
-        .tab-button {
-            padding: 12px 0;
-            border: none;
-            background: none;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-light);
-            cursor: pointer;
-            position: relative;
-            transition: color 0.3s ease;
-            flex: 1;
-            text-align: center;
-        }
-
-        .tab-button.active {
-            color: var(--primary-blue);
-        }
-
-        .tab-button.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--primary-blue);
-        }
-
-        .tab-button:hover {
-            color: var(--primary-blue);
-        }
-
-        /* Forms Container */
-        .forms-wrapper {
-            position: relative;
-            min-height: 350px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-gray);
-            border-radius: 8px;
-            font-size: 0.95rem;
-            color: var(--text-dark);
-            background-color: #fff;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(74, 127, 215, 0.1);
-        }
-
-        .form-control::placeholder {
-            color: var(--text-light);
-        }
-
-        .form-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .form-checkbox input {
-            cursor: pointer;
-            width: 18px;
-            height: 18px;
-        }
-
-        .form-checkbox label {
-            cursor: pointer;
-            font-size: 0.9rem;
-            color: var(--text-dark);
-            margin: 0;
-        }
-
-        .forgot-password {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-
-        .forgot-password a {
-            color: var(--primary-blue);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-
-        .forgot-password a:hover {
-            color: var(--secondary-blue);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px 20px;
-            background-color: var(--primary-blue);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-submit:hover {
-            background-color: var(--secondary-blue);
-            box-shadow: 0 4px 12px rgba(74, 127, 215, 0.3);
-        }
-
-        .auth-form {
-            opacity: 0;
-            visibility: hidden;
-            position: absolute;
+        /* Header & Navigation */
+        .navbar-custom {
+            background: linear-gradient(135deg, rgba(13, 31, 45, 0.95) 0%, rgba(26, 47, 63, 0.95) 100%) !important;
+            padding: 20px 0;
+            border: none !important;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            transition: all 0.3s ease;
-            transform: translateY(10px);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 255, 136, 0.1);
         }
 
-        .auth-form.active {
-            opacity: 1;
-            visibility: visible;
+        .navbar-brand {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #ffffff !important;
+        }
+
+        .navbar-brand span {
+            color: #00ff88;
+        }
+
+        .nav-link {
+            color: #b0b8c1 !important;
+            font-size: 14px;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #00ff88 !important;
+        }
+
+        /* Main Content Section */
+        .landing-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .badge-custom {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero-title {
+            font-size: 72px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: #7a8a99;
+            max-width: 600px;
+            margin: 0 auto 50px;
+            line-height: 1.6;
+        }
+
+        /* Admin Access Box */
+        .admin-access-box {
+            background: rgba(30, 45, 60, 0.8);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            margin-bottom: 80px;
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #b0b8c1;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .password-input-wrapper {
             position: relative;
+            margin-bottom: 25px;
+        }
+
+        .password-input {
+            width: 100%;
+            background: rgba(20, 35, 50, 0.8);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 15px 45px 15px 15px;
+            color: #ffffff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .password-input::placeholder {
+            color: #556677;
+        }
+
+        .password-input:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            background: rgba(20, 35, 50, 0.95);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #00ff88;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .enter-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
+            color: #0d1f2d !important;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .enter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .enter-btn:active {
             transform: translateY(0);
         }
 
-        .form-footer {
+        .encrypted-note {
+            font-size: 12px;
+            color: #556677;
             text-align: center;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: var(--text-light);
         }
 
-        .form-footer a {
-            color: var(--primary-blue);
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: color 0.3s ease;
+        .encrypted-note i {
+            color: #00ff88;
+            margin-right: 5px;
         }
 
-        .form-footer a:hover {
-            color: var(--secondary-blue);
-            text-decoration: underline;
-        }
-
-        /* Responsive Design */
-    </style>
-
-    <style media="(max-width: 768px)">
-            .auth-container {
-                grid-template-columns: 1fr;
-                min-height: auto;
-            }
-
-            .branding-section {
-                padding: 40px 30px;
-                min-height: 250px;
-            }
-
-            .branding-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 2rem;
-            }
-
-            .branding-title {
-                font-size: 1.5rem;
-            }
-
-            .branding-description {
-                font-size: 0.85rem;
-                margin-bottom: 20px;
-            }
-
-            .form-section {
-                padding: 40px 30px;
-            }
-
-            .form-title {
-                font-size: 1.5rem;
-            }
-
-            .forms-wrapper {
-                min-height: auto;
-            }
-
-            .auth-form {
-                position: static;
-                opacity: 1;
-                visibility: visible;
-                transform: none;
-            }
-
-            .auth-form.active {
-                position: static;
-            }
-        }
-    </style>
-
-    <style media="(max-width: 480px)">
-            .auth-container {
-                border-radius: 12px;
-            }
-
-            .branding-section {
-                padding: 30px 20px;
-            }
-
-            .form-section {
-                padding: 30px 20px;
-            }
-
-            .branding-title {
-                font-size: 1.3rem;
-            }
-
-            .form-title {
-                font-size: 1.3rem;
-            }
-
-            .form-label {
-                font-size: 0.9rem;
-            }
-
-            .form-control {
-                padding: 10px 12px;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Password strength indicator */
-        .password-strength {
-            margin-top: 5px;
-            font-size: 0.8rem;
-            display: none;
-        }
-
-        .password-strength.show {
-            display: block;
-        }
-
-        .strength-bar {
-            height: 4px;
-            border-radius: 2px;
-            background-color: #e9ecef;
-            margin-top: 5px;
-        }
-
-        .strength-fill {
-            height: 100%;
-            border-radius: 2px;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .strength-fill.weak {
-            background-color: #ef4444;
-            width: 33%;
-        }
-
-        .strength-fill.medium {
-            background-color: #eab308;
-            width: 66%;
-        }
-
-        .strength-fill.strong {
-            background-color: #22c55e;
+        /* Team Section */
+        .team-section {
             width: 100%;
+            padding: 60px 20px;
+            margin-top: 40px;
+        }
+
+        .team-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .team-card {
+            background: rgba(30, 45, 60, 0.6);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .team-card:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-5px);
+            background: rgba(30, 45, 60, 0.8);
+        }
+
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #0d1f2d;
+            font-weight: 700;
+        }
+
+        .team-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .team-role {
+            font-size: 12px;
+            color: #00ff88;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .team-description {
+            font-size: 14px;
+            color: #7a8a99;
+            line-height: 1.5;
+        }
+
+        /* Support Modal */
+        .support-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .support-modal.show {
+            display: flex;
+        }
+
+        .support-modal-content {
+            background: linear-gradient(135deg, rgba(13, 31, 45, 0.98) 0%, rgba(26, 47, 63, 0.98) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @@keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .support-modal-content h2 {
+            color: #00ff88;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .support-modal-content p {
+            color: #b0b8c1;
+            margin-bottom: 10px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .support-email {
+            color: #00ff88;
+            font-weight: 600;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+
+        .modal-close-btn {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
+            color: #0d1f2d;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .hero-title {
+                font-size: 48px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .admin-access-box {
+                padding: 30px 20px;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="auth-container">
-        <!-- Branding Section -->
-        <div class="branding-section">
-            <div class="branding-icon">
-                <i class="bi bi-speedometer2"></i>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="#"><span>GAME</span>TIME MANAGEMENT SYSTEM</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSupportPopup(event)">Support</a>
+                    </li>
+                </ul>
             </div>
-            <h1 class="branding-title">Smart Sit-In</h1>
-            <p class="branding-subtitle">Computer Lab Management System</p>
-            <p class="branding-description">
-                Manage your lab sit-in requests easily and efficiently. Book your workspace, track your reservations, and stay updated with announcements.
-            </p>
-            <ul class="feature-list">
-                <li>
-                    <i class="bi bi-check-circle"></i>
-                    <span>Easy booking system</span>
-                </li>
-                <li>
-                    <i class="bi bi-check-circle"></i>
-                    <span>Real-time availability</span>
-                </li>
-                <li>
-                    <i class="bi bi-check-circle"></i>
-                    <span>Instant notifications</span>
-                </li>
-            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Landing Section -->
+    <div class="landing-container">
+        <div class="badge-custom">
+            <i class="bi bi-shield-check"></i> Secure Access Protocol
         </div>
 
-        <!-- Form Section -->
-        <div class="form-section">
-            <div class="form-header">
-                <h2 class="form-title" id="formTitle">Welcome Back</h2>
-                <p class="form-subtitle" id="formSubtitle">Login to your account</p>
-            </div>
+        <div class="hero-section">
+            <h1 class="hero-title">WELCOME TO<br>GAMETIME</h1>
+            <p class="hero-subtitle">Enter your security credentials to access the premium<br>management dashboard.</p>
+        </div>
 
-            <!-- Tab Toggles -->
-            <div class="auth-tabs">
-                <button class="tab-button active" data-tab="login" onclick="switchTab('login')">
-                    Login
-                </button>
-                <button class="tab-button" data-tab="register" onclick="switchTab('register')">
-                    Register
+        <!-- Admin Access Box -->
+        <div class="admin-access-box">
+            <label class="admin-label"><i class="bi bi-lock-fill"></i> Admin Access</label>
+            <div class="password-input-wrapper">
+                <input type="password" id="adminPassword" class="password-input" placeholder="Enter Security Password">
+                <button class="password-toggle" type="button" onclick="togglePassword()">
+                    <i class="bi bi-eye-fill"></i>
                 </button>
             </div>
-
-            <!-- Forms Container -->
-            <div class="forms-wrapper">
-                <!-- Login Form -->
-                <form class="auth-form active" id="loginForm" method="post" action="/Account/Login">
-                    <div class="form-group">
-                        <label for="loginUsername" class="form-label">Student ID or Admin Username</label>
-                        <input type="text" id="loginUsername" name="usernameOrId" class="form-control" placeholder="Enter 8-digit Student ID or admin username" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="loginPassword" class="form-label">Password</label>
-                        <input type="password" id="loginPassword" name="password" class="form-control" placeholder="Enter your password" required />
-                    </div>
-
-                    <div class="form-checkbox">
-                        <input type="checkbox" id="rememberMe" name="rememberMe" />
-                        <label for="rememberMe">Remember me</label>
-                    </div>
-
-                    <div class="forgot-password">
-                        <a href="#forgot-password">Forgot your password?</a>
-                    </div>
-
-                    <button type="submit" class="btn-submit">
-                        <i class="bi bi-box-arrow-in-right"></i> Login
-                    </button>
-
-                    <div class="form-footer">
-                        Don't have an account? <a onclick="switchTab('register')">Register here</a>
-                    </div>
-                </form>
-
-                <!-- Register Form -->
-                <form class="auth-form" id="registerForm" method="post" action="/Account/Register">
-                    <div class="form-group">
-                        <label for="registerName" class="form-label">Full Name</label>
-                        <input type="text" id="registerName" name="fullName" class="form-control" placeholder="Enter your full name" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="registerStudentId" class="form-label">Student ID (8 digits)</label>
-                        <input type="text" id="registerStudentId" name="studentId" class="form-control" placeholder="e.g., 20240001" required pattern="\d{8}" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="registerPassword" class="form-label">Password</label>
-                        <input type="password" id="registerPassword" name="password" class="form-control" placeholder="Create a password" required onkeyup="checkPasswordStrength(this.value)" />
-                        <div class="strength-bar">
-                            <div class="strength-fill" id="strengthIndicator"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="confirmPassword" class="form-label">Confirm Password</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required />
-                    </div>
-
-                    <div class="form-checkbox">
-                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required />
-                        <label for="agreeTerms">I agree to the Terms & Conditions</label>
-                    </div>
-
-                    <button type="submit" class="btn-submit">
-                        <i class="bi bi-person-plus"></i> Create Account
-                    </button>
-
-                    <div class="form-footer">
-                        Already have an account? <a onclick="switchTab('login')">Login here</a>
-                    </div>
-                </form>
+            <button class="enter-btn" onclick="enterDashboard()">
+                <span>ENTER DASHBOARD</span>
+                <i class="bi bi-arrow-right"></i>
+            </button>
+            <div class="encrypted-note">
+                <i class="bi bi-check-circle-fill"></i> Encrypted Connection: 256-bit
             </div>
         </div>
     </div>
 
+    <!-- Team Section -->
+    <div class="team-section">
+        <div style="text-align: center;">
+            <div class="team-badge">The Development Team</div>
+        </div>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">AR</div>
+                <div class="team-name">Alex Rivera</div>
+                <div class="team-role">Project Manager</div>
+                <div class="team-description">Orchestrates team workflows and ensures timely delivery of all sprint objectives.</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">JS</div>
+                <div class="team-name">Jordan Smith</div>
+                <div class="team-role">Lead Developer</div>
+                <div class="team-description">Architected core systems and develops the platform.</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">ML</div>
+                <div class="team-name">Morgan Lee</div>
+                <div class="team-role">Backend Developer</div>
+                <div class="team-description">Builds and maintains robust server-side infrastructure.</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">CP</div>
+                <div class="team-name">Casey Park</div>
+                <div class="team-role">Frontend Developer</div>
+                <div class="team-description">Creates responsive and seamless user interface experiences.</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">TN</div>
+                <div class="team-name">Taylor Nguyen</div>
+                <div class="team-role">Documentation</div>
+                <div class="team-description">Authored comprehensive guides and API references for the platform.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div id="supportModal" class="support-modal">
+        <div class="support-modal-content">
+            <h2>Contact Us</h2>
+            <p>For support and inquiries, please reach out to us:</p>
+            <div class="support-email">
+                GameTime@GameTime.com
+            </div>
+            <p style="font-size: 14px; color: #7a8a99;">We're here to help you get the most out of GameTime Management System.</p>
+            <button class="modal-close-btn" onclick="closeSupportPopup()">Close</button>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function switchTab(tabName) {
-            // Hide all forms
-            const forms = document.querySelectorAll('.auth-form');
-            forms.forEach(form => form.classList.remove('active'));
+        function togglePassword() {
+            const input = document.getElementById('adminPassword');
+            const btn = event.target.closest('.password-toggle');
+            const icon = btn.querySelector('i');
 
-            // Remove active class from all tabs
-            const tabs = document.querySelectorAll('.tab-button');
-            tabs.forEach(tab => tab.classList.remove('active'));
-
-            // Show selected form
-            const selectedForm = document.getElementById(tabName + 'Form');
-            if (selectedForm) {
-                selectedForm.classList.add('active');
-            }
-
-            // Mark selected tab as active
-            const selectedTab = document.querySelector(`[data-tab="${tabName}"]`);
-            if (selectedTab) {
-                selectedTab.classList.add('active');
-            }
-
-            // Update form header
-            if (tabName === 'login') {
-                document.getElementById('formTitle').textContent = 'Welcome Back';
-                document.getElementById('formSubtitle').textContent = 'Login to your account';
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye-fill');
+                icon.classList.add('bi-eye-slash-fill');
             } else {
-                document.getElementById('formTitle').textContent = 'Create Account';
-                document.getElementById('formSubtitle').textContent = 'Join Smart Sit-In today';
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash-fill');
+                icon.classList.add('bi-eye-fill');
             }
         }
 
-        function checkPasswordStrength(password) {
-            const strengthIndicator = document.getElementById('strengthIndicator');
-            let strength = 0;
-
-            if (password.length >= 8) strength++;
-            if (/[a-z]+/.test(password)) strength++;
-            if (/[A-Z]+/.test(password)) strength++;
-            if (/[0-9]+/.test(password)) strength++;
-
-            // Check for special characters
-            for (let i = 0; i < password.length; i++) {
-                if (!/[a-zA-Z0-9]/.test(password[i])) {
-                    strength++;
-                    break;
-                }
+        function enterDashboard() {
+            const password = document.getElementById('adminPassword').value;
+            if (password.trim() === '') {
+                alert('Please enter a password');
+                return;
             }
-
-            strengthIndicator.classList.remove('weak', 'medium', 'strong');
-
-            if (password.length === 0) {
-                strengthIndicator.style.display = 'none';
-            } else if (strength <= 2) {
-                strengthIndicator.classList.add('weak');
-                strengthIndicator.style.display = 'block';
-            } else if (strength <= 3) {
-                strengthIndicator.classList.add('medium');
-                strengthIndicator.style.display = 'block';
-            } else {
-                strengthIndicator.classList.add('strong');
-                strengthIndicator.style.display = 'block';
-            }
+            // Redirect to admin dashboard or login
+            window.location.href = '/Admin/Dashboard';
         }
 
-        // Form validation
-        document.getElementById('registerForm').addEventListener('submit', function (e) {
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (password !== confirmPassword) {
-                e.preventDefault();
-                alert('Passwords do not match!');
-            }
-
-            const agreeTerms = document.getElementById('agreeTerms').checked;
-            if (!agreeTerms) {
-                e.preventDefault();
-                alert('You must agree to the Terms & Conditions!');
-            }
-        });
-
-        // Prevent enter key from submitting on password fields when not final field
-        document.getElementById('loginPassword').addEventListener('keypress', function (e) {
+        // Allow Enter key to submit
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                e.preventDefault();
-                document.getElementById('loginForm').submit();
+                enterDashboard();
             }
         });
 
-        document.getElementById('confirmPassword').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                document.getElementById('registerForm').submit();
+        // Support Modal Functions
+        function showSupportPopup(event) {
+            event.preventDefault();
+            const modal = document.getElementById('supportModal');
+            modal.classList.add('show');
+        }
+
+        function closeSupportPopup() {
+            const modal = document.getElementById('supportModal');
+            modal.classList.remove('show');
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('supportModal');
+            if (event.target === modal) {
+                modal.classList.remove('show');
             }
-        });
+        }
     </script>
 </body>
 </html>
