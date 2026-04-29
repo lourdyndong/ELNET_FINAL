@@ -1,45 +1,29 @@
-using ELNETFINALPROJECT.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using ELNETFINALPROJECT.Helpers;
+using ELNETFINALPROJECT.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure EF Core with SQLite
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=smartsitin.db"));
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=accounts.db"));
 
-// Authentication (cookie)
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/"; // Home/Index
-        options.Cookie.Name = "SmartSitInAuth";
-    });
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
-// Ensure database and seed admin
+// Ensure db is created
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
-
-    // Seed default admin if not exists
-    if (!db.Users.Any(u => u.Role == "Admin" && u.Username == "admin"))
-    {
-        db.Users.Add(new ELNETFINALPROJECT.Models.User
-        {
-            Username = "admin",
-            FullName = "Administrator",
-            PasswordHash = PasswordHelper.Hash("admin123"),
-            Role = "Admin"
-        });
-        db.SaveChanges();
-    }
 }
 
 // Configure the HTTP request pipeline.
@@ -53,8 +37,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseAuthentication();
+app.UseSession();
 app.UseAuthorization();
 
 app.MapStaticAssets();
