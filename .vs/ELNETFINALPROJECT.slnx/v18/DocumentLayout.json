@@ -1,9 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\ELNET_FINAL\\",
+  "WorkspaceRootPath": "C:\\ELNET_FINAL\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|d:\\elnet_final\\elnetfinalproject\\elnetfinalproject.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\elnet_final\\elnetfinalproject\\helpers\\passwordhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\helpers\\passwordhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\elnet_final\\elnetfinalproject\\elnetfinalproject.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\elnetfinalproject.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
@@ -19,10 +23,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "PasswordHelper.cs",
+              "DocumentMoniker": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
+              "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
+              "ToolTip": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
+              "RelativeToolTip": "ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T00:25:20.991Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "ELNETFINALPROJECT.csproj",
-              "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
+              "DocumentMoniker": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
-              "ToolTip": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
+              "ToolTip": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
               "RelativeToolTip": "ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
