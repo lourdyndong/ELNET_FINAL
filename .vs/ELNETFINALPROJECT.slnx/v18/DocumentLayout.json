@@ -1,30 +1,42 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\ELNET_FINAL\\",
+  "WorkspaceRootPath": "C:\\Users\\Euwen\\Desktop\\ELNET\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\elnet_final\\elnetfinalproject\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\elnet_final\\elnetfinalproject\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\users\\euwen\\desktop\\elnet\\elnetfinalproject\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\elnet_final\\elnetfinalproject\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\users\\euwen\\desktop\\elnet\\elnetfinalproject\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\users\\euwen\\desktop\\elnet\\elnetfinalproject\\models\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\models\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\users\\euwen\\desktop\\elnet\\elnetfinalproject\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\users\\euwen\\desktop\\elnet\\elnetfinalproject\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\elnet_final\\elnetfinalproject\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\users\\euwen\\desktop\\elnet\\elnetfinalproject\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\elnet_final\\elnetfinalproject\\helpers\\passwordhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\users\\euwen\\desktop\\elnet\\elnetfinalproject\\helpers\\passwordhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\helpers\\passwordhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\elnet_final\\elnetfinalproject\\elnetfinalproject.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\users\\euwen\\desktop\\elnet\\elnetfinalproject\\elnetfinalproject.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\elnetfinalproject.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|c:\\users\\euwen\\desktop\\elnet\\elnetfinalproject\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,84 +46,117 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Program.cs",
+              "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Program.cs",
+              "ToolTip": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Program.cs",
+              "RelativeToolTip": "ELNETFINALPROJECT\\Program.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T11:16:04.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Account.cs",
+              "DocumentMoniker": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Models\\Account.cs",
+              "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Models\\Account.cs",
+              "ToolTip": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Models\\Account.cs",
+              "RelativeToolTip": "ELNETFINALPROJECT\\Models\\Account.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T11:15:56.928Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "ELNETFINALPROJECT\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T11:15:53.038Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Controllers\\HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Controllers\\HomeController.cs",
               "RelativeToolTip": "ELNETFINALPROJECT\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAQwCwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-29T01:00:40.173Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Dashboard.cshtml",
-              "DocumentMoniker": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Home\\Dashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Views\\Home\\Dashboard.cshtml",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Views\\Home\\Dashboard.cshtml",
-              "ToolTip": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Home\\Dashboard.cshtml",
+              "ToolTip": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Views\\Home\\Dashboard.cshtml",
               "RelativeToolTip": "ELNETFINALPROJECT\\Views\\Home\\Dashboard.cshtml",
-              "ViewState": "AgIAAEYEAAAAAAAAAAAAAGwEAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAI8DAAAAAAAAAAAAAGwEAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-04-29T00:58:05.267Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Home\\Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Views\\Home\\Index.cshtml",
               "RelativeToolTip": "ELNETFINALPROJECT\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAL8CAAAAAAAAAAAAAOMCAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAMACAAAAAAAAAIBJwOECAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-04-29T00:31:22.993Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Privacy.cshtml",
-              "DocumentMoniker": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Home\\Privacy.cshtml",
+              "DocumentMoniker": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Views\\Home\\Privacy.cshtml",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Views\\Home\\Privacy.cshtml",
-              "ToolTip": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Home\\Privacy.cshtml",
+              "ToolTip": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Views\\Home\\Privacy.cshtml",
               "RelativeToolTip": "ELNETFINALPROJECT\\Views\\Home\\Privacy.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-29T00:40:31.105Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-29T00:40:31.105Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "PasswordHelper.cs",
-              "DocumentMoniker": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
+              "DocumentMoniker": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
-              "ToolTip": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
+              "ToolTip": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
               "RelativeToolTip": "ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-29T00:25:20.991Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-29T00:25:20.991Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "ELNETFINALPROJECT.csproj",
-              "DocumentMoniker": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
+              "DocumentMoniker": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
-              "ToolTip": "C:\\ELNET_FINAL\\ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
+              "ToolTip": "C:\\Users\\Euwen\\Desktop\\ELNET\\ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
               "RelativeToolTip": "ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",

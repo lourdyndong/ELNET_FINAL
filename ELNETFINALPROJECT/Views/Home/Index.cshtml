@@ -569,22 +569,28 @@
         </div>
 
         <!-- Admin Access Box -->
-        <div class="admin-access-box">
+        <form method="post" action="/Home/Login" class="admin-access-box">
             <label class="admin-label"><i class="bi bi-lock-fill"></i> Admin Access</label>
             <div class="password-input-wrapper">
-                <input type="password" id="adminPassword" class="password-input" placeholder="Enter Security Password">
+                <input type="password" name="password" id="adminPassword" class="password-input" placeholder="Enter Security Password" required>
                 <button class="password-toggle" type="button" onclick="togglePassword()">
                     <i class="bi bi-eye-fill"></i>
                 </button>
             </div>
-            <button class="enter-btn" onclick="enterDashboard()">
+            @if (TempData["Error"] != null)
+            {
+                <div style="color: #ff4a4a; margin-top: 10px; font-size: 14px;">
+                    @TempData["Error"]
+                </div>
+            }
+            <button type="submit" class="enter-btn">
                 <span>ENTER DASHBOARD</span>
                 <i class="bi bi-arrow-right"></i>
             </button>
             <div class="encrypted-note">
                 <i class="bi bi-check-circle-fill"></i> Encrypted Connection: 256-bit
             </div>
-        </div>
+        </form>
     </div>
 
     <!-- Team Section -->
@@ -698,15 +704,7 @@
             }
         }
 
-        function enterDashboard() {
-            const password = document.getElementById('adminPassword').value;
-            if (password.trim() === '') {
-                alert('Please enter a password');
-                return;
-            }
-            // Redirect to admin dashboard or login
-            window.location.href = '/Admin/Dashboard';
-        }
+        // Dashboard entry is now handled by the form POST
 
         // Allow Enter key to submit
         document.getElementById('adminPassword').addEventListener('keypress', function(e) {
