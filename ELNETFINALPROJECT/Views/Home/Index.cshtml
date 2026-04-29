@@ -39,26 +39,78 @@
         }
 
         .navbar-brand {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 15px;
+            font-weight: 800;
             letter-spacing: 2px;
             color: #ffffff !important;
+            text-decoration: none;
         }
 
-        .navbar-brand span {
+        .brand-text {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .brand-white {
+            color: #ffffff;
+        }
+
+        .brand-green {
             color: #00ff88;
+        }
+
+        .nav-icon-wrap {
+            display: flex;
+            align-items: center;
+        }
+
+        .system-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(20, 35, 50, 0.7);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 13px;
+            color: #e0e6ed;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 6px #00ff88;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @@keyframes pulse-dot {
+            0%, 100% {
+                box-shadow: 0 0 4px #00ff88;
+                opacity: 1;
+            }
+
+            50% {
+                box-shadow: 0 0 10px #00ff88;
+                opacity: 0.8;
+            }
         }
 
         .nav-link {
             color: #b0b8c1 !important;
             font-size: 14px;
-            margin: 0 15px;
+            margin: 0 10px;
             transition: color 0.3s ease;
         }
 
-        .nav-link:hover {
-            color: #00ff88 !important;
-        }
+            .nav-link:hover {
+                color: #00ff88 !important;
+            }
 
         /* Main Content Section */
         .landing-container {
@@ -144,15 +196,15 @@
             transition: all 0.3s ease;
         }
 
-        .password-input::placeholder {
-            color: #556677;
-        }
+            .password-input::placeholder {
+                color: #556677;
+            }
 
-        .password-input:focus {
-            border-color: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-            background: rgba(20, 35, 50, 0.95);
-        }
+            .password-input:focus {
+                border-color: #00ff88;
+                box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+                background: rgba(20, 35, 50, 0.95);
+            }
 
         .password-toggle {
             position: absolute;
@@ -190,14 +242,14 @@
             margin-bottom: 15px;
         }
 
-        .enter-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
-        }
+            .enter-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            }
 
-        .enter-btn:active {
-            transform: translateY(0);
-        }
+            .enter-btn:active {
+                transform: translateY(0);
+            }
 
         .encrypted-note {
             font-size: 12px;
@@ -205,10 +257,10 @@
             text-align: center;
         }
 
-        .encrypted-note i {
-            color: #00ff88;
-            margin-right: 5px;
-        }
+            .encrypted-note i {
+                color: #00ff88;
+                margin-right: 5px;
+            }
 
         /* Team Section */
         .team-section {
@@ -249,11 +301,11 @@
             backdrop-filter: blur(5px);
         }
 
-        .team-card:hover {
-            border-color: rgba(0, 255, 136, 0.3);
-            transform: translateY(-5px);
-            background: rgba(30, 45, 60, 0.8);
-        }
+            .team-card:hover {
+                border-color: rgba(0, 255, 136, 0.3);
+                transform: translateY(-5px);
+                background: rgba(30, 45, 60, 0.8);
+            }
 
         .team-avatar {
             width: 80px;
@@ -305,9 +357,9 @@
             justify-content: center;
         }
 
-        .support-modal.show {
-            display: flex;
-        }
+            .support-modal.show {
+                display: flex;
+            }
 
         .support-modal-content {
             background: linear-gradient(135deg, rgba(13, 31, 45, 0.98) 0%, rgba(26, 47, 63, 0.98) 100%);
@@ -326,6 +378,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -365,9 +418,81 @@
             transition: all 0.3s ease;
         }
 
-        .modal-close-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            .modal-close-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            }
+
+        /* Footer */
+        .site-footer {
+            background: rgba(10, 18, 26, 0.95);
+            border-top: 1px solid rgba(255,255,255,0.07);
+            padding: 18px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 48px;
+        }
+
+        .footer-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .footer-stat-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #556677;
+            text-transform: uppercase;
+        }
+
+        .footer-stat-value {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            color: #c0cad4;
+            font-weight: 500;
+        }
+
+            .footer-stat-value svg {
+                flex-shrink: 0;
+            }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #556677;
+        }
+
+            .footer-right a {
+                color: #7a8a99;
+                text-decoration: none;
+                transition: color 0.2s;
+            }
+
+                .footer-right a:hover {
+                    color: #00ff88;
+                }
+
+        .footer-dot {
+            width: 3px;
+            height: 3px;
+            background: #3a4a5a;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
         }
 
         /* Responsive */
@@ -394,14 +519,38 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid px-4">
-            <a class="navbar-brand" href="#"><span>GAME</span>TIME MANAGEMENT SYSTEM</a>
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                <span class="nav-icon-wrap">
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="30" height="30" rx="7" fill="#00ff88" />
+                        <path d="M8 15h4M10 13v4" stroke="#0d1f2d" stroke-width="2" stroke-linecap="round" />
+                        <circle cx="18" cy="13.5" r="1" fill="#0d1f2d" />
+                        <circle cx="21" cy="16.5" r="1" fill="#0d1f2d" />
+                        <path d="M6 11.5C6 10 7 9 8.5 9h13C23 9 24 10 24 11.5v5c0 2.5-2 4.5-4.5 4.5h-9C8 21 6 19 6 16.5v-5z" stroke="#0d1f2d" stroke-width="1.5" fill="none" />
+                    </svg>
+                </span>
+                <span class="brand-text">
+                    <span class="brand-white">GAME</span><span class="brand-green">TIME</span>
+                    <span class="brand-white"> MANAGE</span><span class="brand-green">MENT</span>
+                    <span class="brand-white"> SYS</span><span class="brand-green">TEM</span>
+                </span>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Privacy">Documentation</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="showSupportPopup(event)">Support</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <span class="system-status-badge">
+                            <span class="status-dot"></span>
+                            System Online
+                        </span>
                     </li>
                 </ul>
             </div>
@@ -476,6 +625,46 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-left">
+            <div class="footer-stat">
+                <span class="footer-stat-label">Server Location</span>
+                <span class="footer-stat-value">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="7" cy="7" r="6" stroke="#00ff88" stroke-width="1.2" />
+                        <path d="M7 1C7 1 4.5 4 4.5 7C4.5 10 7 13 7 13" stroke="#00ff88" stroke-width="1.2" />
+                        <path d="M7 1C7 1 9.5 4 9.5 7C9.5 10 7 13 7 13" stroke="#00ff88" stroke-width="1.2" />
+                        <path d="M1 7h12" stroke="#00ff88" stroke-width="1.2" />
+                        <path d="M1.5 4.5h11M1.5 9.5h11" stroke="#00ff88" stroke-width="0.8" />
+                    </svg>
+                    Asia-1 (Philippines)
+                </span>
+            </div>
+            <div class="footer-stat">
+                <span class="footer-stat-label">Network Latency</span>
+                <span class="footer-stat-value">
+                    <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="9" width="3" height="5" rx="1" fill="#00ff88" />
+                        <rect x="4.5" y="6" width="3" height="8" rx="1" fill="#00ff88" />
+                        <rect x="9" y="3" width="3" height="11" rx="1" fill="#00ff88" />
+                        <rect x="13.5" y="0" width="2.5" height="14" rx="1" fill="#00ff88" opacity="0.4" />
+                    </svg>
+                    42ms Average
+                </span>
+            </div>
+        </div>
+        <div class="footer-right">
+            <span>&copy; 2026 GameTime Management System</span>
+            <span class="footer-dot"></span>
+            <a href="/Home/Privacy">Terms</a>
+            <span class="footer-dot"></span>
+            <a href="/Home/Privacy">Privacy</a>
+            <span class="footer-dot"></span>
+            <span style="color: #4a5a6a;">v0.0.1-beta</span>
+        </div>
+    </footer>
 
     <!-- Support Modal -->
     <div id="supportModal" class="support-modal">
