@@ -11,109 +11,37 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ELNETFINALPROJECT
 build_property.RootNamespace = ELNETFINALPROJECT
-build_property.ProjectDir = D:\ELNET_FINAL\ELNETFINALPROJECT\
+build_property.ProjectDir = C:\ELNET_FINAL\ELNETFINALPROJECT\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\ELNET_FINAL\ELNETFINALPROJECT
+build_property.MSBuildProjectDirectory = C:\ELNET_FINAL\ELNETFINALPROJECT
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Admin/Dashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Admin/Labs.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTGFicy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Admin/ManageAnnouncements.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlQW5ub3VuY2VtZW50cy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Admin/ManageRequests.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlUmVxdWVzdHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Admin/Reports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUmVwb3J0cy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Admin/Users.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlcnMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Home/Index.cshtml]
+[C:/ELNET_FINAL/ELNETFINALPROJECT/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Home/Privacy.cshtml]
+[C:/ELNET_FINAL/ELNETFINALPROJECT/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Shared/_AdminLayout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Shared/_AdminNavbar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbk5hdmJhci5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Shared/_AdminSidebar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pblNpZGViYXIuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Shared/_StudentLayout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdHVkZW50TGF5b3V0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Shared/_StudentNavbar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdHVkZW50TmF2YmFyLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Shared/_StudentSidebar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdHVkZW50U2lkZWJhci5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/ELNET_FINAL/ELNETFINALPROJECT/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Student/Announcements.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxBbm5vdW5jZW1lbnRzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Student/Dashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxEYXNoYm9hcmQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Student/MyRequests.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxNeVJlcXVlc3RzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Student/Notifications.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxOb3RpZmljYXRpb25zLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Student/RequestSitIn.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxSZXF1ZXN0U2l0SW4uY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/_ViewImports.cshtml]
+[C:/ELNET_FINAL/ELNETFINALPROJECT/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/_ViewStart.cshtml]
+[C:/ELNET_FINAL/ELNETFINALPROJECT/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ELNET_FINAL/ELNETFINALPROJECT/Views/Shared/_Layout.cshtml]
+[C:/ELNET_FINAL/ELNETFINALPROJECT/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-mrhwpip81q
