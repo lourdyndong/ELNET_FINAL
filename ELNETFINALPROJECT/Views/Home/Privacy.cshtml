@@ -2,5 +2,52 @@
     ViewData["Title"] = "Privacy Policy";
 }
 <h1>@ViewData["Title"]</h1>
+<!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:8px;">
+        <div style="width:34px;height:34px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M5 10h4M7 8v4" stroke="#07120d" stroke-width="1.6" stroke-linecap="round"/>
+                <circle cx="14" cy="9" r="1" fill="#07120d"/>
+                <circle cx="16" cy="11" r="1" fill="#07120d"/>
+            </svg>
+        </div>
+        <div style="font-weight:700;color:var(--text);font-size:14px;">
+            <span style="color:var(--green)">Game</span>Time
+        </div>
+        <div style="margin-left:auto;">
+            <span class="admin-pill">Admin</span>
+        </div>
+    </div>
+        <div class="sidebar-section-label">Navigation</div>
+        <a class="sidebar-item" href="@Url.Action("Dashboard","Home")"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a class="sidebar-item" href="@Url.Action("Players","Home")"><i class="bi bi-people-fill"></i> Players <span class="sidebar-badge"></span></a>
+        <a class="sidebar-item" href="@Url.Action("Stations","Home")"><i class="bi bi-display"></i> Stations <span class="sidebar-badge"></span></a>
+        <a class="sidebar-item" href="@Url.Action("Games","Home")"><i class="bi bi-controller"></i> Games <span class="sidebar-badge"></span></a>
 
+        <div class="sidebar-section-label">System</div>
+        <a class="sidebar-item" href="#"><i class="bi bi-gear"></i> Settings</a>
+        <a class="sidebar-item" href="#"><i class="bi bi-headset"></i> Support <span class="sidebar-badge" style="background:rgba(255,77,77,0.15);color:var(--red);"></span></a>
+
+        <div class="sidebar-bottom">
+            <div class="station-occ">
+                <div class="occ-header">
+                    <span class="occ-label">Station Occupancy</span>
+                    <span class="occ-count"></span>
+                </div>
+                <div class="occ-bar"><div class="occ-fill" style="width:0%"></div></div>
+                <div class="occ-sub"></div>
+            </div>
+            <div class="server-load">
+                <div class="server-left">
+                    <i class="bi bi-hdd-network server-icon"></i>
+                    <div class="server-info">
+                        <div class="server-title"></div>
+                        <div class="server-sub"></div>
+                    </div>
+                </div>
+                <div class="server-dot"></div>
+            </div>
+        </div>
+    </aside>
 <p>Use this page to detail your site's privacy policy.</p>

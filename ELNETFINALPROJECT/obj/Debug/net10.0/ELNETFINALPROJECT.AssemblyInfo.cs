@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ELNETFINALPROJECT")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c21f1501ee78a007cceeace63c920526687efeb1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e6615e077f3ab2a65d469ff14a8e25624cdda1a5")]
 [assembly: System.Reflection.AssemblyProductAttribute("ELNETFINALPROJECT")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ELNETFINALPROJECT")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

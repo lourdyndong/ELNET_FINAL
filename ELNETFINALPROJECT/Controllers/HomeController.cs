@@ -13,5 +13,17 @@ namespace ELNETFINALPROJECT.Controllers
         {
             return View();
         }
+        public IActionResult Players()
+        {
+            return View();
+        }
+        public IActionResult Stations()
+        {
+            return View();
+        }
+        public IActionResult Games()
+        {
+            return View();
+        }
     }
 }
