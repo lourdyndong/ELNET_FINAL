@@ -55,23 +55,12 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
-Controllers/
- AccountController.cs
- AdminController.cs
- HomeController.cs
- StudentController.cs
-Data/ApplicationDbContext.cs
+Controllers/HomeController.cs
+Data/AppDbContext.cs
 Helpers/PasswordHelper.cs
 Models/
- Announcement.cs
+ Account.cs
  ErrorViewModel.cs
- Lab.cs
- Notification.cs
- SitInRequest.cs
- User.cs
- ViewModels/
-  AdminDashboardViewModel.cs
-  StudentDashboardViewModel.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  ELNETFINALPROJECT.AssemblyInfo.cs
@@ -433,63 +422,31 @@ Program.cs
 obj/Debug/net10.0/ELNETFINALPROJECT.GeneratedMSBuildEditorConfig.editorconfig
 
 [additionalFiles]
-Views/Admin/
- Dashboard.cshtml
- Labs.cshtml
- ManageAnnouncements.cshtml
- ManageRequests.cshtml
- Reports.cshtml
- Users.cshtml
 Views/Home/
- Index.cshtml
- Privacy.cshtml
-Views/Shared/
- Error.cshtml
- _AdminLayout.cshtml
- _AdminNavbar.cshtml
- _AdminSidebar.cshtml
- _Layout.cshtml
- _StudentLayout.cshtml
- _StudentNavbar.cshtml
- _StudentSidebar.cshtml
- _ValidationScriptsPartial.cshtml
-Views/Student/
- Announcements.cshtml
  Dashboard.cshtml
- MyRequests.cshtml
- Notifications.cshtml
- RequestSitIn.cshtml
+ Games.cshtml
+ Index.cshtml
+ Players.cshtml
+ Privacy.cshtml
+ Stations.cshtml
+Views/Shared/
+ _Layout.cshtml
+ _ValidationScriptsPartial.cshtml
 Views/
  _ViewImports.cshtml
  _ViewStart.cshtml
 
 [dynamicFiles]
-Views/Admin/
- Dashboard.cshtml
- Labs.cshtml
- ManageAnnouncements.cshtml
- ManageRequests.cshtml
- Reports.cshtml
- Users.cshtml
 Views/Home/
- Index.cshtml
- Privacy.cshtml
-Views/Shared/
- Error.cshtml
- _AdminLayout.cshtml
- _AdminNavbar.cshtml
- _AdminSidebar.cshtml
- _Layout.cshtml
- _StudentLayout.cshtml
- _StudentNavbar.cshtml
- _StudentSidebar.cshtml
- _ValidationScriptsPartial.cshtml
-Views/Student/
- Announcements.cshtml
  Dashboard.cshtml
- MyRequests.cshtml
- Notifications.cshtml
- RequestSitIn.cshtml
+ Games.cshtml
+ Index.cshtml
+ Players.cshtml
+ Privacy.cshtml
+ Stations.cshtml
+Views/Shared/
+ _Layout.cshtml
+ _ValidationScriptsPartial.cshtml
 Views/
  _ViewImports.cshtml
  _ViewStart.cshtml
