@@ -27,18 +27,45 @@ namespace ELNETFINALPROJECT.Controllers
                 HttpContext.Session.SetString("IsAdmin", "true");
                 return RedirectToAction("Dashboard");
             }
-
             TempData["Error"] = "Invalid password!";
             return RedirectToAction("Index");
         }
 
-        public IActionResult Dashboard()
+        private IActionResult RequireAdmin()
         {
             if (HttpContext.Session.GetString("IsAdmin") != "true")
-            {
                 return RedirectToAction("Index");
-            }
-            return View();
+            return null;
+        }
+
+        public IActionResult Dashboard()
+        {
+            return RequireAdmin() ?? View();
+        }
+
+        public IActionResult Players()
+        {
+            return RequireAdmin() ?? View();
+        }
+
+        public IActionResult Stations()
+        {
+            return RequireAdmin() ?? View();
+        }
+
+        public IActionResult Games()
+        {
+            return RequireAdmin() ?? View();
+        }
+
+        public IActionResult Settings()
+        {
+            return RequireAdmin() ?? View();
+        }
+
+        public IActionResult Support()
+        {
+            return RequireAdmin() ?? View();
         }
     }
 }

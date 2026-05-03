@@ -742,30 +742,30 @@
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="sidebar-section-label">Navigation</div>
-        <a class="sidebar-item" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a>
-        <a class="sidebar-item active" href="#"><i class="bi bi-people-fill"></i> Players <span class="sidebar-badge">2.4k</span></a>
-        <a class="sidebar-item" href="#"><i class="bi bi-display"></i> Stations <span class="sidebar-badge">20</span></a>
-        <a class="sidebar-item" href="#"><i class="bi bi-controller"></i> Games <span class="sidebar-badge">48</span></a>
+        <a class="sidebar-item active" href="@Url.Action("Dashboard", "Home")"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a class="sidebar-item" href="@Url.Action("Players", "Home")"><i class="bi bi-people-fill"></i> Players</a>
+        <a class="sidebar-item" href="@Url.Action("Stations", "Home")"><i class="bi bi-display"></i> Stations</a>
+        <a class="sidebar-item" href="@Url.Action("Games", "Home")"><i class="bi bi-controller"></i> Games</a>
 
         <div class="sidebar-section-label">System</div>
-        <a class="sidebar-item" href="#"><i class="bi bi-gear"></i> Settings</a>
-        <a class="sidebar-item" href="#"><i class="bi bi-headset"></i> Support <span class="sidebar-badge" style="background:rgba(255,77,77,0.15);color:var(--red);">2</span></a>
+        <a class="sidebar-item" href="@Url.Action("Settings", "Home")"><i class="bi bi-gear"></i> Settings</a>
+        <a class="sidebar-item" href="@Url.Action("Support", "Home")"><i class="bi bi-headset"></i> Support</a>
 
         <div class="sidebar-bottom">
             <div class="station-occ">
                 <div class="occ-header">
                     <span class="occ-label">Station Occupancy</span>
-                    <span class="occ-count">14/20</span>
+                    <span class="occ-count">—</span>
                 </div>
                 <div class="occ-bar"><div class="occ-fill"></div></div>
-                <div class="occ-sub">70% capacity · 6 available</div>
+                <div class="occ-sub">—</div>
             </div>
             <div class="server-load">
                 <div class="server-left">
                     <i class="bi bi-hdd-network server-icon"></i>
                     <div class="server-info">
                         <div class="server-title">Server Load</div>
-                        <div class="server-sub">42% · 8ms latency</div>
+                        <div class="server-sub">—</div>
                     </div>
                 </div>
                 <div class="server-dot"></div>
@@ -802,30 +802,30 @@
                 <div class="stat-card">
                     <div class="stat-badge badge-live">Live</div>
                     <div class="stat-icon" style="background:var(--green-dim);"><i class="bi bi-people-fill" style="color:var(--green);font-size:15px;"></i></div>
-                    <div class="stat-num">147</div>
+                    <div class="stat-num">—</div>
                     <div class="stat-label">Players Online</div>
-                    <div class="stat-change up"><i class="bi bi-arrow-up-short"></i> +18 since 1hr ago</div>
+                    <div class="stat-change up">—</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-badge badge-stations">Stations</div>
                     <div class="stat-icon" style="background:rgba(77,159,255,0.1);"><i class="bi bi-display" style="color:var(--blue);font-size:15px;"></i></div>
-                    <div class="stat-num" style="color:var(--blue);">6</div>
+                    <div class="stat-num" style="color:var(--blue);">—</div>
                     <div class="stat-label">Available Stations</div>
-                    <div class="stat-change" style="color:var(--text3);">10 Active · 2 Offline · 6 Free</div>
+                    <div class="stat-change" style="color:var(--text3);">—</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-badge badge-today">Today</div>
                     <div class="stat-icon" style="background:rgba(255,170,0,0.1);"><i class="bi bi-lightning-fill" style="color:var(--amber);font-size:15px;"></i></div>
-                    <div class="stat-num" style="color:var(--amber);">312</div>
+                    <div class="stat-num" style="color:var(--amber);">—</div>
                     <div class="stat-label">Active Sessions</div>
-                    <div class="stat-change up-amber"><i class="bi bi-arrow-up-short"></i> +24.6% vs yesterday</div>
+                    <div class="stat-change up-amber">—</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-badge badge-revenue">Revenue</div>
                     <div class="stat-icon" style="background:rgba(255,77,77,0.1);"><i class="bi bi-currency-dollar" style="color:var(--red);font-size:15px;"></i></div>
-                    <div class="stat-num" style="color:var(--green);">$842</div>
+                    <div class="stat-num" style="color:var(--green);">—</div>
                     <div class="stat-label">Earned Today</div>
-                    <div class="stat-change up"><i class="bi bi-arrow-up-short"></i> +11.2% vs yesterday</div>
+                    <div class="stat-change up">—</div>
                 </div>
             </div>
 
@@ -845,86 +845,6 @@
                     </div>
                 </div>
                 <div class="stations-grid">
-                    <!-- PC 01 -->
-                    <div class="station-card">
-                        <div class="station-top"><span class="station-num">PC 01</span><div class="station-dot dot-green"></div></div>
-                        <div class="station-avatar"><i class="bi bi-display-fill" style="font-size:18px;"></i></div>
-                        <div><div class="station-username">NightOwl_X</div><div class="station-game">Valorant</div></div>
-                        <div class="station-time"><i class="bi bi-clock"></i> 1:24</div>
-                        <button class="station-btn manage">Manage</button>
-                    </div>
-                    <!-- PC 02 -->
-                    <div class="station-card">
-                        <div class="station-top"><span class="station-num">PC 02</span><div class="station-dot dot-green"></div></div>
-                        <div class="station-avatar"><i class="bi bi-display-fill" style="font-size:18px;"></i></div>
-                        <div><div class="station-username">StarFighter</div><div class="station-game">CS2</div></div>
-                        <div class="station-time"><i class="bi bi-clock"></i> 2:10</div>
-                        <button class="station-btn manage">Manage</button>
-                    </div>
-                    <!-- PC 03 -->
-                    <div class="station-card">
-                        <div class="station-top"><span class="station-num">PC 03</span><div class="station-dot dot-green"></div></div>
-                        <div class="station-avatar"><i class="bi bi-display-fill" style="font-size:18px;"></i></div>
-                        <div><div class="station-username">ShadowByte</div><div class="station-game">Fortnite</div></div>
-                        <div class="station-time"><i class="bi bi-clock"></i> 0:48</div>
-                        <button class="station-btn manage">Manage</button>
-                    </div>
-                    <!-- PC 04 -->
-                    <div class="station-card">
-                        <div class="station-top"><span class="station-num">PC 04</span><div class="station-dot dot-amber"></div></div>
-                        <div class="station-avatar"><i class="bi bi-display-fill" style="font-size:18px;"></i></div>
-                        <div><div class="station-username">VoidWalker</div><div class="station-game">Apex Legends</div></div>
-                        <div class="station-time"><i class="bi bi-clock"></i> 0:05</div>
-                        <button class="station-btn manage">Manage</button>
-                    </div>
-                    <!-- PC 05 -->
-                    <div class="station-card">
-                        <div class="station-top"><span class="station-num">PC 05</span><div class="station-dot dot-green"></div></div>
-                        <div class="station-avatar"><i class="bi bi-display-fill" style="font-size:18px;"></i></div>
-                        <div><div class="station-username">IronClaw</div><div class="station-game">Dota 2</div></div>
-                        <div class="station-time"><i class="bi bi-clock"></i> 1:55</div>
-                        <button class="station-btn manage">Manage</button>
-                    </div>
-                    <!-- PC 06 -->
-                    <div class="station-card">
-                        <div class="station-top"><span class="station-num">PC 06</span><div class="station-dot" style="background:var(--text3);"></div></div>
-                        <div class="station-avatar" style="color:var(--text3);border-color:var(--border);"><i class="bi bi-display" style="font-size:18px;"></i></div>
-                        <div><div class="station-username" style="color:var(--text3);">Available</div><div class="station-game">— Ready</div></div>
-                        <div class="station-time" style="color:var(--text3);">—</div>
-                        <button class="station-btn assign">Assign</button>
-                    </div>
-                    <!-- PC 07 -->
-                    <div class="station-card">
-                        <div class="station-top"><span class="station-num">PC 07</span><div class="station-dot dot-green"></div></div>
-                        <div class="station-avatar"><i class="bi bi-display-fill" style="font-size:18px;"></i></div>
-                        <div><div class="station-username">CyberWolf</div><div class="station-game">Overwatch</div></div>
-                        <div class="station-time"><i class="bi bi-clock"></i> 3:00</div>
-                        <button class="station-btn manage">Manage</button>
-                    </div>
-                    <!-- PC 08 OFFLINE -->
-                    <div class="station-card offline">
-                        <div class="station-top"><span class="station-num">PC 08</span><div class="station-dot dot-red"></div></div>
-                        <div class="station-avatar" style="color:var(--red);border-color:rgba(255,77,77,0.2);"><i class="bi bi-display-fill" style="font-size:18px;"></i></div>
-                        <div><div class="station-username" style="color:var(--red);">Offline</div><div class="station-game">Maintenance</div></div>
-                        <div class="station-time" style="color:var(--red);"><i class="bi bi-exclamation-circle"></i> Error</div>
-                        <button class="station-btn offline-btn">Offline</button>
-                    </div>
-                    <!-- PC 09 -->
-                    <div class="station-card">
-                        <div class="station-top"><span class="station-num">PC 09</span><div class="station-dot dot-green"></div></div>
-                        <div class="station-avatar"><i class="bi bi-display-fill" style="font-size:18px;"></i></div>
-                        <div><div class="station-username">PixelQueen</div><div class="station-game">Minecraft</div></div>
-                        <div class="station-time"><i class="bi bi-clock"></i> 0:33</div>
-                        <button class="station-btn manage">Manage</button>
-                    </div>
-                    <!-- PC 10 -->
-                    <div class="station-card">
-                        <div class="station-top"><span class="station-num">PC 10</span><div class="station-dot" style="background:var(--text3);"></div></div>
-                        <div class="station-avatar" style="color:var(--text3);border-color:var(--border);"><i class="bi bi-display" style="font-size:18px;"></i></div>
-                        <div><div class="station-username" style="color:var(--text3);">Available</div><div class="station-game">— Ready</div></div>
-                        <div class="station-time" style="color:var(--text3);">—</div>
-                        <button class="station-btn assign">Assign</button>
-                    </div>
                 </div>
             </div>
 
@@ -963,75 +883,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="player-cell">
-                                    <div class="player-av">NO</div>
-                                    <div>
-                                        <div class="player-pname">NightOwl_X <span class="vip-badge">VIP</span></div>
-                                        <div class="player-email">nightowl@gametime.gg</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="balance-cell">$48.50</td>
-                            <td style="font-size:12px;font-family:'JetBrains Mono',monospace;">284h 20m</td>
-                            <td style="font-size:12px;">PC 01</td>
-                            <td><span class="status-active">Active</span></td>
-                            <td style="font-size:12px;color:var(--text3);">Just now</td>
-                            <td>
-                                <div class="actions-cell">
-                                    <div class="action-btn"><i class="bi bi-eye"></i></div>
-                                    <div class="action-btn"><i class="bi bi-pencil"></i></div>
-                                    <div class="action-btn danger"><i class="bi bi-x-circle"></i></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="player-cell">
-                                    <div class="player-av">SF</div>
-                                    <div>
-                                        <div class="player-pname">StarFighter_Q</div>
-                                        <div class="player-email">starq@gametime.gg</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="balance-cell">$12.00</td>
-                            <td style="font-size:12px;font-family:'JetBrains Mono',monospace;">98h 45m</td>
-                            <td style="font-size:12px;">PC 02</td>
-                            <td><span class="status-active">Active</span></td>
-                            <td style="font-size:12px;color:var(--text3);">2 min ago</td>
-                            <td>
-                                <div class="actions-cell">
-                                    <div class="action-btn"><i class="bi bi-eye"></i></div>
-                                    <div class="action-btn"><i class="bi bi-pencil"></i></div>
-                                    <div class="action-btn danger"><i class="bi bi-x-circle"></i></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="player-cell">
-                                    <div class="player-av" style="color:var(--amber);border-color:rgba(255,170,0,0.3);">VW</div>
-                                    <div>
-                                        <div class="player-pname">VoidWalker <span class="vip-badge">VIP</span></div>
-                                        <div class="player-email">void@gametime.gg</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="balance-cell">$76.20</td>
-                            <td style="font-size:12px;font-family:'JetBrains Mono',monospace;">512h 03m</td>
-                            <td style="font-size:12px;">PC 04</td>
-                            <td><span class="status-active">Active</span></td>
-                            <td style="font-size:12px;color:var(--text3);">5 min ago</td>
-                            <td>
-                                <div class="actions-cell">
-                                    <div class="action-btn"><i class="bi bi-eye"></i></div>
-                                    <div class="action-btn"><i class="bi bi-pencil"></i></div>
-                                    <div class="action-btn danger"><i class="bi bi-x-circle"></i></div>
-                                </div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -1056,7 +907,7 @@
                             <div class="computer-icon-wrap">
                                 <i class="bi bi-display-fill"></i>
                             </div>
-                            <div class="computer-label">PC 01 — NightOwl_X</div>
+                            <div class="computer-label">—</div>
                             <div class="computer-sub">Click to reassign station</div>
                         </div>
                     </div>
@@ -1067,27 +918,27 @@
                         <div class="detail-field">
                             <div class="field-label">Username</div>
                             <div class="field-value">
-                                <div class="field-value-inner"><i class="bi bi-person"></i> NightOwl_X</div>
+                                <div class="field-value-inner"><i class="bi bi-person"></i> —</div>
                                 <i class="bi bi-pencil field-icon"></i>
                             </div>
                         </div>
                         <div class="detail-field">
                             <div class="field-label">Email</div>
                             <div class="field-value">
-                                <div class="field-value-inner"><i class="bi bi-envelope"></i> nightowl@gametime.gg</div>
+                                <div class="field-value-inner"><i class="bi bi-envelope"></i> —</div>
                             </div>
                         </div>
                         <div class="detail-row">
                             <div class="detail-field">
                                 <div class="field-label">Balance</div>
                                 <div class="field-value" style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px;">
-                                    $48.50
+                                    —
                                 </div>
                             </div>
                             <div class="detail-field">
                                 <div class="field-label">Station</div>
                                 <div class="field-value" style="font-size:12px;">
-                                    <div class="field-value-inner"><i class="bi bi-display"></i> PC 01</div>
+                                    <div class="field-value-inner"><i class="bi bi-display"></i> —</div>
                                 </div>
                             </div>
                         </div>
@@ -1099,15 +950,15 @@
                         <div class="session-panel">
                             <div class="session-row">
                                 <span class="session-row-label">Game</span>
-                                <span class="session-row-val">Valorant</span>
+                                <span class="session-row-val">—</span>
                             </div>
                             <div class="session-row">
                                 <span class="session-row-label">Time Elapsed</span>
-                                <span class="session-row-val green">1h 24m</span>
+                                <span class="session-row-val green">—</span>
                             </div>
                             <div class="session-row" style="margin-bottom:0;">
                                 <span class="session-row-label">Time Remaining</span>
-                                <span class="session-row-val">30m</span>
+                                <span class="session-row-val">—</span>
                             </div>
                             <div class="time-bar"><div class="time-fill"></div></div>
                         </div>
