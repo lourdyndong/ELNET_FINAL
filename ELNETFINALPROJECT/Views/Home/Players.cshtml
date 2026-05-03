@@ -516,13 +516,18 @@
         </div>
         <div style="display:flex; flex-direction:column; gap:14px;">
             <div>
+                <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Email (optional)</label>
+                <input id="regEmail" type="email" placeholder="Enter email"
+                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
+            </div>
+            <div>
                 <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Username</label>
                 <input id="regUsername" type="text" placeholder="Enter username"
                     style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
             </div>
             <div>
-                <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Email (optional)</label>
-                <input id="regEmail" type="email" placeholder="Enter email"
+                <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Password</label>
+                <input id="regPassword" type="password" placeholder="Enter password (min 6 chars)"
                     style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
             </div>
             <div>
@@ -545,8 +550,9 @@
 
     function openRegisterModal() {
         document.getElementById('registerModal').style.display = 'flex';
-        document.getElementById('regUsername').value = '';
         document.getElementById('regEmail').value = '';
+        document.getElementById('regUsername').value = '';
+        document.getElementById('regPassword').value = '';
         document.getElementById('regBalance').value = '';
         document.getElementById('regError').style.display = 'none';
     }
@@ -555,12 +561,18 @@
     }
 
     function registerPlayer() {
-        const username = document.getElementById('regUsername').value.trim();
         const email = document.getElementById('regEmail').value.trim();
+        const username = document.getElementById('regUsername').value.trim();
+        const password = document.getElementById('regPassword').value;
         const balance = parseFloat(document.getElementById('regBalance').value) || 0;
         const errEl = document.getElementById('regError');
         if (!username) {
             errEl.textContent = 'Username is required.';
+            errEl.style.display = 'block';
+            return;
+        }
+        if (!password || password.length < 6) {
+            errEl.textContent = 'Password is required (minimum 6 characters).';
             errEl.style.display = 'block';
             return;
         }
@@ -570,6 +582,8 @@
             id: playerIdCounter++,
             username,
             email: email || '—',
+            // NOTE: storing password client-side only for frontend/demo purposes
+            password: password,
             balance,
             status: 'Offline',
             registered: now.toLocaleDateString('en-PH', { year:'numeric', month:'short', day:'numeric' })
