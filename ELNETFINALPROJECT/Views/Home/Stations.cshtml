@@ -1,0 +1,541 @@
+@{
+    ViewData["Title"] = "Stations - GameTime";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0b1410;
+            --bg2: #111a16;
+            --bg3: #172018;
+            --bg4: #1e2b20;
+            --card: #141f16;
+            --border: rgba(0,255,100,0.08);
+            --border2: rgba(0,255,100,0.15);
+            --green: #00e872;
+            --green2: #00c460;
+            --green-dim: rgba(0,232,114,0.12);
+            --text: #e8f5ec;
+            --text2: #8aaa90;
+            --text3: #506055;
+            --red: #ff4d4d;
+            --amber: #ffaa00;
+            --blue: #4d9fff;
+            --sidebar-w: 220px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; display: flex; flex-direction: column;
+        }
+
+        /* TOP NAV */
+        .topnav {
+            height: 52px; background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; padding: 0 20px; gap: 16px;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .topnav-brand {
+            display: flex; align-items: center; gap: 8px;
+            font-weight: 700; font-size: 15px; letter-spacing: 0.5px;
+            text-decoration: none; color: var(--text);
+        }
+        .brand-icon {
+            width: 28px; height: 28px; background: var(--green);
+            border-radius: 7px; display: flex; align-items: center; justify-content: center;
+        }
+        .brand-icon svg { color: #0b1410; }
+        .brand-label span { color: var(--green); }
+        .admin-pill {
+            font-size: 10px; font-weight: 600; background: var(--green-dim);
+            color: var(--green); border: 1px solid var(--border2);
+            border-radius: 4px; padding: 2px 7px; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .topnav-search { flex: 1; max-width: 320px; margin-left: 24px; position: relative; }
+        .topnav-search input {
+            width: 100%; background: var(--bg3); border: 1px solid var(--border);
+            border-radius: 8px; padding: 7px 12px 7px 34px; font-size: 13px;
+            color: var(--text); font-family: 'DM Sans', sans-serif; outline: none;
+        }
+        .topnav-search input::placeholder { color: var(--text3); }
+        .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; }
+        .topnav-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+        .status-pill {
+            display: flex; align-items: center; gap: 6px;
+            background: var(--green-dim); border: 1px solid var(--border2);
+            border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 500; color: var(--green);
+        }
+        .status-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+        @@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+        .topnav-icon-btn {
+            width: 34px; height: 34px; background: var(--bg3);
+            border: 1px solid var(--border); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--text2); font-size: 15px;
+            position: relative; transition: border-color 0.2s;
+        }
+        .topnav-icon-btn:hover { border-color: var(--border2); color: var(--text); }
+        .user-chip {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--bg3); border: 1px solid var(--border);
+            border-radius: 10px; padding: 5px 10px 5px 6px; cursor: pointer;
+        }
+        .user-avatar {
+            width: 26px; height: 26px;
+            background: linear-gradient(135deg, var(--green), var(--green2));
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; color: #0b1410;
+        }
+        .user-name { font-size: 12px; font-weight: 600; }
+        .user-role { font-size: 10px; color: var(--text3); }
+
+        /* LAYOUT */
+        .app-body { display: flex; flex: 1; overflow: hidden; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-w); background: var(--bg2);
+            border-right: 1px solid var(--border); padding: 20px 12px;
+            display: flex; flex-direction: column; gap: 8px;
+            position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto;
+        }
+        .sidebar-section-label {
+            font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--text3); padding: 4px 8px; margin-top: 8px;
+        }
+        .sidebar-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 10px; border-radius: 8px; cursor: pointer;
+            font-size: 13px; font-weight: 500; color: var(--text2);
+            text-decoration: none; transition: all 0.15s;
+        }
+        .sidebar-item:hover { background: var(--bg3); color: var(--text); }
+        .sidebar-item.active { background: var(--green-dim); color: var(--green); border: 1px solid var(--border2); }
+        .sidebar-item i { font-size: 15px; width: 18px; text-align: center; }
+        .sidebar-bottom {
+            margin-top: auto; border-top: 1px solid var(--border);
+            padding-top: 14px; display: flex; flex-direction: column; gap: 4px;
+        }
+        .station-occ { padding: 10px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 8px; }
+        .occ-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .occ-label { font-size: 11px; color: var(--text3); }
+        .occ-count { font-size: 12px; font-weight: 600; }
+        .occ-bar { height: 4px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
+        .occ-fill { height: 100%; background: var(--green); border-radius: 2px; }
+        .occ-sub { font-size: 10px; color: var(--text3); margin-top: 5px; }
+        .server-load {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 10px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border);
+        }
+        .server-left { display: flex; align-items: center; gap: 8px; }
+        .server-icon { font-size: 14px; color: var(--green); }
+        .server-title { font-size: 11px; color: var(--text2); font-weight: 500; }
+        .server-sub { font-size: 10px; color: var(--text3); }
+        .server-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
+
+        /* MAIN */
+        .main { flex: 1; overflow-y: auto; padding: 24px; display: flex; gap: 20px; }
+        .main-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+        .main-right { width: 280px; flex-shrink: 0; }
+
+        /* BREADCRUMB */
+        .breadcrumb-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text3); margin-bottom: 6px; }
+        .breadcrumb-row i { font-size: 11px; }
+        .breadcrumb-row a { color: var(--text3); text-decoration: none; }
+        .breadcrumb-row a:hover { color: var(--text2); }
+        .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px; }
+        .page-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+        .page-sub { font-size: 13px; color: var(--text3); margin-top: 2px; }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 14px; border-radius: 8px;
+            font-size: 13px; font-weight: 500; cursor: pointer;
+            border: none; font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+        }
+        .btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+        .btn-ghost:hover { border-color: var(--border2); color: var(--text); }
+        .btn-primary { background: var(--green); color: #0b1410; font-weight: 600; }
+        .btn-primary:hover { background: var(--green2); }
+
+        /* STATIONS PANEL */
+        .stations-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+        .section-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+        .section-title i { color: var(--green); font-size: 15px; }
+        .section-sub { font-size: 11px; color: var(--text3); font-weight: 400; margin-left: 4px; }
+        .legend { display: flex; align-items: center; gap: 12px; }
+        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); }
+        .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+        .dot-green { background: var(--green); }
+        .dot-amber { background: var(--amber); }
+        .dot-red { background: var(--red); }
+
+        .stations-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        .station-card {
+            background: var(--bg3); border: 1px solid var(--border);
+            border-radius: 10px; padding: 12px;
+            display: flex; flex-direction: column; gap: 8px;
+            transition: border-color 0.2s; cursor: pointer;
+        }
+        .station-card:hover { border-color: var(--border2); }
+        .station-card.offline { opacity: 0.55; }
+        .station-top { display: flex; align-items: center; justify-content: space-between; }
+        .station-num { font-size: 11px; font-weight: 600; color: var(--text3); }
+        .station-dot { width: 7px; height: 7px; border-radius: 50%; }
+        .station-avatar {
+            width: 48px; height: 48px; border-radius: 10px;
+            background: var(--bg4); display: flex; align-items: center; justify-content: center;
+            color: var(--green); border: 1px solid var(--border2); margin: 0 auto;
+            font-size: 22px;
+        }
+        .station-username { font-size: 12px; font-weight: 600; line-height: 1.2; text-align: center; }
+        .station-game { font-size: 10px; color: var(--text3); text-align: center; }
+        .station-time { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 11px; color: var(--text2); font-family: 'JetBrains Mono', monospace; }
+        .station-time i { font-size: 10px; color: var(--green); }
+        .station-btn {
+            width: 100%; padding: 5px; border-radius: 6px;
+            font-size: 11px; font-weight: 600; cursor: pointer;
+            border: none; font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+        }
+        .station-btn.manage { background: var(--green-dim); color: var(--green); border: 1px solid var(--border2); }
+        .station-btn.assign { background: var(--bg4); color: var(--text3); border: 1px solid var(--border); }
+        .station-btn.offline-btn { background: rgba(255,77,77,0.1); color: var(--red); border: 1px solid rgba(255,77,77,0.2); }
+        .station-status-text { font-size: 11px; color: var(--text3); text-align: center; }
+
+        /* RIGHT PANEL - INFO */
+        .info-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .info-header {
+            padding: 14px 16px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 8px; background: var(--bg3);
+        }
+        .info-header i { color: var(--green); font-size: 14px; }
+        .info-header-title { font-size: 13px; font-weight: 600; }
+        .info-header-sub { font-size: 11px; color: var(--text3); }
+        .info-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .info-stat {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 12px; background: var(--bg3);
+            border: 1px solid var(--border); border-radius: 8px;
+        }
+        .info-stat-label { font-size: 12px; color: var(--text3); }
+        .info-stat-value { font-size: 13px; font-weight: 600; }
+        .info-stat-value.green { color: var(--green); }
+        .info-stat-value.amber { color: var(--amber); }
+        .info-stat-value.red { color: var(--red); }
+
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text3); }
+        .empty-state i { font-size: 36px; margin-bottom: 10px; display: block; opacity: 0.4; }
+        .empty-state p { font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+    <a class="topnav-brand" href="#">
+        <div class="brand-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8h4M5 6v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="10.5" cy="7" r="0.8" fill="currentColor"/>
+                <circle cx="12.5" cy="9" r="0.8" fill="currentColor"/>
+                <path d="M1 6C1 4.9 1.9 4 3 4h10C14.1 4 15 4.9 15 6v3c0 1.7-1.3 3-3 3H4C2.3 12 1 10.7 1 9V6z" stroke="currentColor" stroke-width="1.4" fill="none"/>
+            </svg>
+        </div>
+        <span class="brand-label"><span>Game</span>Time</span>
+        <span class="admin-pill">Admin</span>
+    </a>
+    <div class="topnav-search">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" placeholder="Search players, stations..." />
+    </div>
+    <div class="topnav-right">
+        <div class="status-pill"><div class="status-dot"></div></div>
+        <div class="topnav-icon-btn"><i class="bi bi-gear"></i></div>
+        <div class="topnav-icon-btn"><i class="bi bi-bell"></i></div>
+        <div class="user-chip">
+            <div class="user-avatar">A</div>
+            <div style="line-height:1.2;">
+                <div class="user-name">Admin</div>
+                <div class="user-role">Manager</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="app-body">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-section-label">Navigation</div>
+        <a class="sidebar-item" href="@Url.Action("Dashboard", "Home")"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a class="sidebar-item" href="@Url.Action("Players", "Home")"><i class="bi bi-people-fill"></i> Players</a>
+        <a class="sidebar-item active" href="@Url.Action("Stations", "Home")"><i class="bi bi-display"></i> Stations</a>
+        <a class="sidebar-item" href="@Url.Action("Games", "Home")"><i class="bi bi-controller"></i> Games</a>
+
+        <div class="sidebar-section-label">System</div>
+        <a class="sidebar-item" href="@Url.Action("Settings", "Home")"><i class="bi bi-gear"></i> Settings</a>
+        <a class="sidebar-item" href="@Url.Action("Support", "Home")"><i class="bi bi-headset"></i> Support</a>
+
+        <div class="sidebar-bottom">
+            <div class="station-occ">
+                <div class="occ-header">
+                    <span class="occ-label">Station Occupancy</span>
+                    <span class="occ-count" id="sidebarOcc">—</span>
+                </div>
+                <div class="occ-bar"><div class="occ-fill" id="sidebarOccFill" style="width:0%;"></div></div>
+                <div class="occ-sub" id="sidebarOccSub">Loading...</div>
+            </div>
+            <div class="server-load">
+                <div class="server-left">
+                    <i class="bi bi-hdd-network server-icon"></i>
+                    <div>
+                        <div class="server-title">Server Load</div>
+                        <div class="server-sub">Online</div>
+                    </div>
+                </div>
+                <div class="server-dot"></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+        <div class="main-left">
+            <!-- Page Header -->
+            <div>
+                <div class="breadcrumb-row">
+                    <i class="bi bi-house"></i>
+                    <a href="/Home/Dashboard">Dashboard</a>
+                    <i class="bi bi-chevron-right"></i>
+                    <span style="color:var(--text2);">Stations</span>
+                </div>
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Stations</h1>
+                        <p class="page-sub">Gaming station overview and real-time status monitoring</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-ghost" onclick="toggleAllStations()"><i class="bi bi-arrow-repeat"></i> Refresh</button>
+                        <button class="btn btn-primary" onclick="openAddStationModal()"><i class="bi bi-plus-lg"></i> Add Station</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stations Panel -->
+            <div class="stations-panel">
+                <div class="section-header">
+                    <div class="section-title">
+                        <i class="bi bi-display-fill"></i>
+                        Gaming Stations
+                        <span class="section-sub">Real-time station status and session monitoring</span>
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item"><div class="legend-dot dot-green"></div> Active</div>
+                        <div class="legend-item"><div class="legend-dot dot-amber"></div> Idle</div>
+                        <div class="legend-item"><div class="legend-dot dot-red"></div> Offline</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:var(--text3);"></div> Free</div>
+                    </div>
+                </div>
+                <div class="stations-grid" id="stationsGrid">
+                    <div class="empty-state" style="grid-column:1/-1;">
+                        <i class="bi bi-display"></i>
+                        <p>No stations added yet. Click <strong>+ Add Station</strong> to get started.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL - INFO -->
+        <aside class="main-right">
+            <div class="info-panel">
+                <div class="info-header">
+                    <i class="bi bi-info-circle-fill"></i>
+                    <div>
+                        <div class="info-header-title">Info</div>
+                        <div class="info-header-sub">Station overview and statuses</div>
+                    </div>
+                </div>
+                <div class="info-body">
+                    <div class="info-stat">
+                        <span class="info-stat-label">Total Stations</span>
+                        <span class="info-stat-value" id="infoTotal">0</span>
+                    </div>
+                    <div class="info-stat">
+                        <span class="info-stat-label">Active</span>
+                        <span class="info-stat-value green" id="infoActive">0</span>
+                    </div>
+                    <div class="info-stat">
+                        <span class="info-stat-label">Idle</span>
+                        <span class="info-stat-value amber" id="infoIdle">0</span>
+                    </div>
+                    <div class="info-stat">
+                        <span class="info-stat-label">Offline</span>
+                        <span class="info-stat-value red" id="infoOffline">0</span>
+                    </div>
+                    <div class="info-stat">
+                        <span class="info-stat-label">Free</span>
+                        <span class="info-stat-value" id="infoFree">0</span>
+                    </div>
+                    <div style="font-size:11px; color:var(--text3); margin-top:4px;">
+                        Click any station card to view details or change its status.
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+</div>
+
+<!-- Add Station Modal -->
+<div id="addStationModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:var(--card); border:1px solid var(--border2); border-radius:16px; padding:28px; width:380px; max-width:90vw;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+            <div style="font-size:16px; font-weight:700;"><i class="bi bi-display-fill" style="color:var(--green); margin-right:8px;"></i>Add Station</div>
+            <button onclick="closeAddStationModal()" style="background:none; border:none; color:var(--text2); font-size:18px; cursor:pointer;"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+            <div>
+                <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Station Name / Number</label>
+                <input id="stationName" type="text" placeholder="e.g. Station 1"
+                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
+            </div>
+            <div>
+                <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Initial Status</label>
+                <select id="stationStatus"
+                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;">
+                    <option value="free">Free</option>
+                    <option value="idle">Idle</option>
+                    <option value="offline">Offline</option>
+                </select>
+            </div>
+            <div id="stationError" style="color:var(--red); font-size:12px; display:none;"></div>
+            <button onclick="addStation()" style="width:100%; padding:11px; background:var(--green); color:#0b1410; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif;">
+                Add Station
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let stations = [];
+    let stationIdCounter = 1;
+
+    function openAddStationModal() {
+        document.getElementById('addStationModal').style.display = 'flex';
+        document.getElementById('stationName').value = '';
+        document.getElementById('stationError').style.display = 'none';
+    }
+    function closeAddStationModal() {
+        document.getElementById('addStationModal').style.display = 'none';
+    }
+
+    function addStation() {
+        const name = document.getElementById('stationName').value.trim();
+        const status = document.getElementById('stationStatus').value;
+        const errEl = document.getElementById('stationError');
+        if (!name) {
+            errEl.textContent = 'Station name is required.';
+            errEl.style.display = 'block';
+            return;
+        }
+        errEl.style.display = 'none';
+        stations.push({ id: stationIdCounter++, name, status, player: null, game: null, time: null });
+        closeAddStationModal();
+        renderStations();
+    }
+
+    function changeStatus(id, newStatus) {
+        const s = stations.find(s => s.id === id);
+        if (s) { s.status = newStatus; renderStations(); }
+    }
+
+    function removeStation(id) {
+        if (confirm('Remove this station?')) {
+            stations = stations.filter(s => s.id !== id);
+            renderStations();
+        }
+    }
+
+    function renderStations() {
+        const grid = document.getElementById('stationsGrid');
+        if (stations.length === 0) {
+            grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+                <i class="bi bi-display"></i>
+                <p>No stations added yet. Click <strong>+ Add Station</strong> to get started.</p>
+            </div>`;
+            updateInfo();
+            return;
+        }
+        grid.innerHTML = stations.map(s => {
+            const dotClass = s.status === 'active' ? 'dot-green' : s.status === 'idle' ? 'dot-amber' : s.status === 'offline' ? 'dot-red' : '';
+            const dotStyle = s.status === 'free' ? 'background:var(--text3);' : '';
+            const btnClass = s.status === 'active' ? 'manage' : s.status === 'offline' ? 'offline-btn' : 'assign';
+            const btnLabel = s.status === 'active' ? 'Manage' : s.status === 'offline' ? 'Offline' : 'Assign';
+            return `
+            <div class="station-card ${s.status === 'offline' ? 'offline' : ''}">
+                <div class="station-top">
+                    <span class="station-num">${s.name}</span>
+                    <span class="station-dot ${dotClass}" style="${dotStyle}"></span>
+                </div>
+                <div class="station-avatar">
+                    <i class="bi bi-display${s.status === 'active' ? '-fill' : ''}"></i>
+                </div>
+                <div class="station-username">${s.player || '—'}</div>
+                <div class="station-game">${s.game || (s.status === 'free' ? 'Available' : s.status.charAt(0).toUpperCase()+s.status.slice(1))}</div>
+                ${s.time ? `<div class="station-time"><i class="bi bi-clock"></i>${s.time}</div>` : ''}
+                <button class="station-btn ${btnClass}" onclick="cycleStatus(${s.id})">${btnLabel}</button>
+                <button onclick="removeStation(${s.id})" style="background:none;border:none;color:var(--text3);font-size:10px;cursor:pointer;text-align:center;width:100%;">Remove</button>
+            </div>`;
+        }).join('');
+        updateInfo();
+    }
+
+    function cycleStatus(id) {
+        const order = ['free', 'idle', 'active', 'offline'];
+        const s = stations.find(s => s.id === id);
+        if (!s) return;
+        const i = order.indexOf(s.status);
+        s.status = order[(i + 1) % order.length];
+        renderStations();
+    }
+
+    function updateInfo() {
+        const total = stations.length;
+        const active = stations.filter(s => s.status === 'active').length;
+        const idle = stations.filter(s => s.status === 'idle').length;
+        const offline = stations.filter(s => s.status === 'offline').length;
+        const free = stations.filter(s => s.status === 'free').length;
+        document.getElementById('infoTotal').textContent = total;
+        document.getElementById('infoActive').textContent = active;
+        document.getElementById('infoIdle').textContent = idle;
+        document.getElementById('infoOffline').textContent = offline;
+        document.getElementById('infoFree').textContent = free;
+        const pct = total > 0 ? Math.round((active / total) * 100) : 0;
+        document.getElementById('sidebarOcc').textContent = `${active}/${total}`;
+        document.getElementById('sidebarOccFill').style.width = pct + '%';
+        document.getElementById('sidebarOccSub').textContent = `${pct}% occupied`;
+    }
+
+    function toggleAllStations() {
+        renderStations();
+    }
+
+    document.getElementById('addStationModal').addEventListener('click', function(e) {
+        if (e.target === this) closeAddStationModal();
+    });
+
+    renderStations();
+</script>
+</body>
+</html>
