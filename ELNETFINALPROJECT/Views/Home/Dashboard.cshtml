@@ -452,6 +452,59 @@
         .station-btn.offline-btn { background: rgba(255,77,77,0.1); color: var(--red); border: 1px solid rgba(255,77,77,0.2); }
         .station-status-text { font-size: 11px; color: var(--text3); text-align: center; }
 
+        /* PC STATUS CARDS (Dashboard) */
+        .pc-status-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+        .pc-status-card:hover { border-color: var(--border2); }
+        .pc-status-card.offline { opacity: 0.55; }
+        .pc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 4px;
+        }
+        .pc-number { font-size: 10px; font-weight: 600; color: var(--text3); }
+        .pc-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .pc-dot.dot-green { background: var(--green); }
+        .pc-dot.dot-amber { background: var(--amber); }
+        .pc-dot.dot-red { background: var(--red); }
+        .pc-dot.dot-gray { background: var(--text3); }
+        .pc-icon {
+            font-size: 24px;
+            color: var(--green);
+            margin: 2px 0;
+        }
+        .pc-status {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text2);
+            line-height: 1.2;
+        }
+        .pc-player {
+            font-size: 9px;
+            color: var(--text3);
+            line-height: 1.2;
+        }
+        .pc-time {
+            font-size: 9px;
+            color: var(--text3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+        }
+
         /* PLAYER TABLE */
         .player-table-panel {
             background: var(--card);
@@ -835,16 +888,55 @@
                     <div class="section-title">
                         <i class="bi bi-display-fill"></i>
                         Gaming Stations
-                        <span class="section-sub">Real-time station status and session monitoring</span>
+                        <span class="section-sub">Real-time PC status and session monitoring</span>
                     </div>
                     <div class="legend">
                         <div class="legend-item"><div class="legend-dot dot-green"></div> Active</div>
-                        <div class="legend-item"><div class="legend-dot dot-amber"></div> Idle</div>
+                        <div class="legend-item"><div class="legend-dot dot-amber"></div> In Use</div>
                         <div class="legend-item"><div class="legend-dot dot-red"></div> Offline</div>
-                        <div class="legend-item"><div class="legend-dot" style="background:var(--text3);"></div> Free</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:var(--text3);"></div> Available</div>
                     </div>
                 </div>
-                <div class="stations-grid">
+                <div class="stations-grid" id="pcGrid">
+                    <script>
+                        // Generate PC 1-40 status cards
+                        const pcStates = [
+                            { id: 1, status: 'available', player: null, time: null },
+                            { id: 2, status: 'available', player: null, time: null },
+                            { id: 3, status: 'in-use', player: 'Player01', time: '1:45' },
+                            { id: 4, status: 'available', player: null, time: null },
+                            { id: 5, status: 'offline', player: null, time: null }
+                        ];
+                        
+                        // Fill remaining with available/offline mix
+                        for (let i = 6; i <= 40; i++) {
+                            pcStates.push({
+                                id: i,
+                                status: Math.random() > 0.7 ? 'offline' : 'available',
+                                player: null,
+                                time: null
+                            });
+                        }
+                        
+                        const grid = document.getElementById('pcGrid');
+                        grid.innerHTML = pcStates.map(pc => {
+                            const dotClass = pc.status === 'active' ? 'dot-green' : pc.status === 'in-use' ? 'dot-amber' : pc.status === 'offline' ? 'dot-red' : 'dot-gray';
+                            const statusLabel = pc.status === 'active' ? 'Active' : pc.status === 'in-use' ? 'In Use' : pc.status === 'offline' ? 'Offline' : 'Available';
+                            return `
+                            <div class="pc-status-card ${pc.status === 'offline' ? 'offline' : ''}">
+                                <div class="pc-header">
+                                    <span class="pc-number">PC ${pc.id}</span>
+                                    <span class="pc-dot ${dotClass}"></span>
+                                </div>
+                                <div class="pc-icon">
+                                    <i class="bi bi-display"></i>
+                                </div>
+                                <div class="pc-status">${statusLabel}</div>
+                                ${pc.player ? `<div class="pc-player">${pc.player}</div>` : ''}
+                                ${pc.time ? `<div class="pc-time"><i class="bi bi-clock"></i> ${pc.time}</div>` : ''}
+                            </div>`;
+                        }).join('');
+                    </script>
                 </div>
             </div>
 

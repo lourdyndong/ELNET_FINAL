@@ -188,10 +188,12 @@
             background: var(--bg3); border: 1px solid var(--border);
             border-radius: 10px; padding: 12px;
             display: flex; flex-direction: column; gap: 8px;
-            transition: border-color 0.2s; cursor: pointer;
+            transition: border-color 0.2s, background 0.2s; 
+            cursor: pointer;
         }
-        .station-card:hover { border-color: var(--border2); }
+        .station-card:hover { border-color: var(--border2); background: var(--bg4); }
         .station-card.offline { opacity: 0.55; }
+        .station-card.selected { border-color: var(--green); background: var(--bg4); box-shadow: 0 0 0 2px rgba(0,232,114,0.1); }
         .station-top { display: flex; align-items: center; justify-content: space-between; }
         .station-num { font-size: 11px; font-weight: 600; color: var(--text3); }
         .station-dot { width: 7px; height: 7px; border-radius: 50%; }
@@ -206,13 +208,13 @@
         .station-time { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 11px; color: var(--text2); font-family: 'JetBrains Mono', monospace; }
         .station-time i { font-size: 10px; color: var(--green); }
         .station-btn {
-            width: 100%; padding: 5px; border-radius: 6px;
+            width: 100%; padding: 6px; border-radius: 6px;
             font-size: 11px; font-weight: 600; cursor: pointer;
             border: none; font-family: 'DM Sans', sans-serif; transition: all 0.15s;
         }
         .station-btn.manage { background: var(--green-dim); color: var(--green); border: 1px solid var(--border2); }
-        .station-btn.assign { background: var(--bg4); color: var(--text3); border: 1px solid var(--border); }
-        .station-btn.offline-btn { background: rgba(255,77,77,0.1); color: var(--red); border: 1px solid rgba(255,77,77,0.2); }
+        .station-btn.manage:hover { background: rgba(0,232,114,0.2); }
+        .station-btn.offline-btn { background: rgba(255,77,77,0.1); color: var(--red); border: 1px solid rgba(255,77,77,0.2); cursor: default; }
         .station-status-text { font-size: 11px; color: var(--text3); text-align: center; }
 
         /* RIGHT PANEL - INFO */
@@ -239,6 +241,203 @@
         .empty-state { text-align: center; padding: 40px 20px; color: var(--text3); }
         .empty-state i { font-size: 36px; margin-bottom: 10px; display: block; opacity: 0.4; }
         .empty-state p { font-size: 13px; }
+
+        /* PC MANAGEMENT PANEL */
+        .pc-management-panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .pc-management-header {
+            background: var(--bg3);
+            border-bottom: 1px solid var(--border);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .pc-management-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .pc-management-title i { color: var(--green); font-size: 16px; }
+        .pc-management-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .pc-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        .pc-info-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+        .pc-info-value { font-size: 13px; font-weight: 600; color: var(--text); }
+        .pc-management-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .pc-action-btn {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .pc-action-btn.guest-login {
+            background: var(--green-dim);
+            color: var(--green);
+            border: 1px solid var(--border2);
+        }
+        .pc-action-btn.guest-login:hover { background: rgba(0,232,114,0.2); }
+        .pc-action-btn.power {
+            background: var(--bg4);
+            color: var(--text2);
+            border: 1px solid var(--border);
+        }
+        .pc-action-btn.power:hover { color: var(--green); }
+        .pc-action-btn.danger {
+            background: rgba(255,77,77,0.1);
+            color: var(--red);
+            border: 1px solid rgba(255,77,77,0.2);
+        }
+        .pc-action-btn.danger:hover { background: rgba(255,77,77,0.15); }
+
+        /* MODAL STYLES */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: var(--card);
+            border: 1px solid var(--border2);
+            border-radius: 16px;
+            padding: 28px;
+            width: 420px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-title i { color: var(--green); font-size: 18px; }
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text2);
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: var(--text); }
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .form-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text3);
+            font-weight: 600;
+        }
+        .form-input, .form-select {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 13px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            outline: none;
+        }
+        .form-input::placeholder, .form-select option { color: var(--text3); }
+        .form-input:focus, .form-select:focus { border-color: var(--border2); }
+        .payment-calc {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 10px;
+            background: var(--bg3);
+            border-radius: 8px;
+            margin-top: 6px;
+        }
+        .payment-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .payment-item-label { font-size: 10px; color: var(--text3); }
+        .payment-item-value { font-size: 14px; font-weight: 600; color: var(--green); font-family: 'JetBrains Mono', monospace; }
+        .form-error { color: var(--red); font-size: 12px; display: none; }
+        .form-button {
+            width: 100%;
+            padding: 11px;
+            background: var(--green);
+            color: #0b1410;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.15s;
+        }
+        .form-button:hover { background: var(--green2); }
+        .form-button:disabled { background: var(--text3); cursor: not-allowed; opacity: 0.6; }
+
+        /* TIME CALCULATOR */
+        .time-calc-info {
+            background: var(--bg4);
+            border: 1px dashed var(--border2);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 11px;
+            color: var(--text3);
+            margin-top: 6px;
+        }
+        .time-calc-info strong { color: var(--green); }
     </style>
 </head>
 <body>
@@ -338,63 +537,134 @@
                 <div class="section-header">
                     <div class="section-title">
                         <i class="bi bi-display-fill"></i>
-                        Gaming Stations
-                        <span class="section-sub">Real-time station status and session monitoring</span>
+                        PC Management
+                        <span class="section-sub">Manage all 40 gaming PCs and player sessions</span>
                     </div>
                     <div class="legend">
                         <div class="legend-item"><div class="legend-dot dot-green"></div> Active</div>
-                        <div class="legend-item"><div class="legend-dot dot-amber"></div> Idle</div>
+                        <div class="legend-item"><div class="legend-dot dot-amber"></div> In Use</div>
                         <div class="legend-item"><div class="legend-dot dot-red"></div> Offline</div>
-                        <div class="legend-item"><div class="legend-dot" style="background:var(--text3);"></div> Free</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:var(--text3);"></div> Available</div>
                     </div>
                 </div>
                 <div class="stations-grid" id="stationsGrid">
-                    <div class="empty-state" style="grid-column:1/-1;">
-                        <i class="bi bi-display"></i>
-                        <p>No stations added yet. Click <strong>+ Add Station</strong> to get started.</p>
-                    </div>
+                    <!-- PC cards will be generated here -->
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT PANEL - INFO -->
+        <!-- RIGHT PANEL - PC MANAGEMENT -->
         <aside class="main-right">
-            <div class="info-panel">
-                <div class="info-header">
-                    <i class="bi bi-info-circle-fill"></i>
-                    <div>
-                        <div class="info-header-title">Info</div>
-                        <div class="info-header-sub">Station overview and statuses</div>
+            <div id="pcManagementPanel" style="display:none;">
+                <div class="pc-management-panel">
+                    <div class="pc-management-header">
+                        <div class="pc-management-title">
+                            <i class="bi bi-display-fill"></i>
+                            <span id="pcTitle">PC Management</span>
+                        </div>
+                        <button onclick="closePCManagement()" style="background:none; border:none; color:var(--text2); font-size:18px; cursor:pointer;"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                    <div class="pc-management-body">
+                        <div class="pc-info-row">
+                            <span class="pc-info-label">Status</span>
+                            <span class="pc-info-value" id="pcStatus">—</span>
+                        </div>
+                        <div class="pc-info-row">
+                            <span class="pc-info-label">Current User</span>
+                            <span class="pc-info-value" id="pcCurrentUser">—</span>
+                        </div>
+                        <div class="pc-info-row">
+                            <span class="pc-info-label">Time Used / Paid</span>
+                            <span class="pc-info-value" id="pcTimeUsed">—</span>
+                        </div>
+                        <div class="pc-management-actions">
+                            <button class="pc-action-btn guest-login" onclick="openGuestLoginModal()">
+                                <i class="bi bi-person-plus"></i> Guest Login
+                            </button>
+                            <button class="pc-action-btn power" id="pcPowerBtn" onclick="togglePCPower()">
+                                <i class="bi bi-power"></i> Power
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="info-body">
-                    <div class="info-stat">
-                        <span class="info-stat-label">Total Stations</span>
-                        <span class="info-stat-value" id="infoTotal">0</span>
+            </div>
+
+            <div id="emptyPanel" style="display:block;">
+                <div class="info-panel">
+                    <div class="info-header">
+                        <i class="bi bi-info-circle-fill"></i>
+                        <div>
+                            <div class="info-header-title">Info</div>
+                            <div class="info-header-sub">PC overview and statuses</div>
+                        </div>
                     </div>
-                    <div class="info-stat">
-                        <span class="info-stat-label">Active</span>
-                        <span class="info-stat-value green" id="infoActive">0</span>
-                    </div>
-                    <div class="info-stat">
-                        <span class="info-stat-label">Idle</span>
-                        <span class="info-stat-value amber" id="infoIdle">0</span>
-                    </div>
-                    <div class="info-stat">
-                        <span class="info-stat-label">Offline</span>
-                        <span class="info-stat-value red" id="infoOffline">0</span>
-                    </div>
-                    <div class="info-stat">
-                        <span class="info-stat-label">Free</span>
-                        <span class="info-stat-value" id="infoFree">0</span>
-                    </div>
-                    <div style="font-size:11px; color:var(--text3); margin-top:4px;">
-                        Click any station card to view details or change its status.
+                    <div class="info-body">
+                        <div class="info-stat">
+                            <span class="info-stat-label">Total PCs</span>
+                            <span class="info-stat-value" id="infoTotal">40</span>
+                        </div>
+                        <div class="info-stat">
+                            <span class="info-stat-label">Active</span>
+                            <span class="info-stat-value green" id="infoActive">0</span>
+                        </div>
+                        <div class="info-stat">
+                            <span class="info-stat-label">In Use</span>
+                            <span class="info-stat-value amber" id="infoInUse">0</span>
+                        </div>
+                        <div class="info-stat">
+                            <span class="info-stat-label">Offline</span>
+                            <span class="info-stat-value red" id="infoOffline">0</span>
+                        </div>
+                        <div class="info-stat">
+                            <span class="info-stat-label">Available</span>
+                            <span class="info-stat-value" id="infoAvailable">0</span>
+                        </div>
+                        <div style="font-size:11px; color:var(--text3); margin-top:4px;">
+                            Click any PC card to manage or click "Guest Login" to add a guest session.
+                        </div>
                     </div>
                 </div>
             </div>
         </aside>
     </main>
+</div>
+
+<!-- Guest Login Modal -->
+<div id="guestLoginModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">
+                <i class="bi bi-person-plus"></i>
+                <span id="modalPCTitle">PC — Guest Login</span>
+            </div>
+            <button onclick="closeGuestLoginModal()" class="modal-close"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <form class="modal-form" onsubmit="processGuestLogin(event)">
+            <div class="form-group">
+                <label class="form-label">Guest Name</label>
+                <input id="guestName" type="text" class="form-input" placeholder="Enter guest name" required />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Payment Amount (Pesos)</label>
+                <input id="paymentAmount" type="number" class="form-input" placeholder="e.g., 20, 40, 60" min="20" step="20" required />
+                <div class="time-calc-info">
+                    <strong>Rate:</strong> 20 pesos = 1 hour | <strong>Time:</strong> <span id="calcTime">—</span>
+                </div>
+            </div>
+            <div class="payment-calc">
+                <div class="payment-item">
+                    <span class="payment-item-label">Total Payment</span>
+                    <span class="payment-item-value" id="paymentTotal">₱0</span>
+                </div>
+                <div class="payment-item">
+                    <span class="payment-item-label">Session Time</span>
+                    <span class="payment-item-value" id="sessionTime">0h 0m</span>
+                </div>
+            </div>
+            <div id="guestError" class="form-error"></div>
+            <button type="submit" class="form-button"><i class="bi bi-check-circle"></i> Confirm & Start Session</button>
+        </form>
+    </div>
 </div>
 
 <!-- Add Station Modal -->
@@ -428,114 +698,185 @@
 </div>
 
 <script>
-    let stations = [];
-    let stationIdCounter = 1;
+    // PC Management System
+    const PESOS_PER_HOUR = 20;
+    let pcList = [];
+    let selectedPC = null;
 
-    function openAddStationModal() {
-        document.getElementById('addStationModal').style.display = 'flex';
-        document.getElementById('stationName').value = '';
-        document.getElementById('stationError').style.display = 'none';
-    }
-    function closeAddStationModal() {
-        document.getElementById('addStationModal').style.display = 'none';
-    }
-
-    function addStation() {
-        const name = document.getElementById('stationName').value.trim();
-        const status = document.getElementById('stationStatus').value;
-        const errEl = document.getElementById('stationError');
-        if (!name) {
-            errEl.textContent = 'Station name is required.';
-            errEl.style.display = 'block';
-            return;
-        }
-        errEl.style.display = 'none';
-        stations.push({ id: stationIdCounter++, name, status, player: null, game: null, time: null });
-        closeAddStationModal();
-        renderStations();
-    }
-
-    function changeStatus(id, newStatus) {
-        const s = stations.find(s => s.id === id);
-        if (s) { s.status = newStatus; renderStations(); }
-    }
-
-    function removeStation(id) {
-        if (confirm('Remove this station?')) {
-            stations = stations.filter(s => s.id !== id);
-            renderStations();
+    // Initialize 40 PCs
+    function initializePCs() {
+        pcList = [];
+        for (let i = 1; i <= 40; i++) {
+            pcList.push({
+                id: i,
+                status: Math.random() > 0.7 ? 'offline' : 'available',
+                currentUser: null,
+                timeUsed: 0,
+                timePaid: 0,
+                isPoweredOn: Math.random() > 0.7 ? false : true
+            });
         }
     }
 
-    function renderStations() {
+    // Render PC grid
+    function renderPCs() {
         const grid = document.getElementById('stationsGrid');
-        if (stations.length === 0) {
-            grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
-                <i class="bi bi-display"></i>
-                <p>No stations added yet. Click <strong>+ Add Station</strong> to get started.</p>
-            </div>`;
-            updateInfo();
-            return;
-        }
-        grid.innerHTML = stations.map(s => {
-            const dotClass = s.status === 'active' ? 'dot-green' : s.status === 'idle' ? 'dot-amber' : s.status === 'offline' ? 'dot-red' : '';
-            const dotStyle = s.status === 'free' ? 'background:var(--text3);' : '';
-            const btnClass = s.status === 'active' ? 'manage' : s.status === 'offline' ? 'offline-btn' : 'assign';
-            const btnLabel = s.status === 'active' ? 'Manage' : s.status === 'offline' ? 'Offline' : 'Assign';
+        grid.innerHTML = pcList.map(pc => {
+            const dotClass = pc.status === 'active' ? 'dot-green' : pc.status === 'in-use' ? 'dot-amber' : pc.status === 'offline' ? 'dot-red' : 'dot-gray';
+            const statusLabel = pc.status === 'active' ? 'Active' : pc.status === 'in-use' ? 'In Use' : pc.status === 'offline' ? 'Offline' : 'Available';
+            const isSelected = selectedPC && selectedPC.id === pc.id;
             return `
-            <div class="station-card ${s.status === 'offline' ? 'offline' : ''}">
+            <div class="station-card ${pc.status === 'offline' ? 'offline' : ''} ${isSelected ? 'selected' : ''}" onclick="selectPC(${pc.id})">
                 <div class="station-top">
-                    <span class="station-num">${s.name}</span>
-                    <span class="station-dot ${dotClass}" style="${dotStyle}"></span>
+                    <span class="station-num">PC ${pc.id}</span>
+                    <span class="station-dot ${dotClass}"></span>
                 </div>
                 <div class="station-avatar">
-                    <i class="bi bi-display${s.status === 'active' ? '-fill' : ''}"></i>
+                    <i class="bi bi-display"></i>
                 </div>
-                <div class="station-username">${s.player || '—'}</div>
-                <div class="station-game">${s.game || (s.status === 'free' ? 'Available' : s.status.charAt(0).toUpperCase()+s.status.slice(1))}</div>
-                ${s.time ? `<div class="station-time"><i class="bi bi-clock"></i>${s.time}</div>` : ''}
-                <button class="station-btn ${btnClass}" onclick="cycleStatus(${s.id})">${btnLabel}</button>
-                <button onclick="removeStation(${s.id})" style="background:none;border:none;color:var(--text3);font-size:10px;cursor:pointer;text-align:center;width:100%;">Remove</button>
+                <div class="station-username">${pc.currentUser || '—'}</div>
+                <div class="station-game">${statusLabel}</div>
+                ${pc.currentUser ? `<div class="station-time"><i class="bi bi-clock"></i> ${formatTime(pc.timePaid)}</div>` : ''}
             </div>`;
         }).join('');
-        updateInfo();
+        updateStats();
     }
 
-    function cycleStatus(id) {
-        const order = ['free', 'idle', 'active', 'offline'];
-        const s = stations.find(s => s.id === id);
-        if (!s) return;
-        const i = order.indexOf(s.status);
-        s.status = order[(i + 1) % order.length];
-        renderStations();
+    // Format time (minutes to h:mm format)
+    function formatTime(minutes) {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return `${hours}h ${mins}m`;
     }
 
-    function updateInfo() {
-        const total = stations.length;
-        const active = stations.filter(s => s.status === 'active').length;
-        const idle = stations.filter(s => s.status === 'idle').length;
-        const offline = stations.filter(s => s.status === 'offline').length;
-        const free = stations.filter(s => s.status === 'free').length;
+    // Select PC and show management panel
+    function selectPC(pcId) {
+        selectedPC = pcList.find(p => p.id === pcId);
+        if (!selectedPC) return;
+
+        document.getElementById('emptyPanel').style.display = 'none';
+        const managementPanel = document.getElementById('pcManagementPanel');
+        managementPanel.style.display = 'block';
+
+        document.getElementById('pcTitle').textContent = `PC ${selectedPC.id} Management`;
+        document.getElementById('pcStatus').textContent = selectedPC.status.charAt(0).toUpperCase() + selectedPC.status.slice(1);
+        document.getElementById('pcCurrentUser').textContent = selectedPC.currentUser || '—';
+        document.getElementById('pcTimeUsed').textContent = selectedPC.currentUser ? `${formatTime(selectedPC.timeUsed)} / ${formatTime(selectedPC.timePaid)}` : '—';
+        document.getElementById('pcPowerBtn').textContent = selectedPC.isPoweredOn ? '⏹ Power Off' : '▶ Power On';
+        
+        renderPCs();
+    }
+
+    function closePCManagement() {
+        selectedPC = null;
+        document.getElementById('pcManagementPanel').style.display = 'none';
+        document.getElementById('emptyPanel').style.display = 'block';
+        renderPCs();
+    }
+
+    // Guest login modal
+    function openGuestLoginModal() {
+        if (!selectedPC) return;
+        document.getElementById('modalPCTitle').textContent = `PC ${selectedPC.id} — Guest Login`;
+        document.getElementById('guestLoginModal').classList.add('active');
+        document.getElementById('paymentAmount').value = '20';
+        updatePaymentCalc();
+    }
+
+    function closeGuestLoginModal() {
+        document.getElementById('guestLoginModal').classList.remove('active');
+        document.getElementById('guestName').value = '';
+        document.getElementById('paymentAmount').value = '20';
+    }
+
+    // Calculate payment and time
+    function updatePaymentCalc() {
+        const amount = parseFloat(document.getElementById('paymentAmount').value) || 0;
+        const hours = amount / PESOS_PER_HOUR;
+        const totalMinutes = Math.floor(hours * 60);
+        const displayHours = Math.floor(hours);
+        const displayMins = totalMinutes % 60;
+
+        document.getElementById('paymentTotal').textContent = `₱${amount}`;
+        document.getElementById('sessionTime').textContent = `${displayHours}h ${displayMins}m`;
+        document.getElementById('calcTime').textContent = `${displayHours}h ${displayMins}m`;
+    }
+
+    document.getElementById('paymentAmount').addEventListener('input', updatePaymentCalc);
+
+    // Process guest login
+    function processGuestLogin(event) {
+        event.preventDefault();
+        if (!selectedPC) return;
+
+        const guestName = document.getElementById('guestName').value.trim();
+        const paymentAmount = parseFloat(document.getElementById('paymentAmount').value) || 0;
+        const errorEl = document.getElementById('guestError');
+
+        if (!guestName) {
+            errorEl.textContent = 'Guest name is required.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        if (paymentAmount < 20) {
+            errorEl.textContent = 'Payment must be at least 20 pesos (1 hour).';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        errorEl.style.display = 'none';
+
+        // Update PC with guest session
+        selectedPC.currentUser = guestName;
+        selectedPC.timePaid = Math.floor((paymentAmount / PESOS_PER_HOUR) * 60);
+        selectedPC.timeUsed = 0;
+        selectedPC.status = 'in-use';
+        selectedPC.isPoweredOn = true;
+
+        closeGuestLoginModal();
+        selectPC(selectedPC.id);
+    }
+
+    // Toggle PC power
+    function togglePCPower() {
+        if (!selectedPC) return;
+        selectedPC.isPoweredOn = !selectedPC.isPoweredOn;
+        if (!selectedPC.isPoweredOn) {
+            selectedPC.status = 'offline';
+        } else if (!selectedPC.currentUser) {
+            selectedPC.status = 'available';
+        }
+        selectPC(selectedPC.id);
+    }
+
+    // Update statistics
+    function updateStats() {
+        const total = pcList.length;
+        const active = pcList.filter(p => p.status === 'active').length;
+        const inUse = pcList.filter(p => p.status === 'in-use').length;
+        const offline = pcList.filter(p => p.status === 'offline').length;
+        const available = pcList.filter(p => p.status === 'available').length;
+
         document.getElementById('infoTotal').textContent = total;
         document.getElementById('infoActive').textContent = active;
-        document.getElementById('infoIdle').textContent = idle;
+        document.getElementById('infoInUse').textContent = inUse;
         document.getElementById('infoOffline').textContent = offline;
-        document.getElementById('infoFree').textContent = free;
-        const pct = total > 0 ? Math.round((active / total) * 100) : 0;
-        document.getElementById('sidebarOcc').textContent = `${active}/${total}`;
-        document.getElementById('sidebarOccFill').style.width = pct + '%';
-        document.getElementById('sidebarOccSub').textContent = `${pct}% occupied`;
+        document.getElementById('infoAvailable').textContent = available;
+
+        const pct = total > 0 ? Math.round(((active + inUse) / total) * 100) : 0;
+        document.querySelector('.occ-fill').style.width = pct + '%';
+        document.querySelector('.occ-sub').textContent = `${pct}% occupied`;
     }
 
-    function toggleAllStations() {
-        renderStations();
-    }
-
-    document.getElementById('addStationModal').addEventListener('click', function(e) {
-        if (e.target === this) closeAddStationModal();
+    // Modal close on overlay click
+    document.getElementById('guestLoginModal').addEventListener('click', function(e) {
+        if (e.target === this) closeGuestLoginModal();
     });
 
-    renderStations();
+    // Initialize on page load
+    initializePCs();
+    renderPCs();
 </script>
 </body>
 </html>
