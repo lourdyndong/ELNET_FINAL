@@ -205,6 +205,7 @@
             margin-top: 8px;
         }
         .sidebar-item {
+            display: block; box-sizing: border-box; width: 100%;
             display: flex; align-items: center; gap: 10px;
             padding: 8px 10px;
             border-radius: 8px;
@@ -214,12 +215,13 @@
             color: var(--text2);
             text-decoration: none;
             transition: all 0.15s;
+            border: 1px solid transparent;
         }
         .sidebar-item:hover { background: var(--bg3); color: var(--text); }
         .sidebar-item.active {
             background: var(--green-dim);
             color: var(--green);
-            border: 1px solid var(--border2);
+            border-color: var(--border2);
         }
         .sidebar-item i { font-size: 15px; width: 18px; text-align: center; }
         .sidebar-badge {
@@ -394,8 +396,8 @@
         }
         .stations-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
         }
         .station-card {
             background: var(--bg3);
@@ -461,9 +463,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             text-align: center;
             transition: border-color 0.2s;
+            min-height: 130px;
         }
         .pc-status-card:hover { border-color: var(--border2); }
         .pc-status-card.offline { opacity: 0.55; }
@@ -793,38 +797,7 @@
 
 <div class="app-body">
     <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="sidebar-section-label">Navigation</div>
-        <a class="sidebar-item active" href="@Url.Action("Dashboard", "Home")"><i class="bi bi-speedometer2"></i> Dashboard</a>
-        <a class="sidebar-item" href="@Url.Action("Players", "Home")"><i class="bi bi-people-fill"></i> Players</a>
-        <a class="sidebar-item" href="@Url.Action("Stations", "Home")"><i class="bi bi-display"></i> Stations</a>
-        <a class="sidebar-item" href="@Url.Action("Games", "Home")"><i class="bi bi-controller"></i> Games</a>
-
-        <div class="sidebar-section-label">System</div>
-        <a class="sidebar-item" href="@Url.Action("Settings", "Home")"><i class="bi bi-gear"></i> Settings</a>
-        <a class="sidebar-item" href="@Url.Action("Support", "Home")"><i class="bi bi-headset"></i> Support</a>
-
-        <div class="sidebar-bottom">
-            <div class="station-occ">
-                <div class="occ-header">
-                    <span class="occ-label">Station Occupancy</span>
-                    <span class="occ-count">—</span>
-                </div>
-                <div class="occ-bar"><div class="occ-fill"></div></div>
-                <div class="occ-sub">—</div>
-            </div>
-            <div class="server-load">
-                <div class="server-left">
-                    <i class="bi bi-hdd-network server-icon"></i>
-                    <div class="server-info">
-                        <div class="server-title">Server Load</div>
-                        <div class="server-sub">—</div>
-                    </div>
-                </div>
-                <div class="server-dot"></div>
-            </div>
-        </div>
-    </aside>
+    <partial name="_Sidebar" />
 
     <!-- MAIN CONTENT -->
     <main class="main">
@@ -845,7 +818,7 @@
                     <div class="header-actions">
                         <button class="btn btn-ghost"><i class="bi bi-clock"></i> Live</button>
                         <button class="btn btn-ghost"><i class="bi bi-funnel"></i> Filters</button>
-                        <button class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> Add Player</button>
+                        <button class="btn btn-primary" onclick="openRegisterModal()"><i class="bi bi-person-plus-fill"></i> Add Player</button>
                     </div>
                 </div>
             </div>
@@ -1071,5 +1044,8 @@
     </main>
 </div>
 
+</div>
+
+<partial name="_RegisterModal" />
 </body>
 </html>

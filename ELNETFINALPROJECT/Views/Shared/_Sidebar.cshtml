@@ -1,0 +1,36 @@
+@* Shared sidebar partial *@
+@{
+    var current = ViewContext.RouteData.Values["action"]?.ToString();
+}
+<aside class="sidebar">
+    <div class="sidebar-section-label">Navigation</div>
+    <a class="sidebar-item @(current == "Dashboard" ? "active" : "")" href="@Url.Action("Dashboard", "Home")"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="sidebar-item @(current == "Players" ? "active" : "")" href="@Url.Action("Players", "Home")"><i class="bi bi-people-fill"></i> Players</a>
+    <a class="sidebar-item @(current == "Stations" ? "active" : "")" href="@Url.Action("Stations", "Home")"><i class="bi bi-display"></i> Stations</a>
+    <a class="sidebar-item @(current == "Games" ? "active" : "")" href="@Url.Action("Games", "Home")"><i class="bi bi-controller"></i> Games</a>
+
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="@Url.Action("Settings", "Home")"><i class="bi bi-gear"></i> Settings</a>
+    <a class="sidebar-item" href="@Url.Action("Support", "Home")"><i class="bi bi-headset"></i> Support</a>
+
+    <div class="sidebar-bottom">
+        <div class="station-occ">
+            <div class="occ-header">
+                <span class="occ-label">Station Occupancy</span>
+                <span class="occ-count" id="occCount">—</span>
+            </div>
+            <div class="occ-bar"><div class="occ-fill" id="occFill"></div></div>
+            <div class="occ-sub" id="occSub">Loading...</div>
+        </div>
+        <div class="server-load">
+            <div class="server-left">
+                <i class="bi bi-hdd-network server-icon"></i>
+                <div class="server-info">
+                    <div class="server-title">Server Load</div>
+                    <div class="server-sub">Online</div>
+                </div>
+            </div>
+            <div class="server-dot"></div>
+        </div>
+    </div>
+</aside>
