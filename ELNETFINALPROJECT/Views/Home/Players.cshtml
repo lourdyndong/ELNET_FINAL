@@ -544,9 +544,24 @@
 </div>
 
 <script>
-    // Simple in-memory player store (connect to your API/backend as needed)
+    // Fetch players from backend
     let players = [];
-    let playerIdCounter = 1001;
+
+    async function loadPlayers() {
+        try {
+            const res = await fetch('/Home/GetPlayers');
+            if (res.ok) {
+                players = await res.json();
+                renderPlayers();
+                updateStats();
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    // Call loadPlayers on init
+    loadPlayers();
 
     function openRegisterModal() {
         document.getElementById('registerModal').style.display = 'flex';
@@ -560,7 +575,7 @@
         document.getElementById('registerModal').style.display = 'none';
     }
 
-    function registerPlayer() {
+    async function registerPlayer() {
         const email = document.getElementById('regEmail').value.trim();
         const username = document.getElementById('regUsername').value.trim();
         const password = document.getElementById('regPassword').value;
@@ -577,20 +592,36 @@
             return;
         }
         errEl.style.display = 'none';
-        const now = new Date();
-        players.push({
-            id: playerIdCounter++,
-            username,
-            email: email || '—',
-            // NOTE: storing password client-side only for frontend/demo purposes
+
+        const payload = {
+            email: email,
+            username: username,
             password: password,
-            balance,
-            status: 'Offline',
-            registered: now.toLocaleDateString('en-PH', { year:'numeric', month:'short', day:'numeric' })
-        });
-        closeRegisterModal();
-        renderPlayers();
-        updateStats();
+            balance: balance
+        };
+
+        try {
+            const res = await fetch('/Home/RegisterPlayer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                const newPlayer = await res.json();
+                players.push(newPlayer);
+                closeRegisterModal();
+                renderPlayers();
+                updateStats();
+            } else {
+                const errData = await res.json();
+                errEl.textContent = errData.message || 'Error registering player.';
+                errEl.style.display = 'block';
+            }
+        } catch (err) {
+            errEl.textContent = 'Network error.';
+            errEl.style.display = 'block';
+        }
     }
 
     function renderPlayers(filter = '') {
@@ -620,7 +651,7 @@
                 <td style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text3);">#${p.id}</td>
                 <td class="balance-cell">₱${p.balance.toFixed(2)}</td>
                 <td><span class="status-badge ${p.status === 'Active' ? 'status-active' : 'status-inactive'}">${p.status === 'Active' ? '' : ''}${p.status}</span></td>
-                <td style="font-size:12px; color:var(--text3);">${p.registered}</td>
+                <td style="font-size:12px; color:var(--text3);">${new Date(p.registeredDate).toLocaleDateString('en-PH', { year:'numeric', month:'short', day:'numeric' })}</td>
                 <td>
                     <div class="actions-cell">
                         <button class="action-btn" title="Top-up" onclick="topUpPlayer(${p.id})"><i class="bi bi-plus-circle"></i></button>

@@ -48,6 +48,31 @@ namespace ELNETFINALPROJECT.Controllers
             return RequireAdmin() ?? View();
         }
 
+        [HttpPost]
+        public IActionResult RegisterPlayer([FromBody] Account account)
+        {
+            if (string.IsNullOrWhiteSpace(account.Username) || string.IsNullOrWhiteSpace(account.Password))
+            {
+                return BadRequest(new { message = "Username and Password are required." });
+            }
+
+            account.Role = "Player";
+            account.Status = "Offline";
+            account.RegisteredDate = DateTime.Now;
+
+            _context.Accounts.Add(account);
+            _context.SaveChanges();
+
+            return Ok(account);
+        }
+
+        [HttpGet]
+        public IActionResult GetPlayers()
+        {
+            var players = _context.Accounts.Where(a => a.Role == "Player").ToList();
+            return Json(players);
+        }
+
         public IActionResult Stations()
         {
             return RequireAdmin() ?? View();
