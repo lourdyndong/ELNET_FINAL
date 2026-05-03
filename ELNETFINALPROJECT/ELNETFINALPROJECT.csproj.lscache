@@ -431,6 +431,8 @@ Views/Home/
  Stations.cshtml
 Views/Shared/
  _Layout.cshtml
+ _RegisterModal.cshtml
+ _Sidebar.cshtml
  _ValidationScriptsPartial.cshtml
 Views/
  _ViewImports.cshtml
@@ -446,6 +448,8 @@ Views/Home/
  Stations.cshtml
 Views/Shared/
  _Layout.cshtml
+ _RegisterModal.cshtml
+ _Sidebar.cshtml
  _ValidationScriptsPartial.cshtml
 Views/
  _ViewImports.cshtml
