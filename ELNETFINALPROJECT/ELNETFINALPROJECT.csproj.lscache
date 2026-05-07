@@ -55,7 +55,9 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
-Controllers/HomeController.cs
+Controllers/
+ HomeController.cs
+ PlayerController.cs
 Data/AppDbContext.cs
 Helpers/PasswordHelper.cs
 Models/
@@ -429,6 +431,10 @@ Views/Home/
  Players.cshtml
  Privacy.cshtml
  Stations.cshtml
+Views/Player/
+ Dashboard.cshtml
+ Login.cshtml
+ Profile.cshtml
 Views/Shared/
  _Layout.cshtml
  _RegisterModal.cshtml
@@ -446,6 +452,10 @@ Views/Home/
  Players.cshtml
  Privacy.cshtml
  Stations.cshtml
+Views/Player/
+ Dashboard.cshtml
+ Login.cshtml
+ Profile.cshtml
 Views/Shared/
  _Layout.cshtml
  _RegisterModal.cshtml
