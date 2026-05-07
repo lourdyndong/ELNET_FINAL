@@ -12,10 +12,27 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/stations.css" />
+    <style>
+        /* USER CHIP + DROPDOWN - added for logout */
+        .user-chip { position: relative; cursor: pointer; }
+        .user-chip.open { border-color: var(--border2) !important; }
+        .user-chip.open .chevron { transform: rotate(180deg); }
+        .chevron { transition: transform 0.2s; font-size: 10px; color: var(--text3); margin-left: 2px; }
+        .user-dropdown { display: none; position: absolute; top: calc(100% + 8px); right: 0; min-width: 180px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; overflow: hidden; z-index: 999; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        .user-chip.open .user-dropdown { display: block; }
+        .dropdown-header { padding: 12px 14px; border-bottom: 1px solid var(--border); background: var(--bg4); }
+        .dropdown-header .dh-name { font-size: 13px; font-weight: 600; }
+        .dropdown-header .dh-role { font-size: 11px; color: var(--text3); margin-top: 1px; }
+        .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; font-size: 13px; color: var(--text2); cursor: pointer; transition: background 0.15s, color 0.15s; text-decoration: none; }
+        .dropdown-item:hover { background: var(--bg4); color: var(--text); }
+        .dropdown-item i { font-size: 14px; width: 16px; text-align: center; }
+        .dropdown-divider { height: 1px; background: var(--border); margin: 2px 0; }
+        .dropdown-item.logout { color: var(--red); }
+        .dropdown-item.logout:hover { background: rgba(255,77,77,0.08); color: var(--red); }
+    </style>
 </head>
 <body>
 
-<!-- TOP NAV -->
 <nav class="topnav">
     <a class="topnav-brand" href="#">
         <div class="brand-icon">
@@ -37,24 +54,32 @@
         <div class="status-pill"><div class="status-dot"></div></div>
         <div class="topnav-icon-btn"><i class="bi bi-gear"></i></div>
         <div class="topnav-icon-btn"><i class="bi bi-bell"></i></div>
-        <div class="user-chip">
+        <div class="user-chip" id="userChip" onclick="toggleUserDropdown()">
             <div class="user-avatar">A</div>
             <div style="line-height:1.2;">
                 <div class="user-name">Admin</div>
                 <div class="user-role">Manager</div>
+            </div>
+            <i class="bi bi-chevron-down chevron"></i>
+            <div class="user-dropdown">
+                <div class="dropdown-header">
+                    <div class="dh-name">Admin</div>
+                    <div class="dh-role">Manager</div>
+                </div>
+                <a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a>
+                <a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item logout" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
             </div>
         </div>
     </div>
 </nav>
 
 <div class="app-body">
-    <!-- SIDEBAR -->
     <partial name="_Sidebar" />
 
-    <!-- MAIN CONTENT -->
     <main class="main">
         <div class="main-left">
-            <!-- Page Header -->
             <div>
                 <div class="breadcrumb-row">
                     <i class="bi bi-house"></i>
@@ -74,7 +99,6 @@
                 </div>
             </div>
 
-            <!-- Stations Panel -->
             <div class="stations-panel">
                 <div class="section-header">
                     <div class="section-title">
@@ -89,13 +113,10 @@
                         <div class="legend-item"><div class="legend-dot" style="background:var(--text3);"></div> Available</div>
                     </div>
                 </div>
-                <div class="stations-grid" id="stationsGrid">
-                    <!-- PC cards will be generated here -->
-                </div>
+                <div class="stations-grid" id="stationsGrid"></div>
             </div>
         </div>
 
-        <!-- RIGHT PANEL - PC MANAGEMENT -->
         <aside class="main-right">
             <div id="pcManagementPanel" style="display:none;">
                 <div class="pc-management-panel">
@@ -107,25 +128,12 @@
                         <button onclick="closePCManagement()" style="background:none; border:none; color:var(--text2); font-size:18px; cursor:pointer;"><i class="bi bi-x-lg"></i></button>
                     </div>
                     <div class="pc-management-body">
-                        <div class="pc-info-row">
-                            <span class="pc-info-label">Status</span>
-                            <span class="pc-info-value" id="pcStatus">—</span>
-                        </div>
-                        <div class="pc-info-row">
-                            <span class="pc-info-label">Current User</span>
-                            <span class="pc-info-value" id="pcCurrentUser">—</span>
-                        </div>
-                        <div class="pc-info-row">
-                            <span class="pc-info-label">Time Used / Paid</span>
-                            <span class="pc-info-value" id="pcTimeUsed">—</span>
-                        </div>
+                        <div class="pc-info-row"><span class="pc-info-label">Status</span><span class="pc-info-value" id="pcStatus">—</span></div>
+                        <div class="pc-info-row"><span class="pc-info-label">Current User</span><span class="pc-info-value" id="pcCurrentUser">—</span></div>
+                        <div class="pc-info-row"><span class="pc-info-label">Time Used / Paid</span><span class="pc-info-value" id="pcTimeUsed">—</span></div>
                         <div class="pc-management-actions">
-                            <button class="pc-action-btn guest-login" onclick="openGuestLoginModal()">
-                                <i class="bi bi-person-plus"></i> Guest Login
-                            </button>
-                            <button class="pc-action-btn power" id="pcPowerBtn" onclick="togglePCPower()">
-                                <i class="bi bi-power"></i> Power
-                            </button>
+                            <button class="pc-action-btn guest-login" onclick="openGuestLoginModal()"><i class="bi bi-person-plus"></i> Guest Login</button>
+                            <button class="pc-action-btn power" id="pcPowerBtn" onclick="togglePCPower()"><i class="bi bi-power"></i> Power</button>
                         </div>
                     </div>
                 </div>
@@ -141,29 +149,12 @@
                         </div>
                     </div>
                     <div class="info-body">
-                        <div class="info-stat">
-                            <span class="info-stat-label">Total PCs</span>
-                            <span class="info-stat-value" id="infoTotal">40</span>
-                        </div>
-                        <div class="info-stat">
-                            <span class="info-stat-label">Active</span>
-                            <span class="info-stat-value green" id="infoActive">0</span>
-                        </div>
-                        <div class="info-stat">
-                            <span class="info-stat-label">In Use</span>
-                            <span class="info-stat-value amber" id="infoInUse">0</span>
-                        </div>
-                        <div class="info-stat">
-                            <span class="info-stat-label">Offline</span>
-                            <span class="info-stat-value red" id="infoOffline">0</span>
-                        </div>
-                        <div class="info-stat">
-                            <span class="info-stat-label">Available</span>
-                            <span class="info-stat-value" id="infoAvailable">0</span>
-                        </div>
-                        <div style="font-size:11px; color:var(--text3); margin-top:4px;">
-                            Click any PC card to manage or click "Guest Login" to add a guest session.
-                        </div>
+                        <div class="info-stat"><span class="info-stat-label">Total PCs</span><span class="info-stat-value" id="infoTotal">40</span></div>
+                        <div class="info-stat"><span class="info-stat-label">Active</span><span class="info-stat-value green" id="infoActive">0</span></div>
+                        <div class="info-stat"><span class="info-stat-label">In Use</span><span class="info-stat-value amber" id="infoInUse">0</span></div>
+                        <div class="info-stat"><span class="info-stat-label">Offline</span><span class="info-stat-value red" id="infoOffline">0</span></div>
+                        <div class="info-stat"><span class="info-stat-label">Available</span><span class="info-stat-value" id="infoAvailable">0</span></div>
+                        <div style="font-size:11px; color:var(--text3); margin-top:4px;">Click any PC card to manage or click "Guest Login" to add a guest session.</div>
                     </div>
                 </div>
             </div>
@@ -175,10 +166,7 @@
 <div id="guestLoginModal" class="modal-overlay">
     <div class="modal-content">
         <div class="modal-header">
-            <div class="modal-title">
-                <i class="bi bi-person-plus"></i>
-                <span id="modalPCTitle">PC — Guest Login</span>
-            </div>
+            <div class="modal-title"><i class="bi bi-person-plus"></i><span id="modalPCTitle">PC — Guest Login</span></div>
             <button onclick="closeGuestLoginModal()" class="modal-close"><i class="bi bi-x-lg"></i></button>
         </div>
         <form class="modal-form" onsubmit="processGuestLogin(event)">
@@ -189,19 +177,11 @@
             <div class="form-group">
                 <label class="form-label">Payment Amount (Pesos)</label>
                 <input id="paymentAmount" type="number" class="form-input" placeholder="e.g., 20, 40, 60" min="20" step="20" required />
-                <div class="time-calc-info">
-                    <strong>Rate:</strong> 20 pesos = 1 hour | <strong>Time:</strong> <span id="calcTime">—</span>
-                </div>
+                <div class="time-calc-info"><strong>Rate:</strong> 20 pesos = 1 hour | <strong>Time:</strong> <span id="calcTime">—</span></div>
             </div>
             <div class="payment-calc">
-                <div class="payment-item">
-                    <span class="payment-item-label">Total Payment</span>
-                    <span class="payment-item-value" id="paymentTotal">₱0</span>
-                </div>
-                <div class="payment-item">
-                    <span class="payment-item-label">Session Time</span>
-                    <span class="payment-item-value" id="sessionTime">0h 0m</span>
-                </div>
+                <div class="payment-item"><span class="payment-item-label">Total Payment</span><span class="payment-item-value" id="paymentTotal">₱0</span></div>
+                <div class="payment-item"><span class="payment-item-label">Session Time</span><span class="payment-item-value" id="sessionTime">0h 0m</span></div>
             </div>
             <div id="guestError" class="form-error"></div>
             <button type="submit" class="form-button"><i class="bi bi-check-circle"></i> Confirm & Start Session</button>
@@ -219,26 +199,31 @@
         <div style="display:flex; flex-direction:column; gap:14px;">
             <div>
                 <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Station Name / Number</label>
-                <input id="stationName" type="text" placeholder="e.g. Station 1"
-                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
+                <input id="stationName" type="text" placeholder="e.g. Station 1" style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
             </div>
             <div>
                 <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Initial Status</label>
-                <select id="stationStatus"
-                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;">
+                <select id="stationStatus" style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;">
                     <option value="free">Free</option>
                     <option value="idle">Idle</option>
                     <option value="offline">Offline</option>
                 </select>
             </div>
             <div id="stationError" style="color:var(--red); font-size:12px; display:none;"></div>
-            <button onclick="addStation()" style="width:100%; padding:11px; background:var(--green); color:#0b1410; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif;">
-                Add Station
-            </button>
+            <button onclick="addStation()" style="width:100%; padding:11px; background:var(--green); color:#0b1410; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif;">Add Station</button>
         </div>
     </div>
 </div>
 
-    <script src="~/js/stations.js"></script>
+<script>
+    function toggleUserDropdown() {
+        document.getElementById('userChip').classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+        const chip = document.getElementById('userChip');
+        if (chip && !chip.contains(e.target)) chip.classList.remove('open');
+    });
+</script>
+<script src="~/js/stations.js"></script>
 </body>
 </html>

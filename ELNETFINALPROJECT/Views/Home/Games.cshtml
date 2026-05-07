@@ -13,121 +13,59 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
-            --bg: #0b1410;
-            --bg2: #111a16;
-            --bg3: #172018;
-            --bg4: #1e2b20;
-            --card: #141f16;
-            --border: rgba(0,255,100,0.08);
-            --border2: rgba(0,255,100,0.15);
-            --green: #00e872;
-            --green2: #00c460;
-            --green-dim: rgba(0,232,114,0.12);
-            --text: #e8f5ec;
-            --text2: #8aaa90;
-            --text3: #506055;
-            --red: #ff4d4d;
-            --amber: #ffaa00;
-            --blue: #4d9fff;
-            --sidebar-w: 220px;
+            --bg: #0b1410; --bg2: #111a16; --bg3: #172018; --bg4: #1e2b20;
+            --card: #141f16; --border: rgba(0,255,100,0.08); --border2: rgba(0,255,100,0.15);
+            --green: #00e872; --green2: #00c460; --green-dim: rgba(0,232,114,0.12);
+            --text: #e8f5ec; --text2: #8aaa90; --text3: #506055;
+            --red: #ff4d4d; --amber: #ffaa00; --blue: #4d9fff; --sidebar-w: 220px;
         }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg); color: var(--text);
-            min-height: 100vh; display: flex; flex-direction: column;
-        }
-
-        /* TOP NAV */
-        .topnav {
-            height: 52px; background: var(--bg2);
-            border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; padding: 0 20px; gap: 16px;
-            position: sticky; top: 0; z-index: 100;
-        }
-        .topnav-brand {
-            display: flex; align-items: center; gap: 8px;
-            font-weight: 700; font-size: 15px; letter-spacing: 0.5px;
-            text-decoration: none; color: var(--text);
-        }
-        .brand-icon {
-            width: 28px; height: 28px; background: var(--green);
-            border-radius: 7px; display: flex; align-items: center; justify-content: center;
-        }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+        .topnav { height: 52px; background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 16px; position: sticky; top: 0; z-index: 100; }
+        .topnav-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; letter-spacing: 0.5px; text-decoration: none; color: var(--text); }
+        .brand-icon { width: 28px; height: 28px; background: var(--green); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
         .brand-icon svg { color: #0b1410; }
         .brand-label span { color: var(--green); }
-        .admin-pill {
-            font-size: 10px; font-weight: 600; background: var(--green-dim);
-            color: var(--green); border: 1px solid var(--border2);
-            border-radius: 4px; padding: 2px 7px; letter-spacing: 1px; text-transform: uppercase;
-        }
+        .admin-pill { font-size: 10px; font-weight: 600; background: var(--green-dim); color: var(--green); border: 1px solid var(--border2); border-radius: 4px; padding: 2px 7px; letter-spacing: 1px; text-transform: uppercase; }
         .topnav-search { flex: 1; max-width: 320px; margin-left: 24px; position: relative; }
-        .topnav-search input {
-            width: 100%; background: var(--bg3); border: 1px solid var(--border);
-            border-radius: 8px; padding: 7px 12px 7px 34px; font-size: 13px;
-            color: var(--text); font-family: 'DM Sans', sans-serif; outline: none;
-        }
+        .topnav-search input { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 7px 12px 7px 34px; font-size: 13px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; }
         .topnav-search input::placeholder { color: var(--text3); }
         .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; }
         .topnav-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
-        .status-pill {
-            display: flex; align-items: center; gap: 6px;
-            background: var(--green-dim); border: 1px solid var(--border2);
-            border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 500; color: var(--green);
-        }
+        .status-pill { display: flex; align-items: center; gap: 6px; background: var(--green-dim); border: 1px solid var(--border2); border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 500; color: var(--green); }
         .status-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
         @@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
-        .topnav-icon-btn {
-            width: 34px; height: 34px; background: var(--bg3);
-            border: 1px solid var(--border); border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text2); font-size: 15px;
-            position: relative; transition: border-color 0.2s;
-        }
+        .topnav-icon-btn { width: 34px; height: 34px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text2); font-size: 15px; position: relative; transition: border-color 0.2s; }
         .topnav-icon-btn:hover { border-color: var(--border2); color: var(--text); }
-        .user-chip {
-            display: flex; align-items: center; gap: 8px;
-            background: var(--bg3); border: 1px solid var(--border);
-            border-radius: 10px; padding: 5px 10px 5px 6px; cursor: pointer;
-        }
-        .user-avatar {
-            width: 26px; height: 26px;
-            background: linear-gradient(135deg, var(--green), var(--green2));
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 11px; font-weight: 700; color: #0b1410;
-        }
+
+        /* USER CHIP + DROPDOWN */
+        .user-chip { display: flex; align-items: center; gap: 8px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 5px 10px 5px 6px; cursor: pointer; position: relative; }
+        .user-chip.open { border-color: var(--border2); }
+        .user-chip.open .chevron { transform: rotate(180deg); }
+        .chevron { transition: transform 0.2s; font-size: 10px; color: var(--text3); margin-left: 2px; }
+        .user-avatar { width: 26px; height: 26px; background: linear-gradient(135deg, var(--green), var(--green2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #0b1410; }
         .user-name { font-size: 12px; font-weight: 600; }
         .user-role { font-size: 10px; color: var(--text3); }
+        .user-dropdown { display: none; position: absolute; top: calc(100% + 8px); right: 0; min-width: 180px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; overflow: hidden; z-index: 999; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        .user-chip.open .user-dropdown { display: block; }
+        .dropdown-header { padding: 12px 14px; border-bottom: 1px solid var(--border); background: var(--bg4); }
+        .dropdown-header .dh-name { font-size: 13px; font-weight: 600; }
+        .dropdown-header .dh-role { font-size: 11px; color: var(--text3); margin-top: 1px; }
+        .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; font-size: 13px; color: var(--text2); cursor: pointer; transition: background 0.15s, color 0.15s; text-decoration: none; }
+        .dropdown-item:hover { background: var(--bg4); color: var(--text); }
+        .dropdown-item i { font-size: 14px; width: 16px; text-align: center; }
+        .dropdown-divider { height: 1px; background: var(--border); margin: 2px 0; }
+        .dropdown-item.logout { color: var(--red); }
+        .dropdown-item.logout:hover { background: rgba(255,77,77,0.08); color: var(--red); }
 
-        /* LAYOUT */
         .app-body { display: flex; flex: 1; overflow: hidden; }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: var(--sidebar-w); background: var(--bg2);
-            border-right: 1px solid var(--border); padding: 20px 12px;
-            display: flex; flex-direction: column; gap: 8px;
-            position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto;
-        }
-        .sidebar-section-label {
-            font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
-            text-transform: uppercase; color: var(--text3); padding: 4px 8px; margin-top: 8px;
-        }
-        .sidebar-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 8px 10px; border-radius: 8px; cursor: pointer;
-            font-size: 13px; font-weight: 500; color: var(--text2);
-            text-decoration: none; transition: all 0.15s;
-        }
+        .sidebar { width: var(--sidebar-w); background: var(--bg2); border-right: 1px solid var(--border); padding: 20px 12px; display: flex; flex-direction: column; gap: 8px; position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto; }
+        .sidebar-section-label { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); padding: 4px 8px; margin-top: 8px; }
+        .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text2); text-decoration: none; transition: all 0.15s; }
         .sidebar-item:hover { background: var(--bg3); color: var(--text); }
         .sidebar-item.active { background: var(--green-dim); color: var(--green); border: 1px solid var(--border2); }
         .sidebar-item i { font-size: 15px; width: 18px; text-align: center; }
-        .sidebar-bottom {
-            margin-top: auto; border-top: 1px solid var(--border);
-            padding-top: 14px; display: flex; flex-direction: column; gap: 4px;
-        }
+        .sidebar-bottom { margin-top: auto; border-top: 1px solid var(--border); padding-top: 14px; display: flex; flex-direction: column; gap: 4px; }
         .station-occ { padding: 10px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 8px; }
         .occ-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
         .occ-label { font-size: 11px; color: var(--text3); }
@@ -135,19 +73,13 @@
         .occ-bar { height: 4px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
         .occ-fill { height: 100%; background: var(--green); border-radius: 2px; }
         .occ-sub { font-size: 10px; color: var(--text3); margin-top: 5px; }
-        .server-load {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 8px 10px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border);
-        }
+        .server-load { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border); }
         .server-left { display: flex; align-items: center; gap: 8px; }
         .server-icon { font-size: 14px; color: var(--green); }
         .server-title { font-size: 11px; color: var(--text2); font-weight: 500; }
         .server-sub { font-size: 10px; color: var(--text3); }
         .server-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
-
-        /* MAIN */
         .main { flex: 1; overflow-y: auto; padding: 24px; }
-
         .breadcrumb-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text3); margin-bottom: 6px; }
         .breadcrumb-row i { font-size: 11px; }
         .breadcrumb-row a { color: var(--text3); text-decoration: none; }
@@ -156,88 +88,36 @@
         .page-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
         .page-sub { font-size: 13px; color: var(--text3); margin-top: 2px; }
         .header-actions { display: flex; align-items: center; gap: 10px; }
-
-        .btn {
-            display: flex; align-items: center; gap: 6px;
-            padding: 8px 14px; border-radius: 8px;
-            font-size: 13px; font-weight: 500; cursor: pointer;
-            border: none; font-family: 'DM Sans', sans-serif; transition: all 0.15s;
-        }
+        .btn { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
         .btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
         .btn-ghost:hover { border-color: var(--border2); color: var(--text); }
         .btn-primary { background: var(--green); color: #0b1410; font-weight: 600; }
         .btn-primary:hover { background: var(--green2); }
         .btn i { font-size: 14px; }
-
-        /* SEARCH/FILTER BAR */
-        .filter-bar {
-            display: flex; align-items: center; gap: 12px;
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 10px; padding: 10px 14px; margin-bottom: 20px;
-        }
+        .filter-bar { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 20px; }
         .filter-search { position: relative; flex: 1; max-width: 300px; }
-        .filter-search input {
-            width: 100%; background: var(--bg3); border: 1px solid var(--border);
-            border-radius: 7px; padding: 7px 10px 7px 30px;
-            font-size: 13px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none;
-        }
+        .filter-search input { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 7px; padding: 7px 10px 7px 30px; font-size: 13px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; }
         .filter-search input::placeholder { color: var(--text3); }
         .filter-search i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--text3); }
-        .filter-bar select {
-            background: var(--bg3); border: 1px solid var(--border);
-            border-radius: 7px; padding: 7px 10px; font-size: 13px;
-            color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; cursor: pointer;
-        }
-
-        /* GAME CARDS GRID */
+        .filter-bar select { background: var(--bg3); border: 1px solid var(--border); border-radius: 7px; padding: 7px 10px; font-size: 13px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; cursor: pointer; }
         .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
-        .game-card {
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 12px; overflow: hidden; transition: border-color 0.2s; cursor: pointer;
-        }
+        .game-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; cursor: pointer; }
         .game-card:hover { border-color: var(--border2); }
-        .game-thumb {
-            height: 130px; background: var(--bg3);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 40px; color: var(--text3); position: relative;
-        }
-        .game-thumb .genre-tag {
-            position: absolute; top: 10px; right: 10px;
-            background: var(--green-dim); color: var(--green);
-            border: 1px solid var(--border2);
-            font-size: 9px; font-weight: 700; letter-spacing: 0.8px;
-            text-transform: uppercase; padding: 2px 7px; border-radius: 4px;
-        }
+        .game-thumb { height: 130px; background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--text3); position: relative; }
+        .game-thumb .genre-tag { position: absolute; top: 10px; right: 10px; background: var(--green-dim); color: var(--green); border: 1px solid var(--border2); font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; }
         .game-info { padding: 14px; }
         .game-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
         .game-meta { font-size: 11px; color: var(--text3); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
         .game-size { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text3); }
-        .status-installed {
-            display: inline-flex; align-items: center; gap: 4px;
-            background: var(--green-dim); color: var(--green);
-            border: 1px solid var(--border2);
-            font-size: 10px; font-weight: 600;
-            padding: 2px 7px; border-radius: 4px;
-        }
+        .status-installed { display: inline-flex; align-items: center; gap: 4px; background: var(--green-dim); color: var(--green); border: 1px solid var(--border2); font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
         .status-installed::before { content: ''; width: 5px; height: 5px; background: var(--green); border-radius: 50%; display: block; }
         .game-actions { display: flex; gap: 8px; margin-top: 10px; }
-        .btn-launch {
-            flex: 1; padding: 7px; background: var(--green); color: #0b1410;
-            border: none, border-radius: 7px; font-size: 12px, font-weight: 700;
-            cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s;
-            display: flex, align-items: center, justify-content: center, gap: 5px;
-        }
+        /* FIXED: was using commas instead of semicolons */
+        .btn-launch { flex: 1; padding: 7px; background: var(--green); color: #0b1410; border: none; border-radius: 7px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 5px; }
         .btn-launch:hover { background: var(--green2); }
-        .btn-icon {
-            width: 32px; height: 32px; background: var(--bg3);
-            border: 1px solid var(--border); border-radius: 7px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text3); font-size: 13px; transition: all 0.15s;
-        }
+        .btn-icon { width: 32px; height: 32px; background: var(--bg3); border: 1px solid var(--border); border-radius: 7px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text3); font-size: 13px; transition: all 0.15s; }
         .btn-icon:hover { border-color: var(--border2); color: var(--text); }
         .btn-icon.danger:hover { border-color: rgba(255,77,77,0.4); color: var(--red); }
-
-        /* EMPTY STATE */
         .empty-state { text-align: center; padding: 60px 20px; color: var(--text3); }
         .empty-state i { font-size: 48px; margin-bottom: 14px; display: block; opacity: 0.35; }
         .empty-state p { font-size: 13px; }
@@ -245,7 +125,6 @@
 </head>
 <body>
 
-<!-- TOP NAV -->
 <nav class="topnav">
     <a class="topnav-brand" href="#">
         <div class="brand-icon">
@@ -267,54 +146,54 @@
         <div class="status-pill"><div class="status-dot"></div></div>
         <div class="topnav-icon-btn"><i class="bi bi-gear"></i></div>
         <div class="topnav-icon-btn"><i class="bi bi-bell"></i></div>
-        <div class="user-chip">
+        <div class="user-chip" id="userChip" onclick="toggleUserDropdown()">
             <div class="user-avatar">A</div>
             <div style="line-height:1.2;">
                 <div class="user-name">Admin</div>
                 <div class="user-role">Manager</div>
+            </div>
+            <i class="bi bi-chevron-down chevron"></i>
+            <div class="user-dropdown">
+                <div class="dropdown-header">
+                    <div class="dh-name">Admin</div>
+                    <div class="dh-role">Manager</div>
+                </div>
+                <a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a>
+                <a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item logout" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
             </div>
         </div>
     </div>
 </nav>
 
 <div class="app-body">
-    <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="sidebar-section-label">Navigation</div>
         <a class="sidebar-item" href="@Url.Action("Dashboard", "Home")"><i class="bi bi-speedometer2"></i> Dashboard</a>
         <a class="sidebar-item" href="@Url.Action("Players", "Home")"><i class="bi bi-people-fill"></i> Players</a>
         <a class="sidebar-item" href="@Url.Action("Stations", "Home")"><i class="bi bi-display"></i> Stations</a>
         <a class="sidebar-item active" href="@Url.Action("Games", "Home")"><i class="bi bi-controller"></i> Games</a>
-
         <div class="sidebar-section-label">System</div>
         <a class="sidebar-item" href="@Url.Action("Settings", "Home")"><i class="bi bi-gear"></i> Settings</a>
         <a class="sidebar-item" href="@Url.Action("Support", "Home")"><i class="bi bi-headset"></i> Support</a>
-
         <div class="sidebar-bottom">
             <div class="station-occ">
-                <div class="occ-header">
-                    <span class="occ-label">Station Occupancy</span>
-                    <span class="occ-count">—</span>
-                </div>
+                <div class="occ-header"><span class="occ-label">Station Occupancy</span><span class="occ-count">—</span></div>
                 <div class="occ-bar"><div class="occ-fill" style="width:0%;"></div></div>
                 <div class="occ-sub">—</div>
             </div>
             <div class="server-load">
                 <div class="server-left">
                     <i class="bi bi-hdd-network server-icon"></i>
-                    <div>
-                        <div class="server-title">Server Load</div>
-                        <div class="server-sub">Online</div>
-                    </div>
+                    <div><div class="server-title">Server Load</div><div class="server-sub">Online</div></div>
                 </div>
                 <div class="server-dot"></div>
             </div>
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="main">
-        <!-- Page Header -->
         <div class="breadcrumb-row">
             <i class="bi bi-house"></i>
             <a href="/Home/Dashboard">Dashboard</a>
@@ -331,8 +210,6 @@
                 <button class="btn btn-ghost" onclick="openCategoriesModal()"><i class="bi bi-tags"></i> Categories</button>
             </div>
         </div>
-
-        <!-- Filter Bar -->
         <div class="filter-bar">
             <div class="filter-search">
                 <i class="bi bi-search"></i>
@@ -340,12 +217,9 @@
             </div>
             <select id="genreFilter" onchange="filterGames()">
                 <option value="">All Genres</option>
-                <option value="FPS">FPS</option>
-                <option value="RPG">RPG</option>
-                <option value="MOBA">MOBA</option>
-                <option value="Sports">Sports</option>
-                <option value="Strategy">Strategy</option>
-                <option value="Battle Royale">Battle Royale</option>
+                <option value="FPS">FPS</option><option value="RPG">RPG</option>
+                <option value="MOBA">MOBA</option><option value="Sports">Sports</option>
+                <option value="Strategy">Strategy</option><option value="Battle Royale">Battle Royale</option>
                 <option value="Other">Other</option>
             </select>
             <select id="statusFilter" onchange="filterGames()">
@@ -354,11 +228,7 @@
                 <option value="Not Installed">Not Installed</option>
             </select>
         </div>
-
-        <!-- Games Grid -->
-        <div class="games-grid" id="gamesGrid">
-            <!-- Populated by JS -->
-        </div>
+        <div class="games-grid" id="gamesGrid"></div>
     </main>
 </div>
 
@@ -372,41 +242,31 @@
         <div style="display:flex; flex-direction:column; gap:14px;">
             <div>
                 <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Game Title</label>
-                <input id="gameTitle" type="text" placeholder="e.g. Valorant"
-                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
+                <input id="gameTitle" type="text" placeholder="e.g. Valorant" style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
             </div>
             <div>
                 <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Genre</label>
-                <select id="gameGenre"
-                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;">
-                    <option value="FPS">FPS</option>
-                    <option value="RPG">RPG</option>
-                    <option value="MOBA">MOBA</option>
-                    <option value="Sports">Sports</option>
-                    <option value="Strategy">Strategy</option>
-                    <option value="Battle Royale">Battle Royale</option>
-                    <option value="Other">Other</option>
+                <select id="gameGenre" style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;">
+                    <option value="FPS">FPS</option><option value="RPG">RPG</option><option value="MOBA">MOBA</option>
+                    <option value="Sports">Sports</option><option value="Strategy">Strategy</option>
+                    <option value="Battle Royale">Battle Royale</option><option value="Other">Other</option>
                 </select>
             </div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
                 <div>
                     <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Size (GB)</label>
-                    <input id="gameSize" type="number" placeholder="0.0" min="0" step="0.1"
-                        style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
+                    <input id="gameSize" type="number" placeholder="0.0" min="0" step="0.1" style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
                 </div>
                 <div>
                     <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Status</label>
-                    <select id="gameStatus"
-                        style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;">
+                    <select id="gameStatus" style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;">
                         <option value="Installed">Installed</option>
                         <option value="Not Installed">Not Installed</option>
                     </select>
                 </div>
             </div>
             <div id="gameError" style="color:var(--red); font-size:12px; display:none;"></div>
-            <button onclick="addGame()" style="width:100%; padding:11px; background:var(--green); color:#0b1410; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif;">
-                Add Game
-            </button>
+            <button onclick="addGame()" style="width:100%; padding:11px; background:var(--green); color:#0b1410; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif;">Add Game</button>
         </div>
     </div>
 </div>
@@ -430,115 +290,48 @@
 </div>
 
 <script>
-    // Seed with defaults matching the UI screenshots
+    function toggleUserDropdown() {
+        document.getElementById('userChip').classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+        const chip = document.getElementById('userChip');
+        if (chip && !chip.contains(e.target)) chip.classList.remove('open');
+    });
+
     let games = [
         { id: 1, title: 'Cyberpunk 2077', genre: 'RPG', size: 70.2, status: 'Installed' },
         { id: 2, title: 'Valorant', genre: 'FPS', size: 23.1, status: 'Installed' },
     ];
     let gameIdCounter = 3;
-
-    const genreIcons = {
-        'FPS': 'bi-crosshair',
-        'RPG': 'bi-shield-fill-exclamation',
-        'MOBA': 'bi-people-fill',
-        'Sports': 'bi-trophy-fill',
-        'Strategy': 'bi-diagram-3-fill',
-        'Battle Royale': 'bi-award-fill',
-        'Other': 'bi-controller',
-    };
+    const genreIcons = { 'FPS': 'bi-crosshair', 'RPG': 'bi-shield-fill-exclamation', 'MOBA': 'bi-people-fill', 'Sports': 'bi-trophy-fill', 'Strategy': 'bi-diagram-3-fill', 'Battle Royale': 'bi-award-fill', 'Other': 'bi-controller' };
 
     function openAddGameModal() { document.getElementById('addGameModal').style.display = 'flex'; document.getElementById('gameTitle').value = ''; document.getElementById('gameSize').value = ''; document.getElementById('gameError').style.display = 'none'; }
     function closeAddGameModal() { document.getElementById('addGameModal').style.display = 'none'; }
     function openCategoriesModal() { updateCategoryCounts(); document.getElementById('categoriesModal').style.display = 'flex'; }
     function closeCategoriesModal() { document.getElementById('categoriesModal').style.display = 'none'; }
-
-    function updateCategoryCounts() {
-        ['FPS','RPG','MOBA','Sports','Strategy','Battle Royale','Other'].forEach(g => {
-            const el = document.getElementById('catCount-' + g);
-            if (el) el.textContent = games.filter(gm => gm.genre === g).length;
-        });
-    }
-
-    function addGame() {
-        const title = document.getElementById('gameTitle').value.trim();
-        const genre = document.getElementById('gameGenre').value;
-        const size = parseFloat(document.getElementById('gameSize').value) || 0;
-        const status = document.getElementById('gameStatus').value;
-        const errEl = document.getElementById('gameError');
-        if (!title) { errEl.textContent = 'Game title is required.'; errEl.style.display = 'block'; return; }
-        errEl.style.display = 'none';
-        games.push({ id: gameIdCounter++, title, genre, size, status });
-        closeAddGameModal();
-        renderGames();
-    }
-
-    function deleteGame(id) {
-        if (confirm('Remove this game?')) {
-            games = games.filter(g => g.id !== id);
-            renderGames();
-        }
-    }
-
-    function toggleStatus(id) {
-        const g = games.find(g => g.id === id);
-        if (g) { g.status = g.status === 'Installed' ? 'Not Installed' : 'Installed'; renderGames(); }
-    }
-
-    function filterGames() {
-        const search = (document.getElementById('gameSearch').value || document.getElementById('topSearch').value || '').toLowerCase();
-        const genre = document.getElementById('genreFilter').value;
-        const status = document.getElementById('statusFilter').value;
-        const filtered = games.filter(g =>
-            g.title.toLowerCase().includes(search) &&
-            (genre === '' || g.genre === genre) &&
-            (status === '' || g.status === status)
-        );
-        renderGamesData(filtered);
-    }
-
-    function renderGames() {
-        filterGames();
-    }
-
+    function updateCategoryCounts() { ['FPS','RPG','MOBA','Sports','Strategy','Battle Royale','Other'].forEach(g => { const el = document.getElementById('catCount-' + g); if (el) el.textContent = games.filter(gm => gm.genre === g).length; }); }
+    function addGame() { const title = document.getElementById('gameTitle').value.trim(); const genre = document.getElementById('gameGenre').value; const size = parseFloat(document.getElementById('gameSize').value) || 0; const status = document.getElementById('gameStatus').value; const errEl = document.getElementById('gameError'); if (!title) { errEl.textContent = 'Game title is required.'; errEl.style.display = 'block'; return; } errEl.style.display = 'none'; games.push({ id: gameIdCounter++, title, genre, size, status }); closeAddGameModal(); renderGames(); }
+    function deleteGame(id) { if (confirm('Remove this game?')) { games = games.filter(g => g.id !== id); renderGames(); } }
+    function toggleStatus(id) { const g = games.find(g => g.id === id); if (g) { g.status = g.status === 'Installed' ? 'Not Installed' : 'Installed'; renderGames(); } }
+    function filterGames() { const search = (document.getElementById('gameSearch').value || document.getElementById('topSearch').value || '').toLowerCase(); const genre = document.getElementById('genreFilter').value; const status = document.getElementById('statusFilter').value; renderGamesData(games.filter(g => g.title.toLowerCase().includes(search) && (genre === '' || g.genre === genre) && (status === '' || g.status === status))); }
+    function renderGames() { filterGames(); }
     function renderGamesData(list) {
         const grid = document.getElementById('gamesGrid');
-        if (list.length === 0) {
-            grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
-                <i class="bi bi-controller"></i>
-                <p>${games.length === 0 ? 'No games added yet. Click <strong>+ Add Game</strong> to get started.' : 'No games match your filters.'}</p>
-            </div>`;
-            return;
-        }
+        if (list.length === 0) { grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="bi bi-controller"></i><p>${games.length === 0 ? 'No games added yet. Click <strong>+ Add Game</strong> to get started.' : 'No games match your filters.'}</p></div>`; return; }
         grid.innerHTML = list.map(g => `
             <div class="game-card">
-                <div class="game-thumb">
-                    <i class="bi ${genreIcons[g.genre] || 'bi-controller'}"></i>
-                    <span class="genre-tag">${g.genre}</span>
-                </div>
+                <div class="game-thumb"><i class="bi ${genreIcons[g.genre] || 'bi-controller'}"></i><span class="genre-tag">${g.genre}</span></div>
                 <div class="game-info">
                     <div class="game-title">${g.title}</div>
-                    <div class="game-meta">
-                        <span class="status-installed">${g.status}</span>
-                        <span class="game-size">${g.size > 0 ? g.size.toFixed(1) + ' GB' : '—'}</span>
-                    </div>
+                    <div class="game-meta"><span class="status-installed">${g.status}</span><span class="game-size">${g.size > 0 ? g.size.toFixed(1) + ' GB' : '—'}</span></div>
                     <div class="game-actions">
-                        <button class="btn-launch" onclick="toggleStatus(${g.id})">
-                            <i class="bi bi-play-fill"></i> Launch
-                        </button>
+                        <button class="btn-launch" onclick="toggleStatus(${g.id})"><i class="bi bi-play-fill"></i> Launch</button>
                         <button class="btn-icon danger" title="Remove" onclick="deleteGame(${g.id})"><i class="bi bi-trash"></i></button>
                     </div>
                 </div>
-            </div>
-        `).join('');
+            </div>`).join('');
     }
-
-    // Modals: close on outside click
-    ['addGameModal','categoriesModal'].forEach(id => {
-        document.getElementById(id).addEventListener('click', function(e) {
-            if (e.target === this) this.style.display = 'none';
-        });
-    });
-
+    ['addGameModal','categoriesModal'].forEach(id => { document.getElementById(id).addEventListener('click', function(e) { if (e.target === this) this.style.display = 'none'; }); });
     renderGames();
 </script>
 </body>

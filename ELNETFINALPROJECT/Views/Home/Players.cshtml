@@ -13,326 +13,137 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
-            --bg: #0b1410;
-            --bg2: #111a16;
-            --bg3: #172018;
-            --bg4: #1e2b20;
-            --card: #141f16;
-            --card2: #192218;
-            --border: rgba(0,255,100,0.08);
-            --border2: rgba(0,255,100,0.15);
-            --green: #00e872;
-            --green2: #00c460;
-            --green-dim: rgba(0,232,114,0.12);
-            --green-glow: rgba(0,232,114,0.06);
-            --text: #e8f5ec;
-            --text2: #8aaa90;
-            --text3: #506055;
-            --red: #ff4d4d;
-            --amber: #ffaa00;
-            --blue: #4d9fff;
-            --sidebar-w: 220px;
+            --bg: #0b1410; --bg2: #111a16; --bg3: #172018; --bg4: #1e2b20;
+            --card: #141f16; --card2: #192218;
+            --border: rgba(0,255,100,0.08); --border2: rgba(0,255,100,0.15);
+            --green: #00e872; --green2: #00c460;
+            --green-dim: rgba(0,232,114,0.12); --green-glow: rgba(0,232,114,0.06);
+            --text: #e8f5ec; --text2: #8aaa90; --text3: #506055;
+            --red: #ff4d4d; --amber: #ffaa00; --blue: #4d9fff; --sidebar-w: 220px;
         }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* TOP NAV */
-        .topnav {
-            height: 52px;
-            background: var(--bg2);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 16px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .topnav-brand {
-            display: flex; align-items: center; gap: 8px;
-            font-weight: 700; font-size: 15px; letter-spacing: 0.5px;
-            text-decoration: none; color: var(--text);
-        }
-        .brand-icon {
-            width: 28px; height: 28px;
-            background: var(--green);
-            border-radius: 7px;
-            display: flex; align-items: center; justify-content: center;
-        }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+        .topnav { height: 52px; background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 16px; position: sticky; top: 0; z-index: 100; }
+        .topnav-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; letter-spacing: 0.5px; text-decoration: none; color: var(--text); }
+        .brand-icon { width: 28px; height: 28px; background: var(--green); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
         .brand-icon svg { color: #0b1410; }
         .brand-label span { color: var(--green); }
-        .admin-pill {
-            font-size: 10px; font-weight: 600;
-            background: var(--green-dim); color: var(--green);
-            border: 1px solid var(--border2);
-            border-radius: 4px; padding: 2px 7px;
-            letter-spacing: 1px; text-transform: uppercase;
-        }
+        .admin-pill { font-size: 10px; font-weight: 600; background: var(--green-dim); color: var(--green); border: 1px solid var(--border2); border-radius: 4px; padding: 2px 7px; letter-spacing: 1px; text-transform: uppercase; }
         .topnav-search { flex: 1; max-width: 320px; margin-left: 24px; position: relative; }
-        .topnav-search input {
-            width: 100%; background: var(--bg3);
-            border: 1px solid var(--border); border-radius: 8px;
-            padding: 7px 12px 7px 34px; font-size: 13px;
-            color: var(--text); font-family: 'DM Sans', sans-serif; outline: none;
-        }
+        .topnav-search input { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 7px 12px 7px 34px; font-size: 13px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; }
         .topnav-search input::placeholder { color: var(--text3); }
         .topnav-search input:focus { border-color: var(--border2); }
-        .search-icon {
-            position: absolute; left: 10px; top: 50%;
-            transform: translateY(-50%); color: var(--text3); font-size: 14px;
-        }
+        .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; }
         .topnav-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
-        .status-pill {
-            display: flex; align-items: center; gap: 6px;
-            background: var(--green-dim); border: 1px solid var(--border2);
-            border-radius: 20px; padding: 5px 12px;
-            font-size: 12px; font-weight: 500; color: var(--green);
-        }
-        .status-dot {
-            width: 7px; height: 7px; background: var(--green);
-            border-radius: 50%; animation: pulse 2s infinite;
-        }
+        .status-pill { display: flex; align-items: center; gap: 6px; background: var(--green-dim); border: 1px solid var(--border2); border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 500; color: var(--green); }
+        .status-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
         @@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
-        .topnav-icon-btn {
-            width: 34px; height: 34px; background: var(--bg3);
-            border: 1px solid var(--border); border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text2); font-size: 15px;
-            position: relative; transition: border-color 0.2s;
-        }
+        .topnav-icon-btn { width: 34px; height: 34px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text2); font-size: 15px; position: relative; transition: border-color 0.2s; }
         .topnav-icon-btn:hover { border-color: var(--border2); color: var(--text); }
-        .notif-badge {
-            position: absolute; top: -4px; right: -4px;
-            width: 16px; height: 16px; background: var(--red);
-            border-radius: 50%; font-size: 9px;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; color: #fff;
-        }
-        .user-chip {
-            display: flex; align-items: center; gap: 8px;
-            background: var(--bg3); border: 1px solid var(--border);
-            border-radius: 10px; padding: 5px 10px 5px 6px; cursor: pointer;
-        }
-        .user-avatar {
-            width: 26px; height: 26px;
-            background: linear-gradient(135deg, var(--green), var(--green2));
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 11px; font-weight: 700; color: #0b1410;
-        }
+        .notif-badge { position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; background: var(--red); border-radius: 50%; font-size: 9px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; }
+
+        /* USER CHIP + DROPDOWN */
+        .user-chip { display: flex; align-items: center; gap: 8px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 5px 10px 5px 6px; cursor: pointer; position: relative; }
+        .user-chip.open { border-color: var(--border2); }
+        .user-chip.open .chevron { transform: rotate(180deg); }
+        .chevron { transition: transform 0.2s; font-size: 10px; color: var(--text3); margin-left: 2px; }
+        .user-avatar { width: 26px; height: 26px; background: linear-gradient(135deg, var(--green), var(--green2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #0b1410; }
         .user-info { line-height: 1.2; }
         .user-name { font-size: 12px; font-weight: 600; }
         .user-role { font-size: 10px; color: var(--text3); }
+        .user-dropdown { display: none; position: absolute; top: calc(100% + 8px); right: 0; min-width: 180px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; overflow: hidden; z-index: 999; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        .user-chip.open .user-dropdown { display: block; }
+        .dropdown-header { padding: 12px 14px; border-bottom: 1px solid var(--border); background: var(--bg4); }
+        .dropdown-header .dh-name { font-size: 13px; font-weight: 600; }
+        .dropdown-header .dh-role { font-size: 11px; color: var(--text3); margin-top: 1px; }
+        .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; font-size: 13px; color: var(--text2); cursor: pointer; transition: background 0.15s, color 0.15s; text-decoration: none; }
+        .dropdown-item:hover { background: var(--bg4); color: var(--text); }
+        .dropdown-item i { font-size: 14px; width: 16px; text-align: center; }
+        .dropdown-divider { height: 1px; background: var(--border); margin: 2px 0; }
+        .dropdown-item.logout { color: var(--red); }
+        .dropdown-item.logout:hover { background: rgba(255,77,77,0.08); color: var(--red); }
 
-        /* LAYOUT */
         .app-body { display: flex; flex: 1; overflow: hidden; }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: var(--sidebar-w); background: var(--bg2);
-            border-right: 1px solid var(--border);
-            padding: 20px 12px;
-            display: flex; flex-direction: column; gap: 8px;
-            position: sticky; top: 52px;
-            height: calc(100vh - 52px); overflow-y: auto;
-        }
-        .sidebar-section-label {
-            font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
-            text-transform: uppercase; color: var(--text3);
-            padding: 4px 8px; margin-top: 8px;
-        }
-        .sidebar-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 8px 10px; border-radius: 8px; cursor: pointer;
-            font-size: 13px; font-weight: 500; color: var(--text2);
-            text-decoration: none; transition: all 0.15s;
-        }
+        .sidebar { width: var(--sidebar-w); background: var(--bg2); border-right: 1px solid var(--border); padding: 20px 12px; display: flex; flex-direction: column; gap: 8px; position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto; }
+        .sidebar-section-label { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); padding: 4px 8px; margin-top: 8px; }
+        .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text2); text-decoration: none; transition: all 0.15s; }
         .sidebar-item:hover { background: var(--bg3); color: var(--text); }
-        .sidebar-item.active {
-            background: var(--green-dim); color: var(--green);
-            border: 1px solid var(--border2);
-        }
+        .sidebar-item.active { background: var(--green-dim); color: var(--green); border: 1px solid var(--border2); }
         .sidebar-item i { font-size: 15px; width: 18px; text-align: center; }
-        .sidebar-bottom {
-            margin-top: auto; border-top: 1px solid var(--border);
-            padding-top: 14px; display: flex; flex-direction: column; gap: 4px;
-        }
-        .station-occ {
-            padding: 10px; background: var(--bg3); border-radius: 8px;
-            border: 1px solid var(--border); margin-bottom: 8px;
-        }
+        .sidebar-bottom { margin-top: auto; border-top: 1px solid var(--border); padding-top: 14px; display: flex; flex-direction: column; gap: 4px; }
+        .station-occ { padding: 10px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 8px; }
         .occ-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
         .occ-label { font-size: 11px; color: var(--text3); }
         .occ-count { font-size: 12px; font-weight: 600; }
         .occ-bar { height: 4px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
         .occ-fill { height: 100%; background: var(--green); border-radius: 2px; width: 0%; }
         .occ-sub { font-size: 10px; color: var(--text3); margin-top: 5px; }
-        .server-load {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 8px 10px; background: var(--bg3);
-            border-radius: 8px; border: 1px solid var(--border);
-        }
+        .server-load { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border); }
         .server-left { display: flex; align-items: center; gap: 8px; }
         .server-icon { font-size: 14px; color: var(--green); }
         .server-info { line-height: 1.3; }
         .server-title { font-size: 11px; color: var(--text2); font-weight: 500; }
         .server-sub { font-size: 10px; color: var(--text3); }
         .server-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
-
-        /* MAIN */
         .main { flex: 1; overflow-y: auto; padding: 24px; display: flex; gap: 20px; }
         .main-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
         .main-right { width: 240px; flex-shrink: 0; }
-
-        /* BREADCRUMB */
-        .breadcrumb-row {
-            display: flex; align-items: center; gap: 6px;
-            font-size: 12px; color: var(--text3); margin-bottom: 6px;
-        }
+        .breadcrumb-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text3); margin-bottom: 6px; }
         .breadcrumb-row i { font-size: 11px; }
         .breadcrumb-row a { color: var(--text3); text-decoration: none; }
         .breadcrumb-row a:hover { color: var(--text2); }
-
-        /* PAGE HEADER */
-        .page-header {
-            display: flex; align-items: flex-start; justify-content: space-between;
-            margin-bottom: 4px;
-        }
+        .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px; }
         .page-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
         .page-sub { font-size: 13px; color: var(--text3); margin-top: 2px; }
         .header-actions { display: flex; align-items: center; gap: 10px; }
-        .btn {
-            display: flex; align-items: center; gap: 6px;
-            padding: 8px 14px; border-radius: 8px;
-            font-size: 13px; font-weight: 500; cursor: pointer;
-            border: none; font-family: 'DM Sans', sans-serif; transition: all 0.15s;
-        }
+        .btn { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
         .btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
         .btn-ghost:hover { border-color: var(--border2); color: var(--text); }
         .btn-primary { background: var(--green); color: #0b1410; font-weight: 600; }
         .btn-primary:hover { background: var(--green2); }
         .btn i { font-size: 14px; }
-
-        /* PLAYER TABLE PANEL */
-        .player-table-panel {
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 12px; overflow: hidden;
-        }
-        .table-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 16px 18px; border-bottom: 1px solid var(--border);
-        }
-        .section-title {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 14px; font-weight: 600;
-        }
+        .player-table-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .table-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid var(--border); }
+        .section-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
         .section-title i { color: var(--green); font-size: 15px; }
-        .table-tabs {
-            display: flex; gap: 4px; padding: 4px;
-            background: var(--bg3); border-radius: 8px;
-            margin: 10px 18px 0 18px;
-        }
-        .tab {
-            padding: 6px 14px; border-radius: 6px; font-size: 12px;
-            font-weight: 500; cursor: pointer; color: var(--text3); transition: all 0.15s;
-        }
+        .table-tabs { display: flex; gap: 4px; padding: 4px; background: var(--bg3); border-radius: 8px; margin: 10px 18px 0 18px; }
+        .tab { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text3); transition: all 0.15s; }
         .tab.active { background: var(--bg4); color: var(--text); }
         .tab:hover:not(.active) { color: var(--text2); }
         .table-actions { display: flex; gap: 8px; }
         .table-search { position: relative; }
-        .table-search input {
-            background: var(--bg3); border: 1px solid var(--border);
-            border-radius: 7px; padding: 6px 10px 6px 30px;
-            font-size: 12px; color: var(--text);
-            font-family: 'DM Sans', sans-serif; outline: none; width: 200px;
-        }
+        .table-search input { background: var(--bg3); border: 1px solid var(--border); border-radius: 7px; padding: 6px 10px 6px 30px; font-size: 12px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; width: 200px; }
         .table-search input::placeholder { color: var(--text3); }
         .table-search i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--text3); }
         table { width: 100%; border-collapse: collapse; }
-        thead th {
-            padding: 10px 18px; text-align: left;
-            font-size: 10px; font-weight: 600; letter-spacing: 0.8px;
-            text-transform: uppercase; color: var(--text3);
-            border-bottom: 1px solid var(--border);
-        }
+        thead th { padding: 10px 18px; text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border); }
         tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
         tbody tr:hover { background: var(--bg3); }
         tbody tr:last-child { border-bottom: none; }
         td { padding: 12px 18px; font-size: 13px; }
         .player-cell { display: flex; align-items: center; gap: 10px; }
-        .player-av {
-            width: 36px; height: 36px; border-radius: 50%;
-            background: var(--bg4); display: flex; align-items: center; justify-content: center;
-            font-size: 13px; font-weight: 700; color: var(--green);
-            border: 1px solid var(--border2); overflow: hidden; flex-shrink: 0;
-        }
+        .player-av { width: 36px; height: 36px; border-radius: 50%; background: var(--bg4); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--green); border: 1px solid var(--border2); overflow: hidden; flex-shrink: 0; }
         .player-pname { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
         .player-email { font-size: 11px; color: var(--text3); }
         .balance-cell { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--green); font-weight: 500; }
-        .status-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 3px 8px; border-radius: 5px;
-            font-size: 11px; font-weight: 500;
-        }
-        .status-active {
-            background: var(--green-dim); color: var(--green);
-            border: 1px solid var(--border2);
-        }
+        .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 5px; font-size: 11px; font-weight: 500; }
+        .status-active { background: var(--green-dim); color: var(--green); border: 1px solid var(--border2); }
         .status-active::before { content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 50%; display: block; }
-        .status-inactive {
-            background: rgba(80,96,85,0.2); color: var(--text3);
-            border: 1px solid rgba(80,96,85,0.3);
-        }
+        .status-inactive { background: rgba(80,96,85,0.2); color: var(--text3); border: 1px solid rgba(80,96,85,0.3); }
         .actions-cell { display: flex; gap: 6px; }
-        .action-btn {
-            width: 28px; height: 28px; border-radius: 6px;
-            border: 1px solid var(--border); background: var(--bg3);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text3); font-size: 13px; transition: all 0.15s;
-        }
+        .action-btn { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg3); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text3); font-size: 13px; transition: all 0.15s; }
         .action-btn:hover { border-color: var(--border2); color: var(--text); }
         .action-btn.danger:hover { border-color: rgba(255,77,77,0.4); color: var(--red); background: rgba(255,77,77,0.08); }
-
-        /* EMPTY STATE */
-        .empty-state {
-            text-align: center; padding: 60px 20px;
-            color: var(--text3);
-        }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text3); }
         .empty-state i { font-size: 40px; margin-bottom: 12px; display: block; opacity: 0.4; }
         .empty-state p { font-size: 13px; }
-
-        /* RIGHT PANEL - LIVE STATS */
-        .live-stats-panel {
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 12px; overflow: hidden;
-        }
-        .live-stats-header {
-            padding: 14px 16px; border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; gap: 8px;
-            background: var(--bg3);
-        }
+        .live-stats-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .live-stats-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; background: var(--bg3); }
         .live-stats-header i { color: var(--green); font-size: 14px; }
         .live-stats-title { font-size: 13px; font-weight: 600; }
         .live-stats-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-        .stat-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px; background: var(--bg3);
-            border: 1px solid var(--border); border-radius: 10px;
-        }
-        .stat-item-icon {
-            width: 38px; height: 38px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px; flex-shrink: 0;
-        }
+        .stat-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; }
+        .stat-item-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
         .stat-item-icon.green { background: var(--green-dim); color: var(--green); }
         .stat-item-icon.blue { background: rgba(77,159,255,0.1); color: var(--blue); }
         .stat-item-icon.amber { background: rgba(255,170,0,0.1); color: var(--amber); }
@@ -343,7 +154,6 @@
 </head>
 <body>
 
-<!-- TOP NAV -->
 <nav class="topnav">
     <a class="topnav-brand" href="#">
         <div class="brand-icon">
@@ -364,32 +174,38 @@
     <div class="topnav-right">
         <div class="status-pill"><div class="status-dot"></div></div>
         <div class="topnav-icon-btn"><i class="bi bi-gear"></i></div>
-        <div class="topnav-icon-btn">
-            <i class="bi bi-bell"></i>
-        </div>
-        <div class="user-chip">
+        <div class="topnav-icon-btn"><i class="bi bi-bell"></i></div>
+        <div class="user-chip" id="userChip" onclick="toggleUserDropdown()">
             <div class="user-avatar">A</div>
             <div class="user-info">
                 <div class="user-name">Admin</div>
                 <div class="user-role">Manager</div>
+            </div>
+            <i class="bi bi-chevron-down chevron"></i>
+            <div class="user-dropdown">
+                <div class="dropdown-header">
+                    <div class="dh-name">Admin</div>
+                    <div class="dh-role">Manager</div>
+                </div>
+                <a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a>
+                <a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item logout" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
             </div>
         </div>
     </div>
 </nav>
 
 <div class="app-body">
-    <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="sidebar-section-label">Navigation</div>
         <a class="sidebar-item" href="@Url.Action("Dashboard", "Home")"><i class="bi bi-speedometer2"></i> Dashboard</a>
         <a class="sidebar-item active" href="@Url.Action("Players", "Home")"><i class="bi bi-people-fill"></i> Players</a>
         <a class="sidebar-item" href="@Url.Action("Stations", "Home")"><i class="bi bi-display"></i> Stations</a>
         <a class="sidebar-item" href="@Url.Action("Games", "Home")"><i class="bi bi-controller"></i> Games</a>
-
         <div class="sidebar-section-label">System</div>
         <a class="sidebar-item" href="@Url.Action("Settings", "Home")"><i class="bi bi-gear"></i> Settings</a>
         <a class="sidebar-item" href="@Url.Action("Support", "Home")"><i class="bi bi-headset"></i> Support</a>
-
         <div class="sidebar-bottom">
             <div class="station-occ">
                 <div class="occ-header">
@@ -412,10 +228,8 @@
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="main">
         <div class="main-left">
-            <!-- Page Header -->
             <div>
                 <div class="breadcrumb-row">
                     <i class="bi bi-house"></i>
@@ -434,12 +248,9 @@
                 </div>
             </div>
 
-            <!-- Player Table -->
             <div class="player-table-panel">
                 <div class="table-header">
-                    <div>
-                        <div class="section-title"><i class="bi bi-people-fill"></i> Active Players</div>
-                    </div>
+                    <div><div class="section-title"><i class="bi bi-people-fill"></i> Active Players</div></div>
                     <div class="table-actions">
                         <div class="table-search">
                             <i class="bi bi-search"></i>
@@ -450,29 +261,16 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Player</th>
-                            <th>ID</th>
-                            <th>Balance</th>
-                            <th>Status</th>
-                            <th>Registered</th>
-                            <th>Action</th>
+                            <th>Player</th><th>ID</th><th>Balance</th><th>Status</th><th>Registered</th><th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="playerTableBody">
-                        <tr>
-                            <td colspan="6">
-                                <div class="empty-state">
-                                    <i class="bi bi-people"></i>
-                                    <p>No players registered yet. Click <strong>+ Register</strong> to add one.</p>
-                                </div>
-                            </td>
-                        </tr>
+                        <tr><td colspan="6"><div class="empty-state"><i class="bi bi-people"></i><p>No players registered yet. Click <strong>+ Register</strong> to add one.</p></div></td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- RIGHT PANEL - LIVE STATS -->
         <aside class="main-right">
             <div class="live-stats-panel">
                 <div class="live-stats-header">
@@ -508,7 +306,7 @@
 </div>
 
 <!-- Register Modal -->
-<div id="registerModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; display:none; align-items:center; justify-content:center;">
+<div id="registerModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center;">
     <div style="background:var(--card); border:1px solid var(--border2); border-radius:16px; padding:28px; width:420px; max-width:90vw;">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
             <div style="font-size:16px; font-weight:700;"><i class="bi bi-person-plus-fill" style="color:var(--green); margin-right:8px;"></i>Register New Player</div>
@@ -517,50 +315,42 @@
         <div style="display:flex; flex-direction:column; gap:14px;">
             <div>
                 <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Email (optional)</label>
-                <input id="regEmail" type="email" placeholder="Enter email"
-                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
+                <input id="regEmail" type="email" placeholder="Enter email" style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
             </div>
             <div>
                 <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Username</label>
-                <input id="regUsername" type="text" placeholder="Enter username"
-                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
+                <input id="regUsername" type="text" placeholder="Enter username" style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
             </div>
             <div>
                 <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Password</label>
-                <input id="regPassword" type="password" placeholder="Enter password (min 6 chars)"
-                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
+                <input id="regPassword" type="password" placeholder="Enter password (min 6 chars)" style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
             </div>
             <div>
                 <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Initial Balance (₱)</label>
-                <input id="regBalance" type="number" placeholder="0.00" min="0" step="0.01"
-                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
+                <input id="regBalance" type="number" placeholder="0.00" min="0" step="0.01" style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
             </div>
             <div id="regError" style="color:var(--red); font-size:12px; display:none;"></div>
-            <button onclick="registerPlayer()" style="width:100%; padding:11px; background:var(--green); color:#0b1410; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif;">
-                Register Player
-            </button>
+            <button onclick="registerPlayer()" style="width:100%; padding:11px; background:var(--green); color:#0b1410; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif;">Register Player</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Fetch players from backend
-    let players = [];
+    function toggleUserDropdown() {
+        document.getElementById('userChip').classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+        const chip = document.getElementById('userChip');
+        if (chip && !chip.contains(e.target)) chip.classList.remove('open');
+    });
 
+    let players = [];
     async function loadPlayers() {
         try {
             const res = await fetch('/Home/GetPlayers');
-            if (res.ok) {
-                players = await res.json();
-                renderPlayers();
-                updateStats();
-            }
-        } catch (err) {
-            console.error(err);
-        }
+            if (res.ok) { players = await res.json(); renderPlayers(); updateStats(); }
+        } catch (err) { console.error(err); }
     }
-
-    // Call loadPlayers on init
     loadPlayers();
 
     function openRegisterModal() {
@@ -571,9 +361,7 @@
         document.getElementById('regBalance').value = '';
         document.getElementById('regError').style.display = 'none';
     }
-    function closeRegisterModal() {
-        document.getElementById('registerModal').style.display = 'none';
-    }
+    function closeRegisterModal() { document.getElementById('registerModal').style.display = 'none'; }
 
     async function registerPlayer() {
         const email = document.getElementById('regEmail').value.trim();
@@ -581,131 +369,55 @@
         const password = document.getElementById('regPassword').value;
         const balance = parseFloat(document.getElementById('regBalance').value) || 0;
         const errEl = document.getElementById('regError');
-        if (!username) {
-            errEl.textContent = 'Username is required.';
-            errEl.style.display = 'block';
-            return;
-        }
-        if (!password || password.length < 6) {
-            errEl.textContent = 'Password is required (minimum 6 characters).';
-            errEl.style.display = 'block';
-            return;
-        }
+        if (!username) { errEl.textContent = 'Username is required.'; errEl.style.display = 'block'; return; }
+        if (!password || password.length < 6) { errEl.textContent = 'Password is required (minimum 6 characters).'; errEl.style.display = 'block'; return; }
         errEl.style.display = 'none';
-
-        const payload = {
-            email: email,
-            username: username,
-            password: password,
-            balance: balance
-        };
-
         try {
             const res = await fetch('/Home/RegisterPlayer', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, username, password, balance })
             });
-
-            if (res.ok) {
-                const newPlayer = await res.json();
-                players.push(newPlayer);
-                closeRegisterModal();
-                renderPlayers();
-                updateStats();
-            } else {
-                const errData = await res.json();
-                errEl.textContent = errData.message || 'Error registering player.';
-                errEl.style.display = 'block';
-            }
-        } catch (err) {
-            errEl.textContent = 'Network error.';
-            errEl.style.display = 'block';
-        }
+            if (res.ok) { players.push(await res.json()); closeRegisterModal(); renderPlayers(); updateStats(); }
+            else { const errData = await res.json(); errEl.textContent = errData.message || 'Error registering player.'; errEl.style.display = 'block'; }
+        } catch (err) { errEl.textContent = 'Network error.'; errEl.style.display = 'block'; }
     }
 
     function renderPlayers(filter = '') {
         const tbody = document.getElementById('playerTableBody');
-        const filtered = players.filter(p =>
-            p.username.toLowerCase().includes(filter.toLowerCase()) ||
-            String(p.id).includes(filter)
-        );
+        const filtered = players.filter(p => p.username.toLowerCase().includes(filter.toLowerCase()) || String(p.id).includes(filter));
         if (filtered.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">
-                <i class="bi bi-people"></i>
-                <p>${players.length === 0 ? 'No players registered yet. Click <strong>+ Register</strong> to add one.' : 'No players match your search.'}</p>
-            </div></td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="bi bi-people"></i><p>${players.length === 0 ? 'No players registered yet. Click <strong>+ Register</strong> to add one.' : 'No players match your search.'}</p></div></td></tr>`;
             return;
         }
         tbody.innerHTML = filtered.map(p => `
             <tr>
-                <td>
-                    <div class="player-cell">
-                        <div class="player-av">${p.username.slice(0,2).toUpperCase()}</div>
-                        <div>
-                            <div class="player-pname">${p.username}</div>
-                            <div class="player-email">${p.email}</div>
-                        </div>
-                    </div>
-                </td>
+                <td><div class="player-cell">
+                    <div class="player-av">${p.username.slice(0,2).toUpperCase()}</div>
+                    <div><div class="player-pname">${p.username}</div><div class="player-email">${p.email}</div></div>
+                </div></td>
                 <td style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text3);">#${p.id}</td>
                 <td class="balance-cell">₱${p.balance.toFixed(2)}</td>
                 <td><span class="status-badge ${p.status === 'Active' ? 'status-active' : 'status-inactive'}">${p.status === 'Active' ? '' : ''}${p.status}</span></td>
                 <td style="font-size:12px; color:var(--text3);">${new Date(p.registeredDate).toLocaleDateString('en-PH', { year:'numeric', month:'short', day:'numeric' })}</td>
-                <td>
-                    <div class="actions-cell">
-                        <button class="action-btn" title="Top-up" onclick="topUpPlayer(${p.id})"><i class="bi bi-plus-circle"></i></button>
-                        <button class="action-btn" title="Edit" onclick="editPlayer(${p.id})"><i class="bi bi-pencil"></i></button>
-                        <button class="action-btn danger" title="Delete" onclick="deletePlayer(${p.id})"><i class="bi bi-trash"></i></button>
-                    </div>
-                </td>
-            </tr>
-        `).join('');
+                <td><div class="actions-cell">
+                    <button class="action-btn" title="Top-up" onclick="topUpPlayer(${p.id})"><i class="bi bi-plus-circle"></i></button>
+                    <button class="action-btn" title="Edit" onclick="editPlayer(${p.id})"><i class="bi bi-pencil"></i></button>
+                    <button class="action-btn danger" title="Delete" onclick="deletePlayer(${p.id})"><i class="bi bi-trash"></i></button>
+                </div></td>
+            </tr>`).join('');
     }
-
-    function filterPlayers() {
-        renderPlayers(document.getElementById('playerSearch').value);
-    }
-
-    function deletePlayer(id) {
-        if (confirm('Remove this player?')) {
-            players = players.filter(p => p.id !== id);
-            renderPlayers(document.getElementById('playerSearch').value);
-            updateStats();
-        }
-    }
-
-    function topUpPlayer(id) {
-        const amount = parseFloat(prompt('Enter top-up amount (₱):'));
-        if (!isNaN(amount) && amount > 0) {
-            const p = players.find(p => p.id === id);
-            if (p) { p.balance += amount; renderPlayers(); updateStats(); }
-        }
-    }
-
-    function editPlayer(id) {
-        const p = players.find(p => p.id === id);
-        if (!p) return;
-        const newName = prompt('Edit username:', p.username);
-        if (newName && newName.trim()) { p.username = newName.trim(); renderPlayers(); }
-    }
-
+    function filterPlayers() { renderPlayers(document.getElementById('playerSearch').value); }
+    function deletePlayer(id) { if (confirm('Remove this player?')) { players = players.filter(p => p.id !== id); renderPlayers(document.getElementById('playerSearch').value); updateStats(); } }
+    function topUpPlayer(id) { const amount = parseFloat(prompt('Enter top-up amount (₱):')); if (!isNaN(amount) && amount > 0) { const p = players.find(p => p.id === id); if (p) { p.balance += amount; renderPlayers(); updateStats(); } } }
+    function editPlayer(id) { const p = players.find(p => p.id === id); if (!p) return; const newName = prompt('Edit username:', p.username); if (newName && newName.trim()) { p.username = newName.trim(); renderPlayers(); } }
     function updateStats() {
         const active = players.filter(p => p.status === 'Active').length;
-        const total = players.length;
-        const cash = players.reduce((s, p) => s + p.balance, 0);
         document.getElementById('statPlayersIn').textContent = active;
-        document.getElementById('statTotalReg').textContent = total;
-        document.getElementById('statCash').textContent = '₱' + cash.toFixed(2);
+        document.getElementById('statTotalReg').textContent = players.length;
+        document.getElementById('statCash').textContent = '₱' + players.reduce((s, p) => s + p.balance, 0).toFixed(2);
     }
-
-    // Close modal on outside click
-    document.getElementById('registerModal').addEventListener('click', function(e) {
-        if (e.target === this) closeRegisterModal();
-    });
-
-    renderPlayers();
-    updateStats();
+    document.getElementById('registerModal').addEventListener('click', function(e) { if (e.target === this) closeRegisterModal(); });
+    renderPlayers(); updateStats();
 </script>
 </body>
 </html>
