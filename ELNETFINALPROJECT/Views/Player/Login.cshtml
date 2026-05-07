@@ -565,7 +565,7 @@
             <div class="form-top-label">Welcome Back, Player</div>
             <h2 class="form-title">PLAYER LOGIN</h2>
 
-            <form method="post" action="/Player/Login" id="loginForm">
+            <form method="post" action="@Url.Action("Login", "Player")" id="loginForm">
                 <!-- Error message -->
                 <div class="error-msg" id="errorMsg">
                     @if (TempData["Error"] != null)
