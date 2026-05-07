@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         :root {
             --bg: #0b1410;
@@ -58,6 +62,7 @@
             top: 0;
             z-index: 100;
         }
+
         .topnav-brand {
             display: flex;
             align-items: center;
@@ -68,16 +73,28 @@
             text-decoration: none;
             color: var(--text);
         }
+
         .brand-icon {
-            width: 28px; height: 28px;
+            width: 28px;
+            height: 28px;
             background: var(--green);
             border-radius: 7px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .brand-icon svg { color: #0b1410; }
-        .brand-label span { color: var(--green); }
+
+            .brand-icon svg {
+                color: #0b1410;
+            }
+
+        .brand-label span {
+            color: var(--green);
+        }
+
         .admin-pill {
-            font-size: 10px; font-weight: 600;
+            font-size: 10px;
+            font-weight: 600;
             background: var(--green-dim);
             color: var(--green);
             border: 1px solid var(--border2);
@@ -86,38 +103,54 @@
             letter-spacing: 1px;
             text-transform: uppercase;
         }
+
         .topnav-search {
             flex: 1;
             max-width: 320px;
             margin-left: 24px;
             position: relative;
         }
-        .topnav-search input {
-            width: 100%;
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 7px 12px 7px 34px;
-            font-size: 13px;
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            outline: none;
-        }
-        .topnav-search input::placeholder { color: var(--text3); }
-        .topnav-search input:focus { border-color: var(--border2); }
+
+            .topnav-search input {
+                width: 100%;
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 7px 12px 7px 34px;
+                font-size: 13px;
+                color: var(--text);
+                font-family: 'DM Sans', sans-serif;
+                outline: none;
+            }
+
+                .topnav-search input::placeholder {
+                    color: var(--text3);
+                }
+
+                .topnav-search input:focus {
+                    border-color: var(--border2);
+                }
+
         .search-icon {
-            position: absolute; left: 10px; top: 50%;
+            position: absolute;
+            left: 10px;
+            top: 50%;
             transform: translateY(-50%);
-            color: var(--text3); font-size: 14px;
+            color: var(--text3);
+            font-size: 14px;
         }
+
         .topnav-right {
             margin-left: auto;
             display: flex;
             align-items: center;
             gap: 14px;
         }
+
         .status-pill {
-            display: flex; align-items: center; gap: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             background: var(--green-dim);
             border: 1px solid var(--border2);
             border-radius: 20px;
@@ -126,53 +159,189 @@
             font-weight: 500;
             color: var(--green);
         }
+
         .status-dot {
-            width: 7px; height: 7px;
+            width: 7px;
+            height: 7px;
             background: var(--green);
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
-        @@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+
+        @@keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
         .topnav-icon-btn {
-            width: 34px; height: 34px;
+            width: 34px;
+            height: 34px;
             background: var(--bg3);
             border: 1px solid var(--border);
             border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text2);
             font-size: 15px;
             position: relative;
             transition: border-color 0.2s;
         }
-        .topnav-icon-btn:hover { border-color: var(--border2); color: var(--text); }
+
+            .topnav-icon-btn:hover {
+                border-color: var(--border2);
+                color: var(--text);
+            }
+
         .notif-badge {
-            position: absolute; top: -4px; right: -4px;
-            width: 16px; height: 16px;
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 16px;
+            height: 16px;
             background: var(--red);
             border-radius: 50%;
             font-size: 9px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 700;
             color: #fff;
         }
+
         .user-chip {
-            display: flex; align-items: center; gap: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             background: var(--bg3);
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: 5px 10px 5px 6px;
             cursor: pointer;
+            position: relative;
         }
+
+            .user-chip:hover {
+                border-color: var(--border2);
+            }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 180px;
+            background: var(--bg3);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 999;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .user-chip.open .user-dropdown {
+            display: block;
+        }
+
+        .user-chip.open {
+            border-color: var(--border2);
+        }
+
+            .user-chip.open .bi-chevron-down {
+                transform: rotate(180deg);
+            }
+
+        .bi-chevron-down {
+            transition: transform 0.2s;
+        }
+
+        .dropdown-header {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg4);
+        }
+
+            .dropdown-header .dh-name {
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            .dropdown-header .dh-role {
+                font-size: 11px;
+                color: var(--text3);
+                margin-top: 1px;
+            }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: var(--text2);
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            text-decoration: none;
+        }
+
+            .dropdown-item:hover {
+                background: var(--bg4);
+                color: var(--text);
+            }
+
+            .dropdown-item i {
+                font-size: 14px;
+                width: 16px;
+                text-align: center;
+            }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 2px 0;
+        }
+
+        .dropdown-item.logout {
+            color: var(--red);
+        }
+
+            .dropdown-item.logout:hover {
+                background: rgba(255,77,77,0.08);
+                color: var(--red);
+            }
+
         .user-avatar {
-            width: 26px; height: 26px;
+            width: 26px;
+            height: 26px;
             background: linear-gradient(135deg, var(--green), var(--green2));
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 11px; font-weight: 700; color: #0b1410;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #0b1410;
         }
-        .user-info { line-height: 1.2; }
-        .user-name { font-size: 12px; font-weight: 600; }
-        .user-role { font-size: 10px; color: var(--text3); }
+
+        .user-info {
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 10px;
+            color: var(--text3);
+        }
 
         /* LAYOUT */
         .app-body {
@@ -195,6 +364,7 @@
             height: calc(100vh - 52px);
             overflow-y: auto;
         }
+
         .sidebar-section-label {
             font-size: 10px;
             font-weight: 600;
@@ -204,9 +374,11 @@
             padding: 4px 8px;
             margin-top: 8px;
         }
+
         .sidebar-item {
-            display: block; box-sizing: border-box; width: 100%;
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 8px 10px;
             border-radius: 8px;
             cursor: pointer;
@@ -215,15 +387,25 @@
             color: var(--text2);
             text-decoration: none;
             transition: all 0.15s;
-            border: 1px solid transparent;
         }
-        .sidebar-item:hover { background: var(--bg3); color: var(--text); }
-        .sidebar-item.active {
-            background: var(--green-dim);
-            color: var(--green);
-            border-color: var(--border2);
-        }
-        .sidebar-item i { font-size: 15px; width: 18px; text-align: center; }
+
+            .sidebar-item:hover {
+                background: var(--bg3);
+                color: var(--text);
+            }
+
+            .sidebar-item.active {
+                background: var(--green-dim);
+                color: var(--green);
+                border: 1px solid var(--border2);
+            }
+
+            .sidebar-item i {
+                font-size: 15px;
+                width: 18px;
+                text-align: center;
+            }
+
         .sidebar-badge {
             margin-left: auto;
             background: var(--bg4);
@@ -233,6 +415,7 @@
             border-radius: 10px;
             font-weight: 500;
         }
+
         .sidebar-item.active .sidebar-badge {
             background: rgba(0,232,114,0.2);
             color: var(--green);
@@ -242,8 +425,11 @@
             margin-top: auto;
             border-top: 1px solid var(--border);
             padding-top: 14px;
-            display: flex; flex-direction: column; gap: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
+
         .station-occ {
             padding: 10px;
             background: var(--bg3);
@@ -251,25 +437,86 @@
             border: 1px solid var(--border);
             margin-bottom: 8px;
         }
-        .occ-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-        .occ-label { font-size: 11px; color: var(--text3); }
-        .occ-count { font-size: 12px; font-weight: 600; }
-        .occ-bar { height: 4px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
-        .occ-fill { height: 100%; background: var(--green); border-radius: 2px; width: 70%; }
-        .occ-sub { font-size: 10px; color: var(--text3); margin-top: 5px; }
+
+        .occ-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .occ-label {
+            font-size: 11px;
+            color: var(--text3);
+        }
+
+        .occ-count {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .occ-bar {
+            height: 4px;
+            background: var(--bg4);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .occ-fill {
+            height: 100%;
+            background: var(--green);
+            border-radius: 2px;
+            width: 70%;
+        }
+
+        .occ-sub {
+            font-size: 10px;
+            color: var(--text3);
+            margin-top: 5px;
+        }
+
         .server-load {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             padding: 8px 10px;
             background: var(--bg3);
             border-radius: 8px;
             border: 1px solid var(--border);
         }
-        .server-left { display: flex; align-items: center; gap: 8px; }
-        .server-icon { font-size: 14px; color: var(--green); }
-        .server-info { line-height: 1.3; }
-        .server-title { font-size: 11px; color: var(--text2); font-weight: 500; }
-        .server-sub { font-size: 10px; color: var(--text3); }
-        .server-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
+
+        .server-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .server-icon {
+            font-size: 14px;
+            color: var(--green);
+        }
+
+        .server-info {
+            line-height: 1.3;
+        }
+
+        .server-title {
+            font-size: 11px;
+            color: var(--text2);
+            font-weight: 500;
+        }
+
+        .server-sub {
+            font-size: 10px;
+            color: var(--text3);
+        }
+
+        .server-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+        }
 
         /* MAIN */
         .main {
@@ -279,27 +526,72 @@
             display: flex;
             gap: 20px;
         }
-        .main-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
-        .main-right { width: 280px; flex-shrink: 0; }
+
+        .main-left {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .main-right {
+            width: 280px;
+            flex-shrink: 0;
+        }
 
         /* BREADCRUMB + HEADER */
         .breadcrumb-row {
-            display: flex; align-items: center; gap: 6px;
-            font-size: 12px; color: var(--text3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text3);
             margin-bottom: 6px;
         }
-        .breadcrumb-row i { font-size: 11px; }
-        .breadcrumb-row a { color: var(--text3); text-decoration: none; }
-        .breadcrumb-row a:hover { color: var(--text2); }
+
+            .breadcrumb-row i {
+                font-size: 11px;
+            }
+
+            .breadcrumb-row a {
+                color: var(--text3);
+                text-decoration: none;
+            }
+
+                .breadcrumb-row a:hover {
+                    color: var(--text2);
+                }
+
         .page-header {
-            display: flex; align-items: flex-start; justify-content: space-between;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
             margin-bottom: 4px;
         }
-        .page-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
-        .page-sub { font-size: 13px; color: var(--text3); margin-top: 2px; }
-        .header-actions { display: flex; align-items: center; gap: 10px; }
-        .btn { 
-            display: flex; align-items: center; gap: 6px;
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .page-sub {
+            font-size: 13px;
+            color: var(--text3);
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             padding: 8px 14px;
             border-radius: 8px;
             font-size: 13px;
@@ -309,19 +601,31 @@
             font-family: 'DM Sans', sans-serif;
             transition: all 0.15s;
         }
+
         .btn-ghost {
             background: var(--bg3);
             color: var(--text2);
             border: 1px solid var(--border);
         }
-        .btn-ghost:hover { border-color: var(--border2); color: var(--text); }
+
+            .btn-ghost:hover {
+                border-color: var(--border2);
+                color: var(--text);
+            }
+
         .btn-primary {
             background: var(--green);
             color: #0b1410;
             font-weight: 600;
         }
-        .btn-primary:hover { background: var(--green2); }
-        .btn i { font-size: 14px; }
+
+            .btn-primary:hover {
+                background: var(--green2);
+            }
+
+        .btn i {
+            font-size: 14px;
+        }
 
         /* STAT CARDS */
         .stat-grid {
@@ -329,6 +633,7 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 14px;
         }
+
         .stat-card {
             background: var(--card);
             border: 1px solid var(--border);
@@ -337,8 +642,10 @@
             position: relative;
             overflow: hidden;
         }
+
         .stat-badge {
-            font-size: 9px; font-weight: 700;
+            font-size: 9px;
+            font-weight: 700;
             letter-spacing: 1.2px;
             text-transform: uppercase;
             padding: 2px 7px;
@@ -346,10 +653,31 @@
             display: inline-block;
             margin-bottom: 10px;
         }
-        .badge-live { background: rgba(0,232,114,0.15); color: var(--green); border: 1px solid rgba(0,232,114,0.3); }
-        .badge-stations { background: rgba(77,159,255,0.15); color: var(--blue); border: 1px solid rgba(77,159,255,0.3); }
-        .badge-today { background: rgba(255,170,0,0.15); color: var(--amber); border: 1px solid rgba(255,170,0,0.3); }
-        .badge-revenue { background: rgba(255,77,77,0.15); color: var(--red); border: 1px solid rgba(255,77,77,0.3); }
+
+        .badge-live {
+            background: rgba(0,232,114,0.15);
+            color: var(--green);
+            border: 1px solid rgba(0,232,114,0.3);
+        }
+
+        .badge-stations {
+            background: rgba(77,159,255,0.15);
+            color: var(--blue);
+            border: 1px solid rgba(77,159,255,0.3);
+        }
+
+        .badge-today {
+            background: rgba(255,170,0,0.15);
+            color: var(--amber);
+            border: 1px solid rgba(255,170,0,0.3);
+        }
+
+        .badge-revenue {
+            background: rgba(255,77,77,0.15);
+            color: var(--red);
+            border: 1px solid rgba(255,77,77,0.3);
+        }
+
         .stat-num {
             font-size: 38px;
             font-weight: 700;
@@ -357,36 +685,91 @@
             letter-spacing: -1px;
             margin-bottom: 6px;
         }
-        .stat-label { font-size: 11px; color: var(--text3); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text3);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
         .stat-change {
-            display: flex; align-items: center; gap: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
             font-size: 11px;
             margin-top: 8px;
         }
-        .stat-change.up { color: var(--green); }
-        .stat-change.up-amber { color: var(--amber); }
+
+            .stat-change.up {
+                color: var(--green);
+            }
+
+            .stat-change.up-amber {
+                color: var(--amber);
+            }
+
         .stat-icon {
-            position: absolute; top: 14px; right: 14px;
-            width: 32px; height: 32px;
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 16px;
         }
 
         /* STATIONS GRID */
         .section-header {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 14px;
         }
+
         .section-title {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 14px; font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
         }
-        .section-title i { color: var(--green); font-size: 15px; }
-        .section-sub { font-size: 11px; color: var(--text3); font-weight: 400; margin-left: 4px; }
-        .legend { display: flex; align-items: center; gap: 12px; }
-        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); }
-        .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+            .section-title i {
+                color: var(--green);
+                font-size: 15px;
+            }
+
+        .section-sub {
+            font-size: 11px;
+            color: var(--text3);
+            font-weight: 400;
+            margin-left: 4px;
+        }
+
+        .legend {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: var(--text3);
+        }
+
+        .legend-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
 
         .stations-panel {
             background: var(--card);
@@ -394,49 +777,111 @@
             border-radius: 12px;
             padding: 18px;
         }
+
         .stations-grid {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
         }
+
         .station-card {
             background: var(--bg3);
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: 12px;
-            display: flex; flex-direction: column; gap: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
             transition: border-color 0.2s;
             cursor: pointer;
         }
-        .station-card:hover { border-color: var(--border2); }
-        .station-card.offline { opacity: 0.55; }
+
+            .station-card:hover {
+                border-color: var(--border2);
+            }
+
+            .station-card.offline {
+                opacity: 0.55;
+            }
+
         .station-top {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .station-num { font-size: 11px; font-weight: 600; color: var(--text3); }
-        .station-dot { width: 7px; height: 7px; border-radius: 50%; }
-        .dot-green { background: var(--green); }
-        .dot-amber { background: var(--amber); }
-        .dot-red { background: var(--red); }
-        .dot-gray { background: var(--text3); }
+
+        .station-num {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text3);
+        }
+
+        .station-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .dot-green {
+            background: var(--green);
+        }
+
+        .dot-amber {
+            background: var(--amber);
+        }
+
+        .dot-red {
+            background: var(--red);
+        }
+
+        .dot-gray {
+            background: var(--text3);
+        }
+
         .station-avatar {
-            width: 48px; height: 48px;
+            width: 48px;
+            height: 48px;
             border-radius: 10px;
             background: var(--bg4);
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--green);
             border: 1px solid var(--border2);
             margin: 0 auto;
         }
-        .station-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .station-username { font-size: 12px; font-weight: 600; line-height: 1.2; }
-        .station-game { font-size: 10px; color: var(--text3); }
+
+            .station-avatar img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .station-username {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .station-game {
+            font-size: 10px;
+            color: var(--text3);
+        }
+
         .station-time {
-            display: flex; align-items: center; gap: 4px;
-            font-size: 11px; color: var(--text2);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: var(--text2);
             font-family: 'JetBrains Mono', monospace;
         }
-        .station-time i { font-size: 10px; color: var(--green); }
+
+            .station-time i {
+                font-size: 10px;
+                color: var(--green);
+            }
+
         .station-btn {
             width: 100%;
             padding: 5px;
@@ -448,65 +893,33 @@
             font-family: 'DM Sans', sans-serif;
             transition: all 0.15s;
         }
-        .station-btn.manage { background: var(--green-dim); color: var(--green); border: 1px solid var(--border2); }
-        .station-btn.manage:hover { background: rgba(0,232,114,0.2); }
-        .station-btn.assign { background: var(--bg4); color: var(--text3); border: 1px solid var(--border); }
-        .station-btn.offline-btn { background: rgba(255,77,77,0.1); color: var(--red); border: 1px solid rgba(255,77,77,0.2); }
-        .station-status-text { font-size: 11px; color: var(--text3); text-align: center; }
 
-        /* PC STATUS CARDS (Dashboard) */
-        .pc-status-card {
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            .station-btn.manage {
+                background: var(--green-dim);
+                color: var(--green);
+                border: 1px solid var(--border2);
+            }
+
+                .station-btn.manage:hover {
+                    background: rgba(0,232,114,0.2);
+                }
+
+            .station-btn.assign {
+                background: var(--bg4);
+                color: var(--text3);
+                border: 1px solid var(--border);
+            }
+
+            .station-btn.offline-btn {
+                background: rgba(255,77,77,0.1);
+                color: var(--red);
+                border: 1px solid rgba(255,77,77,0.2);
+            }
+
+        .station-status-text {
+            font-size: 11px;
+            color: var(--text3);
             text-align: center;
-            transition: border-color 0.2s;
-            min-height: 130px;
-        }
-        .pc-status-card:hover { border-color: var(--border2); }
-        .pc-status-card.offline { opacity: 0.55; }
-        .pc-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 4px;
-        }
-        .pc-number { font-size: 10px; font-weight: 600; color: var(--text3); }
-        .pc-dot { width: 6px; height: 6px; border-radius: 50%; }
-        .pc-dot.dot-green { background: var(--green); }
-        .pc-dot.dot-amber { background: var(--amber); }
-        .pc-dot.dot-red { background: var(--red); }
-        .pc-dot.dot-gray { background: var(--text3); }
-        .pc-icon {
-            font-size: 24px;
-            color: var(--green);
-            margin: 2px 0;
-        }
-        .pc-status {
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--text2);
-            line-height: 1.2;
-        }
-        .pc-player {
-            font-size: 9px;
-            color: var(--text3);
-            line-height: 1.2;
-        }
-        .pc-time {
-            font-size: 9px;
-            color: var(--text3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
         }
 
         /* PLAYER TABLE */
@@ -516,13 +929,18 @@
             border-radius: 12px;
             overflow: hidden;
         }
+
         .table-header {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             padding: 16px 18px;
             border-bottom: 1px solid var(--border);
         }
+
         .table-tabs {
-            display: flex; gap: 4px;
+            display: flex;
+            gap: 4px;
             padding: 4px;
             background: var(--bg3);
             border-radius: 8px;
@@ -530,6 +948,7 @@
             margin-left: 18px;
             margin-right: 18px;
         }
+
         .tab {
             padding: 6px 14px;
             border-radius: 6px;
@@ -539,26 +958,55 @@
             color: var(--text3);
             transition: all 0.15s;
         }
-        .tab.active { background: var(--bg4); color: var(--text); }
-        .tab:hover:not(.active) { color: var(--text2); }
-        .table-actions { display: flex; gap: 8px; }
+
+            .tab.active {
+                background: var(--bg4);
+                color: var(--text);
+            }
+
+            .tab:hover:not(.active) {
+                color: var(--text2);
+            }
+
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+
         .table-search {
             position: relative;
         }
-        .table-search input {
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 7px;
-            padding: 6px 10px 6px 30px;
-            font-size: 12px;
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            outline: none;
-            width: 180px;
+
+            .table-search input {
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: 7px;
+                padding: 6px 10px 6px 30px;
+                font-size: 12px;
+                color: var(--text);
+                font-family: 'DM Sans', sans-serif;
+                outline: none;
+                width: 180px;
+            }
+
+                .table-search input::placeholder {
+                    color: var(--text3);
+                }
+
+            .table-search i {
+                position: absolute;
+                left: 9px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 12px;
+                color: var(--text3);
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        .table-search input::placeholder { color: var(--text3); }
-        .table-search i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--text3); }
-        table { width: 100%; border-collapse: collapse; }
+
         thead th {
             padding: 10px 18px;
             text-align: left;
@@ -569,38 +1017,88 @@
             color: var(--text3);
             border-bottom: 1px solid var(--border);
         }
+
         tbody tr {
             border-bottom: 1px solid var(--border);
             transition: background 0.1s;
         }
-        tbody tr:hover { background: var(--bg3); }
-        tbody tr:last-child { border-bottom: none; }
-        td { padding: 12px 18px; font-size: 13px; }
-        .player-cell { display: flex; align-items: center; gap: 10px; }
+
+            tbody tr:hover {
+                background: var(--bg3);
+            }
+
+            tbody tr:last-child {
+                border-bottom: none;
+            }
+
+        td {
+            padding: 12px 18px;
+            font-size: 13px;
+        }
+
+        .player-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .player-av {
-            width: 36px; height: 36px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: var(--bg4);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 13px; font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
             color: var(--green);
             border: 1px solid var(--border2);
-            overflow: hidden; flex-shrink: 0;
+            overflow: hidden;
+            flex-shrink: 0;
         }
-        .player-av img { width: 100%; height: 100%; object-fit: cover; }
-        .player-pname { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
-        .player-email { font-size: 11px; color: var(--text3); }
+
+            .player-av img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .player-pname {
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .player-email {
+            font-size: 11px;
+            color: var(--text3);
+        }
+
         .vip-badge {
-            font-size: 9px; font-weight: 700;
+            font-size: 9px;
+            font-weight: 700;
             background: rgba(255,170,0,0.15);
             color: var(--amber);
             border: 1px solid rgba(255,170,0,0.3);
-            padding: 1px 5px; border-radius: 3px;
+            padding: 1px 5px;
+            border-radius: 3px;
             letter-spacing: 0.5px;
         }
-        .balance-cell { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--green); font-weight: 500; }
+
+        .balance-cell {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--green);
+            font-weight: 500;
+        }
+
         .status-active {
-            display: inline-flex; align-items: center; gap: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
             background: var(--green-dim);
             color: var(--green);
             border: 1px solid var(--border2);
@@ -609,20 +1107,46 @@
             font-size: 11px;
             font-weight: 500;
         }
-        .status-active::before { content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 50%; display: block; }
-        .actions-cell { display: flex; gap: 6px; }
+
+            .status-active::before {
+                content: '';
+                width: 6px;
+                height: 6px;
+                background: var(--green);
+                border-radius: 50%;
+                display: block;
+            }
+
+        .actions-cell {
+            display: flex;
+            gap: 6px;
+        }
+
         .action-btn {
-            width: 28px; height: 28px;
+            width: 28px;
+            height: 28px;
             border-radius: 6px;
             border: 1px solid var(--border);
             background: var(--bg3);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text3);
             font-size: 13px;
             transition: all 0.15s;
         }
-        .action-btn:hover { border-color: var(--border2); color: var(--text); }
-        .action-btn.danger:hover { border-color: rgba(255,77,77,0.4); color: var(--red); background: rgba(255,77,77,0.08); }
+
+            .action-btn:hover {
+                border-color: var(--border2);
+                color: var(--text);
+            }
+
+            .action-btn.danger:hover {
+                border-color: rgba(255,77,77,0.4);
+                color: var(--red);
+                background: rgba(255,77,77,0.08);
+            }
 
         /* RIGHT PANEL - PLAYER DETAIL */
         .detail-panel {
@@ -631,16 +1155,37 @@
             border-radius: 12px;
             overflow: hidden;
         }
+
         .detail-header {
             padding: 14px 16px;
             border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; gap: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             background: var(--bg3);
         }
-        .detail-header i { color: var(--green); font-size: 14px; }
-        .detail-header-title { font-size: 13px; font-weight: 600; }
-        .detail-header-sub { font-size: 11px; color: var(--text3); }
-        .detail-body { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+            .detail-header i {
+                color: var(--green);
+                font-size: 14px;
+            }
+
+        .detail-header-title {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .detail-header-sub {
+            font-size: 11px;
+            color: var(--text3);
+        }
+
+        .detail-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
 
         /* COMPUTER ICON SECTION */
         .computer-section {
@@ -657,45 +1202,95 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .computer-section:hover { border-color: var(--green); background: var(--green-dim); }
+
+            .computer-section:hover {
+                border-color: var(--green);
+                background: var(--green-dim);
+            }
+
         .computer-icon-wrap {
-            width: 64px; height: 64px;
+            width: 64px;
+            height: 64px;
             background: var(--green-dim);
             border: 1px solid var(--border2);
             border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .computer-icon-wrap i { font-size: 30px; color: var(--green); }
-        .computer-label { font-size: 12px; font-weight: 600; color: var(--text2); }
-        .computer-sub { font-size: 10px; color: var(--text3); }
+
+            .computer-icon-wrap i {
+                font-size: 30px;
+                color: var(--green);
+            }
+
+        .computer-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text2);
+        }
+
+        .computer-sub {
+            font-size: 10px;
+            color: var(--text3);
+        }
 
         .detail-section-label {
-            font-size: 10px; font-weight: 700;
+            font-size: 10px;
+            font-weight: 700;
             letter-spacing: 1.2px;
             text-transform: uppercase;
             color: var(--text3);
             margin-bottom: 10px;
         }
-        .detail-field { margin-bottom: 10px; }
+
+        .detail-field {
+            margin-bottom: 10px;
+        }
+
         .field-label {
-            font-size: 10px; color: var(--text3);
-            text-transform: uppercase; letter-spacing: 0.8px;
+            font-size: 10px;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
             margin-bottom: 4px;
         }
+
         .field-value {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             background: var(--bg3);
             border: 1px solid var(--border);
             border-radius: 7px;
             padding: 8px 10px;
             font-size: 13px;
         }
-        .field-icon { font-size: 12px; color: var(--text3); cursor: pointer; }
-        .field-icon:hover { color: var(--green); }
-        .field-value-inner { display: flex; align-items: center; gap: 6px; }
-        .field-value-inner i { color: var(--text3); font-size: 12px; }
+
+        .field-icon {
+            font-size: 12px;
+            color: var(--text3);
+            cursor: pointer;
+        }
+
+            .field-icon:hover {
+                color: var(--green);
+            }
+
+        .field-value-inner {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+            .field-value-inner i {
+                color: var(--text3);
+                font-size: 12px;
+            }
+
         .detail-row {
-            display: grid; grid-template-columns: 1fr 1fr;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
 
@@ -705,18 +1300,49 @@
             border-radius: 8px;
             padding: 12px;
         }
+
         .session-row {
-            display: flex; justify-content: space-between;
+            display: flex;
+            justify-content: space-between;
             font-size: 12px;
             margin-bottom: 6px;
         }
-        .session-row-label { color: var(--text3); }
-        .session-row-val { font-weight: 500; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
-        .session-row-val.green { color: var(--green); }
-        .time-bar { height: 4px; background: var(--bg4); border-radius: 2px; margin-top: 8px; overflow: hidden; }
-        .time-fill { height: 100%; background: var(--green); border-radius: 2px; width: 78%; }
 
-        .detail-actions { display: flex; flex-direction: column; gap: 8px; }
+        .session-row-label {
+            color: var(--text3);
+        }
+
+        .session-row-val {
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+            .session-row-val.green {
+                color: var(--green);
+            }
+
+        .time-bar {
+            height: 4px;
+            background: var(--bg4);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .time-fill {
+            height: 100%;
+            background: var(--green);
+            border-radius: 2px;
+            width: 78%;
+        }
+
+        .detail-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
         .btn-save {
             width: 100%;
             padding: 10px;
@@ -728,324 +1354,439 @@
             font-weight: 700;
             cursor: pointer;
             font-family: 'DM Sans', sans-serif;
-            display: flex; align-items: center; justify-content: center; gap: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             transition: background 0.15s;
         }
-        .btn-save:hover { background: var(--green2); }
-        .detail-btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+            .btn-save:hover {
+                background: var(--green2);
+            }
+
+        .detail-btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
         .btn-add-time {
             padding: 8px;
             background: var(--green-dim);
             color: var(--green);
             border: 1px solid var(--border2);
             border-radius: 7px;
-            font-size: 12px; font-weight: 600;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
             font-family: 'DM Sans', sans-serif;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
+
         .btn-end-session {
             padding: 8px;
             background: rgba(255,77,77,0.1);
             color: var(--red);
             border: 1px solid rgba(255,77,77,0.2);
             border-radius: 7px;
-            font-size: 12px; font-weight: 600;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
             font-family: 'DM Sans', sans-serif;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
     </style>
 </head>
 <body>
 
-<!-- TOP NAV -->
-<nav class="topnav">
-    <a class="topnav-brand" href="#">
-        <div class="brand-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M3 8h4M5 6v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <circle cx="10.5" cy="7" r="0.8" fill="currentColor"/>
-                <circle cx="12.5" cy="9" r="0.8" fill="currentColor"/>
-                <path d="M1 6C1 4.9 1.9 4 3 4h10C14.1 4 15 4.9 15 6v3c0 1.7-1.3 3-3 3H4C2.3 12 1 10.7 1 9V6z" stroke="currentColor" stroke-width="1.4" fill="none"/>
-            </svg>
+    <!-- TOP NAV -->
+    <nav class="topnav">
+        <a class="topnav-brand" href="#">
+            <div class="brand-icon">
+                <i class="bi bi-controller" style="color:#0b1410;font-size:15px;"></i>
+            </div>
+            <span class="brand-label"><span>Game</span>Time</span>
+            <span class="admin-pill">Admin</span>
+        </a>
+        <div class="topnav-search">
+            <i class="bi bi-search search-icon"></i>
+            <input type="text" placeholder="Search players, stations..." />
         </div>
-        <span class="brand-label"><span>Game</span>Time</span>
-        <span class="admin-pill">Admin</span>
-    </a>
-    <div class="topnav-search">
-        <i class="bi bi-search search-icon"></i>
-        <input type="text" placeholder="Search players, stations..." />
-    </div>
-    <div class="topnav-right">
-        <div class="status-pill"><div class="status-dot"></div> All Systems Online</div>
-        <div class="topnav-icon-btn"><i class="bi bi-gear"></i></div>
-        <div class="topnav-icon-btn">
-            <i class="bi bi-bell"></i>
-            <span class="notif-badge">3</span>
-        </div>
-        <div class="user-chip">
-            <div class="user-avatar">AC</div>
-            <div class="user-info">
-                <div class="user-name">Alex Chen</div>
-                <div class="user-role">Super Admin</div>
+        <div class="topnav-right">
+            <div class="status-pill"><div class="status-dot"></div> All Systems Online</div>
+            <div class="topnav-icon-btn"><i class="bi bi-gear"></i></div>
+            <div class="topnav-icon-btn">
+                <i class="bi bi-bell"></i>
+                <span class="notif-badge">3</span>
             </div>
-            <i class="bi bi-chevron-down" style="font-size:10px;color:var(--text3);margin-left:2px;"></i>
-        </div>
-    </div>
-</nav>
-
-<div class="app-body">
-    <!-- SIDEBAR -->
-    <partial name="_Sidebar" />
-
-    <!-- MAIN CONTENT -->
-    <main class="main">
-        <div class="main-left">
-            <!-- Page Header -->
-            <div>
-                <div class="breadcrumb-row">
-                    <i class="bi bi-house"></i>
-                    <a href="#">Dashboard</a>
-                    <i class="bi bi-chevron-right"></i>
-                    <span style="color:var(--text2);">Players</span>
+            <div class="user-chip" id="userChip" onclick="toggleUserDropdown()">
+                <div class="user-avatar">AC</div>
+                <div class="user-info">
+                    <div class="user-name">Alex Chen</div>
+                    <div class="user-role">Super Admin</div>
                 </div>
-                <div class="page-header">
-                    <div>
-                        <h1 class="page-title">Player Management</h1>
-                        <p class="page-sub">Monitor stations, manage players & sessions in real-time.</p>
+                <i class="bi bi-chevron-down" style="font-size:10px;color:var(--text3);margin-left:2px;"></i>
+                <div class="user-dropdown">
+                    <div class="dropdown-header">
+                        <div class="dh-name">Alex Chen</div>
+                        <div class="dh-role">Super Admin</div>
                     </div>
-                    <div class="header-actions">
-                        <button class="btn btn-ghost"><i class="bi bi-clock"></i> Live</button>
-                        <button class="btn btn-ghost"><i class="bi bi-funnel"></i> Filters</button>
-                        <button class="btn btn-primary" onclick="openRegisterModal()"><i class="bi bi-person-plus-fill"></i> Add Player</button>
-                    </div>
+                    <a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a>
+                    <a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item logout" href="/Home/Index"><i class="bi bi-box-arrow-right"></i> Logout</a>
                 </div>
-            </div>
-
-            <!-- Stat Cards -->
-            <div class="stat-grid">
-                <div class="stat-card">
-                    <div class="stat-badge badge-live">Live</div>
-                    <div class="stat-icon" style="background:var(--green-dim);"><i class="bi bi-people-fill" style="color:var(--green);font-size:15px;"></i></div>
-                    <div class="stat-num">—</div>
-                    <div class="stat-label">Players Online</div>
-                    <div class="stat-change up">—</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-badge badge-stations">Stations</div>
-                    <div class="stat-icon" style="background:rgba(77,159,255,0.1);"><i class="bi bi-display" style="color:var(--blue);font-size:15px;"></i></div>
-                    <div class="stat-num" style="color:var(--blue);">—</div>
-                    <div class="stat-label">Available Stations</div>
-                    <div class="stat-change" style="color:var(--text3);">—</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-badge badge-today">Today</div>
-                    <div class="stat-icon" style="background:rgba(255,170,0,0.1);"><i class="bi bi-lightning-fill" style="color:var(--amber);font-size:15px;"></i></div>
-                    <div class="stat-num" style="color:var(--amber);">—</div>
-                    <div class="stat-label">Active Sessions</div>
-                    <div class="stat-change up-amber">—</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-badge badge-revenue">Revenue</div>
-                    <div class="stat-icon" style="background:rgba(255,77,77,0.1);"><i class="bi bi-currency-dollar" style="color:var(--red);font-size:15px;"></i></div>
-                    <div class="stat-num" style="color:var(--green);">—</div>
-                    <div class="stat-label">Earned Today</div>
-                    <div class="stat-change up">—</div>
-                </div>
-            </div>
-
-            <!-- Gaming Stations -->
-            <div class="stations-panel">
-                <div class="section-header">
-                    <div class="section-title">
-                        <i class="bi bi-display-fill"></i>
-                        Gaming Stations
-                        <span class="section-sub">Real-time PC status and session monitoring</span>
-                    </div>
-                    <div class="legend">
-                        <div class="legend-item"><div class="legend-dot dot-green"></div> Active</div>
-                        <div class="legend-item"><div class="legend-dot dot-amber"></div> In Use</div>
-                        <div class="legend-item"><div class="legend-dot dot-red"></div> Offline</div>
-                        <div class="legend-item"><div class="legend-dot" style="background:var(--text3);"></div> Available</div>
-                    </div>
-                </div>
-                <div class="stations-grid" id="pcGrid">
-                    <script>
-                        // Generate PC 1-40 status cards
-                        const pcStates = [
-                            { id: 1, status: 'available', player: null, time: null },
-                            { id: 2, status: 'available', player: null, time: null },
-                            { id: 3, status: 'in-use', player: 'Player01', time: '1:45' },
-                            { id: 4, status: 'available', player: null, time: null },
-                            { id: 5, status: 'offline', player: null, time: null }
-                        ];
-                        
-                        // Fill remaining with available/offline mix
-                        for (let i = 6; i <= 40; i++) {
-                            pcStates.push({
-                                id: i,
-                                status: Math.random() > 0.7 ? 'offline' : 'available',
-                                player: null,
-                                time: null
-                            });
-                        }
-                        
-                        const grid = document.getElementById('pcGrid');
-                        grid.innerHTML = pcStates.map(pc => {
-                            const dotClass = pc.status === 'active' ? 'dot-green' : pc.status === 'in-use' ? 'dot-amber' : pc.status === 'offline' ? 'dot-red' : 'dot-gray';
-                            const statusLabel = pc.status === 'active' ? 'Active' : pc.status === 'in-use' ? 'In Use' : pc.status === 'offline' ? 'Offline' : 'Available';
-                            return `
-                            <div class="pc-status-card ${pc.status === 'offline' ? 'offline' : ''}">
-                                <div class="pc-header">
-                                    <span class="pc-number">PC ${pc.id}</span>
-                                    <span class="pc-dot ${dotClass}"></span>
-                                </div>
-                                <div class="pc-icon">
-                                    <i class="bi bi-display"></i>
-                                </div>
-                                <div class="pc-status">${statusLabel}</div>
-                                ${pc.player ? `<div class="pc-player">${pc.player}</div>` : ''}
-                                ${pc.time ? `<div class="pc-time"><i class="bi bi-clock"></i> ${pc.time}</div>` : ''}
-                            </div>`;
-                        }).join('');
-                    </script>
-                </div>
-            </div>
-
-            <!-- Player Management Table -->
-            <div class="player-table-panel">
-                <div class="table-header">
-                    <div>
-                        <div class="section-title"><i class="bi bi-table"></i> Player Management</div>
-                        <div style="font-size:11px;color:var(--text3);margin-top:2px;">Full registry of all registered players</div>
-                    </div>
-                    <div class="table-actions">
-                        <div class="table-search">
-                            <i class="bi bi-search"></i>
-                            <input type="text" placeholder="Search players..." />
-                        </div>
-                        <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;"><i class="bi bi-funnel"></i> Filter</button>
-                        <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;"><i class="bi bi-download"></i> Export</button>
-                    </div>
-                </div>
-                <div class="table-tabs">
-                    <div class="tab active">All Players</div>
-                    <div class="tab">Online Now</div>
-                    <div class="tab">VIP Members</div>
-                    <div class="tab">Suspended</div>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Player</th>
-                            <th>Balance</th>
-                            <th>Total Time</th>
-                            <th>Station</th>
-                            <th>Status</th>
-                            <th>Last Active</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
             </div>
         </div>
+    </nav>
 
-        <!-- RIGHT PANEL -->
-        <aside class="main-right">
-            <div class="detail-panel">
-                <div class="detail-header">
-                    <i class="bi bi-person-vcard-fill"></i>
-                    <div>
-                        <div class="detail-header-title">Player Detail</div>
-                        <div class="detail-header-sub">Edit profile & manage session</div>
+    <div class="app-body">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-section-label">Navigation</div>
+            <a class="sidebar-item" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="sidebar-item active" href="#"><i class="bi bi-people-fill"></i> Players <span class="sidebar-badge">2.4k</span></a>
+            <a class="sidebar-item" href="#"><i class="bi bi-display"></i> Stations <span class="sidebar-badge">20</span></a>
+            <a class="sidebar-item" href="#"><i class="bi bi-controller"></i> Games <span class="sidebar-badge">48</span></a>
+
+            <div class="sidebar-section-label">System</div>
+            <a class="sidebar-item" href="#"><i class="bi bi-gear"></i> Settings</a>
+            <a class="sidebar-item" href="#"><i class="bi bi-headset"></i> Support <span class="sidebar-badge" style="background:rgba(255,77,77,0.15);color:var(--red);">2</span></a>
+
+            <div class="sidebar-bottom">
+                <div class="station-occ">
+                    <div class="occ-header">
+                        <span class="occ-label">Station Occupancy</span>
+                        <span class="occ-count">0/0</span>
                     </div>
+                    <div class="occ-bar"><div class="occ-fill" style="width:0%;"></div></div>
+                    <div class="occ-sub">No stations configured</div>
                 </div>
-                <div class="detail-body">
-
-                    <!-- COMPUTER ICON (replaces profile picture upload) -->
-                    <div>
-                        <div class="detail-section-label">Station Assignment</div>
-                        <div class="computer-section">
-                            <div class="computer-icon-wrap">
-                                <i class="bi bi-display-fill"></i>
-                            </div>
-                            <div class="computer-label">—</div>
-                            <div class="computer-sub">Click to reassign station</div>
+                <div class="server-load">
+                    <div class="server-left">
+                        <i class="bi bi-hdd-network server-icon"></i>
+                        <div class="server-info">
+                            <div class="server-title">Server Load</div>
+                            <div class="server-sub">0% · — latency</div>
                         </div>
                     </div>
-
-                    <!-- Player Info -->
-                    <div>
-                        <div class="detail-section-label">Player Info</div>
-                        <div class="detail-field">
-                            <div class="field-label">Username</div>
-                            <div class="field-value">
-                                <div class="field-value-inner"><i class="bi bi-person"></i> —</div>
-                                <i class="bi bi-pencil field-icon"></i>
-                            </div>
-                        </div>
-                        <div class="detail-field">
-                            <div class="field-label">Email</div>
-                            <div class="field-value">
-                                <div class="field-value-inner"><i class="bi bi-envelope"></i> —</div>
-                            </div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-field">
-                                <div class="field-label">Balance</div>
-                                <div class="field-value" style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px;">
-                                    —
-                                </div>
-                            </div>
-                            <div class="detail-field">
-                                <div class="field-label">Station</div>
-                                <div class="field-value" style="font-size:12px;">
-                                    <div class="field-value-inner"><i class="bi bi-display"></i> —</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Current Session -->
-                    <div>
-                        <div class="detail-section-label">Current Session</div>
-                        <div class="session-panel">
-                            <div class="session-row">
-                                <span class="session-row-label">Game</span>
-                                <span class="session-row-val">—</span>
-                            </div>
-                            <div class="session-row">
-                                <span class="session-row-label">Time Elapsed</span>
-                                <span class="session-row-val green">—</span>
-                            </div>
-                            <div class="session-row" style="margin-bottom:0;">
-                                <span class="session-row-label">Time Remaining</span>
-                                <span class="session-row-val">—</span>
-                            </div>
-                            <div class="time-bar"><div class="time-fill"></div></div>
-                        </div>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="detail-actions">
-                        <button class="btn-save"><i class="bi bi-floppy2-fill"></i> Save Changes</button>
-                        <div class="detail-btn-row">
-                            <button class="btn-add-time"><i class="bi bi-plus-circle"></i> Add Time</button>
-                            <button class="btn-end-session"><i class="bi bi-stop-circle"></i> End Session</button>
-                        </div>
-                    </div>
-
+                    <div class="server-dot"></div>
                 </div>
             </div>
         </aside>
-    </main>
-</div>
 
-</div>
+        <!-- MAIN CONTENT -->
+        <main class="main">
+            <div class="main-left">
+                <!-- Page Header -->
+                <div>
+                    <div class="breadcrumb-row">
+                        <i class="bi bi-house"></i>
+                        <a href="#">Dashboard</a>
+                        <i class="bi bi-chevron-right"></i>
+                        <span style="color:var(--text2);">Players</span>
+                    </div>
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Player Management</h1>
+                            <p class="page-sub">Monitor stations, manage players & sessions in real-time.</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn-ghost"><i class="bi bi-clock"></i> Live</button>
+                            <button class="btn btn-ghost"><i class="bi bi-funnel"></i> Filters</button>
+                            <button class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> Add Player</button>
+                        </div>
+                    </div>
+                </div>
 
-<partial name="_RegisterModal" />
+                <!-- Stat Cards -->
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-badge badge-live">Live</div>
+                        <div class="stat-icon" style="background:var(--green-dim);"><i class="bi bi-people-fill" style="color:var(--green);font-size:15px;"></i></div>
+                        <div class="stat-num">0</div>
+                        <div class="stat-label">Players Online</div>
+                        <div class="stat-change up"><i class="bi bi-arrow-up-short"></i> No data yet</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-badge badge-stations">Stations</div>
+                        <div class="stat-icon" style="background:rgba(77,159,255,0.1);"><i class="bi bi-display" style="color:var(--blue);font-size:15px;"></i></div>
+                        <div class="stat-num" style="color:var(--blue);">0</div>
+                        <div class="stat-label">Available Stations</div>
+                        <div class="stat-change" style="color:var(--text3);">No stations configured</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-badge badge-today">Today</div>
+                        <div class="stat-icon" style="background:rgba(255,170,0,0.1);"><i class="bi bi-lightning-fill" style="color:var(--amber);font-size:15px;"></i></div>
+                        <div class="stat-num" style="color:var(--amber);">0</div>
+                        <div class="stat-label">Active Sessions</div>
+                        <div class="stat-change up-amber"><i class="bi bi-dash"></i> No sessions today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-badge badge-revenue">Revenue</div>
+                        <div class="stat-icon" style="background:rgba(255,77,77,0.1);"><i class="bi bi-currency-dollar" style="color:var(--red);font-size:15px;"></i></div>
+                        <div class="stat-num" style="color:var(--green);">$0</div>
+                        <div class="stat-label">Earned Today</div>
+                        <div class="stat-change up"><i class="bi bi-dash"></i> No revenue yet</div>
+                    </div>
+                </div>
+
+                <!-- Gaming Stations -->
+                <div class="stations-panel">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="bi bi-display-fill"></i>
+                            Gaming Stations
+                            <span class="section-sub">Real-time station status and session monitoring</span>
+                        </div>
+                        <div class="legend">
+                            <div class="legend-item"><div class="legend-dot dot-green"></div> Active</div>
+                            <div class="legend-item"><div class="legend-dot dot-amber"></div> Idle</div>
+                            <div class="legend-item"><div class="legend-dot dot-red"></div> Offline</div>
+                            <div class="legend-item"><div class="legend-dot" style="background:var(--text3);"></div> Free</div>
+                        </div>
+                    </div>
+                    <div class="stations-grid">
+                        <!-- PC 01 -->
+                        <div class="station-card">
+                            <div class="station-top"><span class="station-num">PC 01</span><div class="station-dot" style="background:var(--text3);"></div></div>
+                            <div class="station-avatar"><i class="bi bi-controller" style="font-size:18px;"></i></div>
+                            <div><div class="station-username" style="color:var(--text3);">—</div><div class="station-game">—</div></div>
+                            <div class="station-time" style="color:var(--text3);">—</div>
+                            <button class="station-btn assign">Assign</button>
+                        </div>
+                        <!-- PC 02 -->
+                        <div class="station-card">
+                            <div class="station-top"><span class="station-num">PC 02</span><div class="station-dot" style="background:var(--text3);"></div></div>
+                            <div class="station-avatar"><i class="bi bi-controller" style="font-size:18px;"></i></div>
+                            <div><div class="station-username" style="color:var(--text3);">—</div><div class="station-game">—</div></div>
+                            <div class="station-time" style="color:var(--text3);">—</div>
+                            <button class="station-btn assign">Assign</button>
+                        </div>
+                        <!-- PC 03 -->
+                        <div class="station-card">
+                            <div class="station-top"><span class="station-num">PC 03</span><div class="station-dot" style="background:var(--text3);"></div></div>
+                            <div class="station-avatar"><i class="bi bi-controller" style="font-size:18px;"></i></div>
+                            <div><div class="station-username" style="color:var(--text3);">—</div><div class="station-game">—</div></div>
+                            <div class="station-time" style="color:var(--text3);">—</div>
+                            <button class="station-btn assign">Assign</button>
+                        </div>
+                        <!-- PC 04 -->
+                        <div class="station-card">
+                            <div class="station-top"><span class="station-num">PC 04</span><div class="station-dot" style="background:var(--text3);"></div></div>
+                            <div class="station-avatar"><i class="bi bi-controller" style="font-size:18px;"></i></div>
+                            <div><div class="station-username" style="color:var(--text3);">—</div><div class="station-game">—</div></div>
+                            <div class="station-time" style="color:var(--text3);">—</div>
+                            <button class="station-btn assign">Assign</button>
+                        </div>
+                        <!-- PC 05 -->
+                        <div class="station-card">
+                            <div class="station-top"><span class="station-num">PC 05</span><div class="station-dot" style="background:var(--text3);"></div></div>
+                            <div class="station-avatar"><i class="bi bi-controller" style="font-size:18px;"></i></div>
+                            <div><div class="station-username" style="color:var(--text3);">—</div><div class="station-game">—</div></div>
+                            <div class="station-time" style="color:var(--text3);">—</div>
+                            <button class="station-btn assign">Assign</button>
+                        </div>
+                        <!-- PC 06 -->
+                        <div class="station-card">
+                            <div class="station-top"><span class="station-num">PC 06</span><div class="station-dot" style="background:var(--text3);"></div></div>
+                            <div class="station-avatar" style="color:var(--text3);border-color:var(--border);"><i class="bi bi-controller" style="font-size:18px;"></i></div>
+                            <div><div class="station-username" style="color:var(--text3);">—</div><div class="station-game">—</div></div>
+                            <div class="station-time" style="color:var(--text3);">—</div>
+                            <button class="station-btn assign">Assign</button>
+                        </div>
+                        <!-- PC 07 -->
+                        <div class="station-card">
+                            <div class="station-top"><span class="station-num">PC 07</span><div class="station-dot" style="background:var(--text3);"></div></div>
+                            <div class="station-avatar"><i class="bi bi-controller" style="font-size:18px;"></i></div>
+                            <div><div class="station-username" style="color:var(--text3);">—</div><div class="station-game">—</div></div>
+                            <div class="station-time" style="color:var(--text3);">—</div>
+                            <button class="station-btn assign">Assign</button>
+                        </div>
+                        <!-- PC 08 -->
+                        <div class="station-card">
+                            <div class="station-top"><span class="station-num">PC 08</span><div class="station-dot" style="background:var(--text3);"></div></div>
+                            <div class="station-avatar"><i class="bi bi-controller" style="font-size:18px;"></i></div>
+                            <div><div class="station-username" style="color:var(--text3);">—</div><div class="station-game">—</div></div>
+                            <div class="station-time" style="color:var(--text3);">—</div>
+                            <button class="station-btn assign">Assign</button>
+                        </div>
+                        <!-- PC 09 -->
+                        <div class="station-card">
+                            <div class="station-top"><span class="station-num">PC 09</span><div class="station-dot" style="background:var(--text3);"></div></div>
+                            <div class="station-avatar"><i class="bi bi-controller" style="font-size:18px;"></i></div>
+                            <div><div class="station-username" style="color:var(--text3);">—</div><div class="station-game">—</div></div>
+                            <div class="station-time" style="color:var(--text3);">—</div>
+                            <button class="station-btn assign">Assign</button>
+                        </div>
+                        <!-- PC 10 -->
+                        <div class="station-card">
+                            <div class="station-top"><span class="station-num">PC 10</span><div class="station-dot" style="background:var(--text3);"></div></div>
+                            <div class="station-avatar" style="color:var(--text3);border-color:var(--border);"><i class="bi bi-controller" style="font-size:18px;"></i></div>
+                            <div><div class="station-username" style="color:var(--text3);">Available</div><div class="station-game">— Ready</div></div>
+                            <div class="station-time" style="color:var(--text3);">—</div>
+                            <button class="station-btn assign">Assign</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Player Management Table -->
+                <div class="player-table-panel">
+                    <div class="table-header">
+                        <div>
+                            <div class="section-title"><i class="bi bi-table"></i> Player Management</div>
+                            <div style="font-size:11px;color:var(--text3);margin-top:2px;">Full registry of all registered players</div>
+                        </div>
+                        <div class="table-actions">
+                            <div class="table-search">
+                                <i class="bi bi-search"></i>
+                                <input type="text" placeholder="Search players..." />
+                            </div>
+                            <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;"><i class="bi bi-funnel"></i> Filter</button>
+                            <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;"><i class="bi bi-download"></i> Export</button>
+                        </div>
+                    </div>
+                    <div class="table-tabs">
+                        <div class="tab active">All Players</div>
+                        <div class="tab">Online Now</div>
+                        <div class="tab">VIP Members</div>
+                        <div class="tab">Suspended</div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Player</th>
+                                <th>Balance</th>
+                                <th>Total Time</th>
+                                <th>Station</th>
+                                <th>Status</th>
+                                <th>Last Active</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="7" style="text-align:center;padding:40px;color:var(--text3);">
+                                    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+                                        <i class="bi bi-controller" style="font-size:32px;color:var(--border2);"></i>
+                                        <span style="font-size:13px;">No players found</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <aside class="main-right">
+                <div class="detail-panel">
+                    <div class="detail-header">
+                        <i class="bi bi-person-vcard-fill"></i>
+                        <div>
+                            <div class="detail-header-title">Player Detail</div>
+                            <div class="detail-header-sub">Edit profile & manage session</div>
+                        </div>
+                    </div>
+                    <div class="detail-body">
+
+                        <!-- Station icon -->
+                        <div>
+                            <div class="detail-section-label">Station Assignment</div>
+                            <div class="computer-section">
+                                <div class="computer-icon-wrap">
+                                    <i class="bi bi-controller"></i>
+                                </div>
+                                <div class="computer-label">No station assigned</div>
+                                <div class="computer-sub">Click to assign a station</div>
+                            </div>
+                        </div>
+
+                        <!-- Player Info -->
+                        <div>
+                            <div class="detail-section-label">Player Info</div>
+                            <div class="detail-field">
+                                <div class="field-label">Username</div>
+                                <div class="field-value">
+                                    <div class="field-value-inner"><i class="bi bi-person"></i> —</div>
+                                    <i class="bi bi-pencil field-icon"></i>
+                                </div>
+                            </div>
+                            <div class="detail-field">
+                                <div class="field-label">Email</div>
+                                <div class="field-value">
+                                    <div class="field-value-inner"><i class="bi bi-envelope"></i> —</div>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-field">
+                                    <div class="field-label">Balance</div>
+                                    <div class="field-value" style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px;">
+                                        $0.00
+                                    </div>
+                                </div>
+                                <div class="detail-field">
+                                    <div class="field-label">Station</div>
+                                    <div class="field-value" style="font-size:12px;">
+                                        <div class="field-value-inner"><i class="bi bi-controller"></i> —</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Current Session -->
+                        <div>
+                            <div class="detail-section-label">Current Session</div>
+                            <div class="session-panel">
+                                <div class="session-row">
+                                    <span class="session-row-label">Game</span>
+                                    <span class="session-row-val">—</span>
+                                </div>
+                                <div class="session-row">
+                                    <span class="session-row-label">Time Elapsed</span>
+                                    <span class="session-row-val green">0h 00m</span>
+                                </div>
+                                <div class="session-row" style="margin-bottom:0;">
+                                    <span class="session-row-label">Time Remaining</span>
+                                    <span class="session-row-val">0m</span>
+                                </div>
+                                <div class="time-bar"><div class="time-fill" style="width:0%;"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="detail-actions">
+                            <button class="btn-save"><i class="bi bi-floppy2-fill"></i> Save Changes</button>
+                            <div class="detail-btn-row">
+                                <button class="btn-add-time"><i class="bi bi-plus-circle"></i> Add Time</button>
+                                <button class="btn-end-session"><i class="bi bi-stop-circle"></i> End Session</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script>
+        function toggleUserDropdown() {
+            document.getElementById('userChip').classList.toggle('open');
+        }
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const chip = document.getElementById('userChip');
+            if (!chip.contains(e.target)) {
+                chip.classList.remove('open');
+            }
+        });
+    </script>
 </body>
 </html>
