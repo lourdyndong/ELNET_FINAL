@@ -1096,13 +1096,16 @@
         });
     </script>
     <script>
-        async function loadPlayerData() {
+        const playerData = {
+            username: '@(ViewData["Username"]?.ToString() ?? string.Empty)',
+            email: '@(ViewData["Email"]?.ToString() ?? string.Empty)',
+            id: '@(ViewData["Id"]?.ToString() ?? string.Empty)',
+            balance: Number('@(ViewData["Balance"]?.ToString() ?? "0")') || 0
+        };
+
+        function loadPlayerData() {
             try {
-                const res = await fetch('/Player/GetProfile');
-                if (res.ok) {
-                    const data = await res.json();
-                    updateUI(data);
-                }
+                updateUI(playerData);
             } catch (err) {
                 console.error('Failed to load player data:', err);
             }
