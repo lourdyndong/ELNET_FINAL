@@ -92,5 +92,11 @@ namespace ELNETFINALPROJECT.Controllers
         {
             return RequireAdmin() ?? View();
         }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("IsAdmin");
+            return RedirectToAction("Index");
+        }
     }
 }
