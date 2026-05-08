@@ -1,0 +1,1175 @@
+﻿@{
+    ViewData["Title"] = "Player Dashboard - GameTime";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --green: #00ff88;
+            --green2: #00cc6a;
+            --green-dim: rgba(0,255,136,0.08);
+            --green-glow: rgba(0,255,136,0.15);
+            --bg: #080f0b;
+            --bg2: #0c1510;
+            --bg3: #101a13;
+            --bg4: #141f17;
+            --card: #0e1812;
+            --border: rgba(0,255,136,0.08);
+            --border2: rgba(0,255,136,0.2);
+            --text: #d4ecd8;
+            --text2: #6a9070;
+            --text3: #3a5a40;
+            --red: #ff3355;
+            --amber: #ffaa00;
+            --sidebar-w: 200px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--bg2);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 50;
+        }
+
+        .sidebar-brand {
+            padding: 16px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .brand-icon {
+            width: 28px; height: 28px;
+            background: var(--green);
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .brand-icon svg { color: #080f0b; }
+        .brand-name {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: 1px;
+        }
+
+        /* Station cards in sidebar */
+        .sidebar-stations {
+            padding: 12px 10px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-station-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .sidebar-station-card:hover { border-color: var(--border2); }
+        .sidebar-station-card.active { border-color: var(--green); background: var(--green-dim); }
+
+        .ssc-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .ssc-label { font-size: 9px; color: var(--text3); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+        .ssc-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text3); }
+        .ssc-dot.active { background: var(--green); box-shadow: 0 0 6px var(--green); }
+
+        .ssc-screen {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg4);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text3);
+            margin-bottom: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .ssc-screen.active-screen {
+            color: var(--green);
+            background: rgba(0,255,136,0.05);
+            border: 1px solid rgba(0,255,136,0.15);
+        }
+        .ssc-screen-glow {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(0,255,136,0.08), transparent 70%);
+        }
+
+        .ssc-action {
+            width: 100%;
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s;
+        }
+        .ssc-action.play {
+            background: var(--green);
+            color: #080f0b;
+        }
+        .ssc-action.play:hover { background: var(--green2); }
+        .ssc-action.assign {
+            background: var(--bg4);
+            color: var(--text3);
+            border: 1px solid var(--border);
+        }
+
+        /* Sidebar bottom user */
+        .sidebar-user {
+            padding: 12px 14px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar-avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--green-dim);
+            border: 1px solid var(--border2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700; color: var(--green);
+            flex-shrink: 0;
+        }
+        .sidebar-user-info { flex: 1; min-width: 0; }
+        .sidebar-username { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sidebar-logout {
+            font-size: 14px;
+            color: var(--text3);
+            cursor: pointer;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .sidebar-logout:hover { color: var(--red); }
+
+        /* MAIN */
+        .main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            height: 48px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            flex-shrink: 0;
+        }
+        .topbar-left { display: flex; align-items: center; gap: 10px; }
+        .topbar-section {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text3);
+        }
+        .topbar-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: 0.5px;
+        }
+        .topbar-title span { color: var(--green); }
+        .topbar-right { display: flex; align-items: center; gap: 12px; }
+        .topbar-status {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 10px; color: var(--text2);
+        }
+        .topbar-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+        @@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+        .topbar-icon { font-size: 16px; color: var(--text3); cursor: pointer; transition: color 0.2s; }
+        .topbar-icon:hover { color: var(--text); }
+
+        /* CONTENT */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 280px 1fr 260px;
+            grid-template-rows: auto 1fr;
+            gap: 16px;
+        }
+
+        /* BALANCE CARD */
+        .balance-card {
+            grid-column: 1;
+            grid-row: 1;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+            opacity: 0.6;
+        }
+        .balance-label {
+            font-size: 9px; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--text3);
+            margin-bottom: 6px;
+        }
+        .balance-amount {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 44px;
+            font-weight: 700;
+            color: var(--green);
+            line-height: 1;
+            letter-spacing: -1px;
+            margin-bottom: 4px;
+        }
+        .balance-time-label {
+            font-size: 9px; color: var(--text3); letter-spacing: 1px;
+            text-transform: uppercase; margin-bottom: 4px;
+        }
+        .balance-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+        .topup-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--green);
+            color: #080f0b;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .topup-btn:hover { background: var(--green2); box-shadow: 0 4px 15px rgba(0,255,136,0.25); }
+
+        /* MAIN STATS AREA */
+        .stats-area {
+            grid-column: 2;
+            grid-row: 1 / 3;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .stats-header {
+            font-size: 9px; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--text3);
+            margin-bottom: 4px;
+        }
+
+        /* Profile Identity Card */
+        .profile-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .profile-card-title {
+            font-size: 10px; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--text3);
+            margin-bottom: 16px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .profile-card-title i { color: var(--green); }
+
+        .profile-identity {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .profile-avatar-wrap { position: relative; }
+        .profile-avatar {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: var(--green-dim);
+            border: 2px solid var(--border2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; font-weight: 700; color: var(--green);
+            font-family: 'Rajdhani', sans-serif;
+        }
+        .profile-avatar-badge {
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 16px; height: 16px;
+            background: var(--green);
+            border-radius: 50%;
+            border: 2px solid var(--card);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 8px;
+            color: #080f0b;
+        }
+        .profile-info { flex: 1; }
+        .profile-username {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 20px; font-weight: 700;
+            color: var(--text);
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .profile-email { font-size: 11px; color: var(--text2); margin-bottom: 6px; }
+        .profile-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px; color: var(--text3);
+        }
+
+        .profile-fields { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+        .pf-label { font-size: 9px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+        .pf-value {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 9px 12px;
+            font-size: 12px;
+            color: var(--text2);
+        }
+
+        .create-profile-btn {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            color: var(--green);
+            border: 1px solid var(--border2);
+            border-radius: 5px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 13px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .create-profile-btn:hover { background: var(--green-dim); }
+
+        /* Activity log card */
+        .activity-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            flex: 1;
+        }
+        .activity-title {
+            font-size: 10px; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--text3);
+            margin-bottom: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .activity-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+        }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-icon {
+            width: 28px; height: 28px;
+            border-radius: 6px;
+            background: var(--green-dim);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; color: var(--green);
+            flex-shrink: 0;
+        }
+        .activity-info { flex: 1; }
+        .activity-name { font-size: 12px; font-weight: 500; }
+        .activity-time { font-size: 10px; color: var(--text3); }
+        .activity-amount { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green); }
+
+        /* SECURITY PROTOCOL CARD */
+        .security-card {
+            grid-column: 3;
+            grid-row: 1 / 3;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .security-title {
+            font-size: 10px; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--text3);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .security-badge {
+            display: flex; align-items: center; gap: 4px;
+            font-size: 9px; color: var(--green);
+            background: var(--green-dim);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            padding: 2px 8px;
+        }
+        .security-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+
+        .sec-field { }
+        .sec-label {
+            font-size: 9px; color: var(--text3);
+            letter-spacing: 1px; text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .sec-input {
+            width: 100%;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 10px 12px;
+            font-size: 12px;
+            color: var(--text2);
+            font-family: 'DM Sans', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .sec-input:focus { border-color: var(--border2); }
+        .sec-input::placeholder { color: var(--text3); }
+
+        .update-btn {
+            width: 100%;
+            padding: 11px;
+            background: var(--green);
+            color: #080f0b;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 12px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 4px;
+        }
+        .update-btn:hover { background: var(--green2); }
+
+        /* Session info */
+        .session-card {
+            grid-column: 1;
+            grid-row: 2;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+        }
+        .session-title {
+            font-size: 9px; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--text3);
+            margin-bottom: 14px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .session-title i { color: var(--green); }
+        .session-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+        }
+        .session-row:last-child { border-bottom: none; }
+        .session-key { color: var(--text3); font-size: 11px; }
+        .session-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text); }
+        .session-val.green { color: var(--green); }
+        .session-val.amber { color: var(--amber); }
+
+        /* Bottom status bar */
+        .status-bar {
+            height: 28px;
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            flex-shrink: 0;
+        }
+        .status-item { display: flex; align-items: center; gap: 5px; font-size: 9px; color: var(--text3); }
+        .status-item i { font-size: 10px; }
+        .status-green { color: var(--green); }
+
+        /* Cyberpunk network bg effect */
+        .network-bg {
+            position: fixed;
+            top: 0; right: 0;
+            width: 400px;
+            height: 400px;
+            pointer-events: none;
+            opacity: 0.04;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Decorative network background -->
+    <svg class="network-bg" viewBox="0 0 400 400" fill="none">
+        <circle cx="200" cy="200" r="150" stroke="#00ff88" stroke-width="0.5"/>
+        <circle cx="200" cy="200" r="100" stroke="#00ff88" stroke-width="0.5"/>
+        <circle cx="200" cy="200" r="50" stroke="#00ff88" stroke-width="0.5"/>
+        <line x1="50" y1="200" x2="350" y2="200" stroke="#00ff88" stroke-width="0.5"/>
+        <line x1="200" y1="50" x2="200" y2="350" stroke="#00ff88" stroke-width="0.5"/>
+        <line x1="94" y1="94" x2="306" y2="306" stroke="#00ff88" stroke-width="0.5"/>
+        <line x1="306" y1="94" x2="94" y2="306" stroke="#00ff88" stroke-width="0.5"/>
+        <circle cx="200" cy="50" r="4" fill="#00ff88"/>
+        <circle cx="350" cy="200" r="4" fill="#00ff88"/>
+        <circle cx="200" cy="350" r="4" fill="#00ff88"/>
+        <circle cx="94" cy="94" r="3" fill="#00ff88"/>
+        <circle cx="306" cy="94" r="3" fill="#00ff88"/>
+    </svg>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8h4M5 6v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    <circle cx="10.5" cy="7" r="0.8" fill="currentColor"/>
+                    <circle cx="12.5" cy="9" r="0.8" fill="currentColor"/>
+                    <path d="M1 6C1 4.9 1.9 4 3 4h10C14.1 4 15 4.9 15 6v3c0 1.7-1.3 3-3 3H4C2.3 12 1 10.7 1 9V6z" stroke="currentColor" stroke-width="1.4" fill="none"/>
+                </svg>
+            </div>
+            <div class="brand-name">GAMETIME</div>
+        </div>
+
+        <div class="sidebar-stations">
+            <!-- Station card - active -->
+            <div class="sidebar-station-card active">
+                <div class="ssc-top">
+                    <span class="ssc-label">PC 01</span>
+                    <span class="ssc-dot active"></span>
+                </div>
+                <div class="ssc-screen active-screen">
+                    <div class="ssc-screen-glow"></div>
+                    <i class="bi bi-display-fill"></i>
+                </div>
+                <button class="ssc-action play">Playing</button>
+            </div>
+
+            <!-- Station card - inactive -->
+            <div class="sidebar-station-card">
+                <div class="ssc-top">
+                    <span class="ssc-label">PC 02</span>
+                    <span class="ssc-dot"></span>
+                </div>
+                <div class="ssc-screen">
+                    <i class="bi bi-display"></i>
+                </div>
+                <button class="ssc-action assign">Reserve</button>
+            </div>
+        </div>
+
+        <div class="sidebar-user">
+            <div class="sidebar-avatar" id="sidebarAvatar">—</div>
+            <div class="sidebar-user-info">
+                <div class="sidebar-username" id="sidebarUsername">Loading...</div>
+            </div>
+            <button class="sidebar-logout" title="Logout" onclick="confirmLogout()">
+                <i class="bi bi-box-arrow-right"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+        <!-- TOP BAR -->
+        <div class="topbar">
+            <div class="topbar-left">
+                <span class="topbar-section">Command Center</span>
+                <span style="color:var(--text3);">/</span>
+                <span class="topbar-title">Welcome back, <span id="topbarName">Agent</span></span>
+            </div>
+            <div class="topbar-right">
+                <div class="topbar-status">
+                    <span class="topbar-status-dot"></span>
+                    Network Secure
+                </div>
+                <i class="bi bi-bell topbar-icon"></i>
+                <i class="bi bi-gear topbar-icon"></i>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <!-- BALANCE CARD -->
+            <div class="balance-card">
+                <div class="balance-label">Available This Credits</div>
+                <div class="balance-amount" id="balanceDisplay">₱0.00</div>
+                <div class="balance-time-label">Remaining Time</div>
+                <div class="balance-time" id="timeDisplay">0h 00m</div>
+                <button class="topup-btn" onclick="openTopUp()">
+                    <i class="bi bi-plus-circle-fill"></i> Top Up Balance
+                </button>
+            </div>
+
+            <!-- STATS / PROFILE AREA -->
+            <div class="stats-area">
+                <!-- Profile Identity -->
+                <div class="profile-card">
+                    <div class="profile-card-title">
+                        <i class="bi bi-person-badge-fill"></i>
+                        Profile Identity
+                    </div>
+                    <div class="profile-identity">
+                        <div class="profile-avatar-wrap">
+                            <div class="profile-avatar" id="profileAvatar">—</div>
+                            <div class="profile-avatar-badge"><i class="bi bi-check"></i></div>
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-username" id="profileUsername">—</div>
+                            <div class="profile-email" id="profileEmail">—</div>
+                            <div class="profile-id" id="profileId">ID: #—</div>
+                        </div>
+                    </div>
+                    <div class="profile-fields">
+                        <div>
+                            <div class="pf-label">Display Name</div>
+                            <div class="pf-value" id="profileDisplayName">—</div>
+                        </div>
+                    </div>
+                    <button class="create-profile-btn">
+                        <i class="bi bi-pencil-fill"></i> Edit Profile
+                    </button>
+                </div>
+
+                <!-- Activity -->
+                <div class="activity-card">
+                    <div class="activity-title">
+                        <span>Recent Activity</span>
+                        <span style="font-size:9px; color:var(--text3); font-weight:400;">Session History</span>
+                    </div>
+                    <div id="activityList">
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="bi bi-display"></i></div>
+                            <div class="activity-info">
+                                <div class="activity-name">No sessions yet</div>
+                                <div class="activity-time">—</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECURITY PROTOCOL -->
+            <div class="security-card">
+                <div class="security-title">
+                    Security Protocol
+                    <span class="security-badge">
+                        <span class="security-dot"></span>
+                        Secure
+                    </span>
+                </div>
+
+                <div class="sec-field">
+                    <div class="sec-label">New Access Key</div>
+                    <input type="password" class="sec-input" placeholder="••••••••••" id="newPassword" />
+                </div>
+
+                <div class="sec-field">
+                    <div class="sec-label">Confirm New Key</div>
+                    <input type="password" class="sec-input" placeholder="••••••••••" id="confirmPassword" />
+                </div>
+
+                <button class="update-btn" onclick="updateCredentials()">
+                    Update Access Credentials
+                </button>
+
+                <div style="border-top: 1px solid var(--border); padding-top: 14px;">
+                    <div class="sec-label" style="margin-bottom:10px;">Session Info</div>
+                    <div class="session-row">
+                        <span class="session-key">Station</span>
+                        <span class="session-val green" id="secStation">PC 01</span>
+                    </div>
+                    <div class="session-row">
+                        <span class="session-key">Status</span>
+                        <span class="session-val green">Active</span>
+                    </div>
+                    <div class="session-row">
+                        <span class="session-key">Time Used</span>
+                        <span class="session-val" id="secTimeUsed">0h 00m</span>
+                    </div>
+                    <div class="session-row">
+                        <span class="session-key">Remaining</span>
+                        <span class="session-val amber" id="secTimeLeft">—</span>
+                    </div>
+                </div>
+
+                <div style="margin-top:auto; padding-top:14px; border-top:1px solid var(--border);">
+                    <div class="sec-label" style="margin-bottom:8px;">System Status Update</div>
+                    <div style="font-size:11px; color:var(--text3); line-height:1.6;">
+                        Infrastructure online. All systems operational.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SESSION CARD (below balance) -->
+            <div class="session-card">
+                <div class="session-title">
+                    <i class="bi bi-activity"></i>
+                    Live Session
+                </div>
+                <div class="session-row">
+                    <span class="session-key">Game</span>
+                    <span class="session-val" id="sessionGame">—</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-key">Station</span>
+                    <span class="session-val green" id="sessionStation">PC 01</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-key">Elapsed</span>
+                    <span class="session-val green" id="sessionElapsed">0h 00m</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-key">Remaining</span>
+                    <span class="session-val amber" id="sessionRemaining">—</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-key">Rate</span>
+                    <span class="session-val">₱20 / hr</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- STATUS BAR -->
+        <div class="status-bar">
+            <div class="status-item">
+                <i class="bi bi-circle-fill status-green" style="font-size:7px;"></i>
+                Infrastructure Online
+            </div>
+            <div class="status-item">
+                GT/2026 — v1.0.2-STABLE
+            </div>
+            <div class="status-item">
+                <i class="bi bi-clock"></i>
+                <span id="currentTime">--:--</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOP UP MODAL -->
+    <div id="topUpModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+        <div style="position:relative; width:820px; max-width:95vw; max-height:95vh; overflow-y:auto;">
+
+            <!-- Outer border frame -->
+            <div style="border:1px solid rgba(0,180,255,0.4); border-radius:8px; padding:24px; background:#0a1014; box-shadow:0 0 40px rgba(0,180,255,0.1), inset 0 0 40px rgba(0,0,0,0.5);">
+
+                <!-- Title bar -->
+                <div style="font-size:11px; color:rgba(0,180,255,0.6); letter-spacing:2px; text-transform:uppercase; margin-bottom:16px; font-family:'JetBrains Mono',monospace;">Top Up Balance Screen</div>
+
+                <!-- Inner panel -->
+                <div style="border:1px solid rgba(0,180,255,0.2); border-radius:6px; padding:24px; background:#0c1318; position:relative;">
+
+                    <!-- Corner decorations -->
+                    <div style="position:absolute; top:-1px; left:-1px; width:30px; height:30px; border-top:2px solid rgba(0,180,255,0.5); border-left:2px solid rgba(0,180,255,0.5); border-radius:4px 0 0 0;"></div>
+                    <div style="position:absolute; top:-1px; right:-1px; width:30px; height:30px; border-top:2px solid rgba(0,180,255,0.5); border-right:2px solid rgba(0,180,255,0.5); border-radius:0 4px 0 0;"></div>
+                    <div style="position:absolute; bottom:-1px; left:-1px; width:30px; height:30px; border-bottom:2px solid rgba(0,180,255,0.5); border-left:2px solid rgba(0,180,255,0.5); border-radius:0 0 0 4px;"></div>
+                    <div style="position:absolute; bottom:-1px; right:-1px; width:30px; height:30px; border-bottom:2px solid rgba(0,180,255,0.5); border-right:2px solid rgba(0,180,255,0.5); border-radius:0 0 4px 0;"></div>
+
+                    <!-- Close button -->
+                    <button onclick="closeTopUp()" style="position:absolute; top:12px; right:12px; background:none; border:none; color:rgba(255,255,255,0.3); font-size:18px; cursor:pointer; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.3)'"><i class="bi bi-x-lg"></i></button>
+
+                    <!-- Side trophy icon -->
+                    <div style="position:absolute; left:-50px; top:20px; width:80px; height:80px; border:1px dashed rgba(0,180,255,0.2); border-radius:4px; display:flex; align-items:center; justify-content:center; color:rgba(0,180,255,0.2); font-size:28px;">
+                        <i class="bi bi-trophy"></i>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-left:20px;">
+
+                        <!-- LEFT SIDE -->
+                        <div>
+                            <!-- Header -->
+                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                                <div style="width:24px; height:24px; background:var(--green); border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h4M5 6v4" stroke="#080f0b" stroke-width="2" stroke-linecap="round"/><circle cx="10.5" cy="7" r="0.9" fill="#080f0b"/><circle cx="12.5" cy="9" r="0.9" fill="#080f0b"/></svg>
+                                </div>
+                                <div>
+                                    <div style="font-family:'Rajdhani',sans-serif; font-size:18px; font-weight:700; letter-spacing:1px; color:#fff;">BALANCE PROTOCOL</div>
+                                    <div style="font-size:9px; color:rgba(255,255,255,0.3); letter-spacing:1px; font-family:'JetBrains Mono',monospace;" id="txId">TRANSACTION ID: GT-00000-TX</div>
+                                </div>
+                            </div>
+                            <div style="display:flex; justify-content:flex-end; margin-bottom:16px;">
+                                <div style="display:flex; align-items:center; gap:5px; background:rgba(0,255,136,0.1); border:1px solid rgba(0,255,136,0.2); border-radius:12px; padding:3px 10px; font-size:9px; color:var(--green); letter-spacing:1px;">
+                                    <span style="width:5px; height:5px; background:var(--green); border-radius:50%; display:inline-block;"></span>
+                                    SECURE LINK ESTABLISHED
+                                </div>
+                            </div>
+
+                            <!-- Select Credits -->
+                            <div style="font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--green); margin-bottom:4px; display:flex; justify-content:space-between;">
+                                <span>Select Credits</span>
+                                <span style="color:rgba(255,255,255,0.3);">PTS Equivalent</span>
+                            </div>
+
+                            <!-- Amount presets -->
+                            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:12px;">
+                                <div class="amount-preset" onclick="selectAmount(50)" style="border:1px solid rgba(255,255,255,0.15); border-radius:4px; padding:10px; text-align:center; cursor:pointer; transition:all 0.2s; background:#111820;">
+                                    <div style="font-family:'Rajdhani',sans-serif; font-size:18px; font-weight:700; color:#fff;">₱50</div>
+                                    <div style="font-size:9px; color:rgba(255,255,255,0.3); letter-spacing:1px;">5,000 PTS</div>
+                                </div>
+                                <div class="amount-preset selected-preset" onclick="selectAmount(100)" style="border:2px solid var(--green); border-radius:4px; padding:10px; text-align:center; cursor:pointer; transition:all 0.2s; background:rgba(0,255,136,0.08);">
+                                    <div style="font-family:'Rajdhani',sans-serif; font-size:18px; font-weight:700; color:var(--green);">₱100</div>
+                                    <div style="font-size:9px; color:var(--green); opacity:0.7; letter-spacing:1px;">10,000 PTS</div>
+                                </div>
+                                <div class="amount-preset" onclick="selectAmount(250)" style="border:1px solid rgba(255,255,255,0.15); border-radius:4px; padding:10px; text-align:center; cursor:pointer; transition:all 0.2s; background:#111820;">
+                                    <div style="font-family:'Rajdhani',sans-serif; font-size:18px; font-weight:700; color:#fff;">₱250</div>
+                                    <div style="font-size:9px; color:rgba(255,255,255,0.3); letter-spacing:1px;">25,000 PTS</div>
+                                </div>
+                            </div>
+
+                            <!-- Custom amount -->
+                            <div style="margin-bottom:20px;">
+                                <div style="font-size:9px; color:rgba(255,255,255,0.3); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">Custom Amount</div>
+                                <div style="position:relative;">
+                                    <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:rgba(255,255,255,0.4); font-size:13px;">₱</span>
+                                    <input type="number" id="customAmount" placeholder="0.00" min="0" step="0.01"
+                                        style="width:100%; background:#111820; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:10px 12px 10px 28px; font-size:13px; color:#fff; font-family:'DM Sans',sans-serif; outline:none;"
+                                        oninput="onCustomAmount(this.value)" onfocus="clearPresets()" />
+                                </div>
+                            </div>
+
+                            <!-- Payment Protocol -->
+                            <div style="font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--green); margin-bottom:10px;">Payment Protocol</div>
+
+                            <div style="display:flex; flex-direction:column; gap:8px;">
+                                <label style="display:flex; align-items:center; gap:10px; border:1px solid var(--green); border-radius:4px; padding:10px 14px; cursor:pointer; background:rgba(0,255,136,0.04);">
+                                    <input type="radio" name="payMethod" value="card" checked style="accent-color:var(--green);" onchange="showPayMethod('card')" />
+                                    <i class="bi bi-credit-card-fill" style="color:var(--green);"></i>
+                                    <span style="font-size:13px; color:#fff;">Credit / Debit Card</span>
+                                </label>
+                                <label style="display:flex; align-items:center; gap:10px; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:10px 14px; cursor:pointer;">
+                                    <input type="radio" name="payMethod" value="gcash" style="accent-color:var(--green);" onchange="showPayMethod('gcash')" />
+                                    <i class="bi bi-qr-code" style="color:rgba(255,255,255,0.4);"></i>
+                                    <span style="font-size:13px; color:rgba(255,255,255,0.5);">Gcash QR Payment</span>
+                                </label>
+                                <label style="display:flex; align-items:center; gap:10px; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:10px 14px; cursor:pointer;">
+                                    <input type="radio" name="payMethod" value="wallet" style="accent-color:var(--green);" onchange="showPayMethod('wallet')" />
+                                    <i class="bi bi-wallet2" style="color:rgba(255,255,255,0.4);"></i>
+                                    <span style="font-size:13px; color:rgba(255,255,255,0.5);">Digital Wallets</span>
+                                </label>
+                            </div>
+
+                            <!-- Footer encryption note -->
+                            <div style="margin-top:16px; font-size:9px; color:rgba(255,255,255,0.2); letter-spacing:1px; display:flex; justify-content:space-between;">
+                                <span><i class="bi bi-shield-lock-fill" style="color:var(--green); margin-right:4px;"></i>256-BIT AES ENCRYPTION ACTIVE</span>
+                                <span style="display:flex; gap:12px;">
+                                    <a href="#" style="color:rgba(255,255,255,0.2); text-decoration:none;">TERMS OF SERVICE</a>
+                                    <a href="#" style="color:rgba(255,255,255,0.2); text-decoration:none;">REFUND POLICY</a>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT SIDE -->
+                        <div style="display:flex; flex-direction:column; gap:14px;">
+
+                            <!-- Card credentials -->
+                            <div id="cardFields">
+                                <div style="font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--green); margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                                    <i class="bi bi-credit-card"></i> Card Credentials
+                                </div>
+                                <div style="display:flex; flex-direction:column; gap:10px;">
+                                    <div>
+                                        <div style="font-size:9px; color:rgba(255,255,255,0.3); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">Cardholder Name</div>
+                                        <input type="text" placeholder="CYBER GHOST" style="width:100%; background:#111820; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:10px 12px; font-size:13px; color:#fff; font-family:'DM Sans',sans-serif; outline:none;" />
+                                    </div>
+                                    <div>
+                                        <div style="font-size:9px; color:rgba(255,255,255,0.3); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">Card Number</div>
+                                        <input type="text" placeholder="**** **** **** 0000" maxlength="19" style="width:100%; background:#111820; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:10px 12px; font-size:13px; color:#fff; font-family:'JetBrains Mono',monospace; outline:none;" />
+                                    </div>
+                                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                                        <div>
+                                            <div style="font-size:9px; color:rgba(255,255,255,0.3); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">Expiry Date</div>
+                                            <input type="text" placeholder="MM/YY" maxlength="5" style="width:100%; background:#111820; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:10px 12px; font-size:13px; color:#fff; font-family:'JetBrains Mono',monospace; outline:none;" />
+                                        </div>
+                                        <div>
+                                            <div style="font-size:9px; color:rgba(255,255,255,0.3); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">CVV Code</div>
+                                            <input type="password" placeholder="***" maxlength="4" style="width:100%; background:#111820; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:10px 12px; font-size:13px; color:#fff; font-family:'JetBrains Mono',monospace; outline:none;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- QR placeholder -->
+                            <div id="gcashFields" style="display:none;">
+                                <div style="font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--green); margin-bottom:12px;"><i class="bi bi-qr-code"></i> Gcash QR Payment</div>
+                                <div style="background:#111820; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:20px; text-align:center; color:rgba(255,255,255,0.3);">
+                                    <i class="bi bi-qr-code" style="font-size:60px; display:block; margin-bottom:10px;"></i>
+                                    <div style="font-size:11px;">Scan with GCash app</div>
+                                </div>
+                            </div>
+
+                            <!-- Wallet placeholder -->
+                            <div id="walletFields" style="display:none;">
+                                <div style="font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--green); margin-bottom:12px;"><i class="bi bi-wallet2"></i> Digital Wallet</div>
+                                <div style="background:#111820; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:20px; text-align:center; color:rgba(255,255,255,0.3);">
+                                    <i class="bi bi-wallet2" style="font-size:40px; display:block; margin-bottom:10px;"></i>
+                                    <div style="font-size:11px;">Select your wallet provider</div>
+                                </div>
+                            </div>
+
+                            <!-- Summary -->
+                            <div style="background:#111820; border:1px solid rgba(255,255,255,0.08); border-radius:4px; padding:14px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.4); letter-spacing:1px; text-transform:uppercase;">Current Balance</span>
+                                    <span style="font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:600; color:#fff;" id="summaryBalance">₱0.00</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.4); letter-spacing:1px; text-transform:uppercase;">Top-up Amount</span>
+                                    <span style="font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:600; color:var(--green);" id="summaryTopup">+₱100.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Execute button -->
+                            <button onclick="executePayment()" style="width:100%; padding:15px; background:var(--green); color:#080f0b; border:none; border-radius:4px; font-family:'Rajdhani',sans-serif; font-size:15px; font-weight:700; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px;" onmouseover="this.style.background='#00cc6a';this.style.boxShadow='0 4px 20px rgba(0,255,136,0.4)'" onmouseout="this.style.background='var(--green)';this.style.boxShadow='none'">
+                                EXECUTE PAYMENT <i class="bi bi-lightning-fill"></i>
+                            </button>
+
+                            <!-- Side decorative barcode -->
+                            <div style="position:absolute; bottom:20px; right:-50px; width:80px; height:60px; border:1px dashed rgba(0,255,136,0.15); border-radius:4px; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+                                <div style="display:flex; gap:2px; height:40px; align-items:flex-end;">
+                                    <div style="width:2px; background:rgba(0,255,136,0.2); height:100%;"></div>
+                                    <div style="width:4px; background:rgba(0,255,136,0.3); height:80%;"></div>
+                                    <div style="width:2px; background:rgba(0,255,136,0.2); height:60%;"></div>
+                                    <div style="width:3px; background:rgba(0,255,136,0.25); height:90%;"></div>
+                                    <div style="width:2px; background:rgba(0,255,136,0.2); height:70%;"></div>
+                                    <div style="width:4px; background:rgba(0,255,136,0.3); height:100%;"></div>
+                                    <div style="width:2px; background:rgba(0,255,136,0.2); height:85%;"></div>
+                                    <div style="width:3px; background:rgba(0,255,136,0.25); height:65%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom protocol verified bar -->
+                <div style="margin-top:14px; display:flex; justify-content:center;">
+                    <div style="border:1px solid rgba(0,255,136,0.2); border-radius:4px; padding:8px 20px; display:flex; align-items:center; gap:10px; min-width:280px; justify-content:space-between;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <div style="width:20px; height:20px; background:var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                <i class="bi bi-check" style="font-size:12px; color:#080f0b;"></i>
+                            </div>
+                            <div>
+                                <div style="font-size:10px; font-weight:700; letter-spacing:1px; color:#fff; text-transform:uppercase;">Protocol Verified</div>
+                                <div style="font-size:9px; color:rgba(255,255,255,0.3);">Payment processor is ready for secure deployment.</div>
+                            </div>
+                        </div>
+                        <i class="bi bi-three-dots-vertical" style="color:rgba(255,255,255,0.3); cursor:pointer;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .amount-preset:hover { border-color: rgba(0,255,136,0.4) !important; background: rgba(0,255,136,0.04) !important; }
+        .selected-preset { border-color: var(--green) !important; background: rgba(0,255,136,0.08) !important; }
+        .selected-preset div:first-child { color: var(--green) !important; }
+    </style>
+
+    <script>
+        let selectedAmount = 100;
+
+        function openTopUp() {
+            // Generate transaction ID
+            const txId = 'GT-' + Math.floor(10000 + Math.random() * 90000) + '-TX';
+            document.getElementById('txId').textContent = 'TRANSACTION ID: ' + txId;
+            // Set current balance
+            const bal = document.getElementById('balanceDisplay').textContent;
+            document.getElementById('summaryBalance').textContent = bal;
+            document.getElementById('summaryTopup').textContent = '+₱' + selectedAmount.toFixed(2);
+            document.getElementById('topUpModal').style.display = 'flex';
+        }
+
+        function closeTopUp() {
+            document.getElementById('topUpModal').style.display = 'none';
+        }
+
+        function selectAmount(amount) {
+            selectedAmount = amount;
+            document.getElementById('customAmount').value = '';
+            document.getElementById('summaryTopup').textContent = '+₱' + amount.toFixed(2);
+            // Update preset styles
+            document.querySelectorAll('.amount-preset').forEach(el => {
+                el.classList.remove('selected-preset');
+                el.style.borderColor = 'rgba(255,255,255,0.15)';
+                el.style.background = '#111820';
+                el.querySelector('div').style.color = '#fff';
+            });
+            const amounts = [50, 100, 250];
+            const idx = amounts.indexOf(amount);
+            if (idx >= 0) {
+                document.querySelectorAll('.amount-preset')[idx].classList.add('selected-preset');
+            }
+        }
+
+        function onCustomAmount(val) {
+            const amount = parseFloat(val) || 0;
+            selectedAmount = amount;
+            document.getElementById('summaryTopup').textContent = '+₱' + amount.toFixed(2);
+        }
+
+        function clearPresets() {
+            document.querySelectorAll('.amount-preset').forEach(el => {
+                el.classList.remove('selected-preset');
+                el.style.borderColor = 'rgba(255,255,255,0.15)';
+                el.style.background = '#111820';
+            });
+        }
+
+        function showPayMethod(method) {
+            document.getElementById('cardFields').style.display = method === 'card' ? 'block' : 'none';
+            document.getElementById('gcashFields').style.display = method === 'gcash' ? 'block' : 'none';
+            document.getElementById('walletFields').style.display = method === 'wallet' ? 'block' : 'none';
+        }
+
+        function executePayment() {
+            if (selectedAmount <= 0) { alert('Please select or enter an amount.'); return; }
+            alert('Payment of ₱' + selectedAmount.toFixed(2) + ' submitted!\n(Connect to backend to process real payments)');
+            closeTopUp();
+        }
+
+        // Close on outside click
+        document.getElementById('topUpModal').addEventListener('click', function(e) {
+            if (e.target === this) closeTopUp();
+        });
+    </script>
+    <script>
+        const playerData = {
+            username: '@(ViewData["Username"]?.ToString() ?? string.Empty)',
+            email: '@(ViewData["Email"]?.ToString() ?? string.Empty)',
+            id: '@(ViewData["Id"]?.ToString() ?? string.Empty)',
+            balance: Number('@(ViewData["Balance"]?.ToString() ?? "0")') || 0
+        };
+
+        function loadPlayerData() {
+            try {
+                updateUI(playerData);
+            } catch (err) {
+                console.error('Failed to load player data:', err);
+            }
+        }
+
+        function updateUI(data) {
+            const name = data.username || '—';
+            const initials = name.slice(0, 2).toUpperCase();
+
+            // Topbar
+            document.getElementById('topbarName').textContent = name;
+
+            // Sidebar
+            document.getElementById('sidebarUsername').textContent = name;
+            document.getElementById('sidebarAvatar').textContent = initials;
+
+            // Profile card
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('profileUsername').textContent = name;
+            document.getElementById('profileEmail').textContent = data.email || '—';
+            document.getElementById('profileId').textContent = 'ID: #' + (data.id || '—');
+            document.getElementById('profileDisplayName').textContent = name;
+
+            // Balance
+            const balance = data.balance || 0;
+            document.getElementById('balanceDisplay').textContent = '₱' + balance.toFixed(2);
+
+            // Time remaining (₱20 = 1hr)
+            const hours = Math.floor(balance / 20);
+            const mins = Math.floor((balance % 20) / 20 * 60);
+            document.getElementById('timeDisplay').textContent = hours + 'h ' + String(mins).padStart(2, '0') + 'm';
+            document.getElementById('secTimeLeft').textContent = hours + 'h ' + String(mins).padStart(2, '0') + 'm';
+            document.getElementById('sessionRemaining').textContent = hours + 'h ' + String(mins).padStart(2, '0') + 'm';
+        }
+
+        function updateCredentials() {
+            const np = document.getElementById('newPassword').value;
+            const cp = document.getElementById('confirmPassword').value;
+            if (!np || np.length < 6) { alert('Password must be at least 6 characters.'); return; }
+            if (np !== cp) { alert('Passwords do not match.'); return; }
+            alert('Credentials updated! (Connect to backend to save)');
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        }
+
+        function confirmLogout() {
+            if (confirm('Log out of your session?')) {
+                window.location.href = '/Player/Logout';
+            }
+        }
+
+        // Live clock
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('currentTime').textContent = h + ':' + m + ':' + s;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Load data on init
+        loadPlayerData();
+    </script>
+</body>
+</html>

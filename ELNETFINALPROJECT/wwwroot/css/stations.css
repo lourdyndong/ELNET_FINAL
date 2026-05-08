@@ -50,10 +50,10 @@ body {
 .user-role { font-size: 10px; color: var(--text3); }
 
 /* LAYOUT */
-.app-body { display: flex; flex: 1; overflow: hidden; }
+.app-body { display: flex; flex: 1; overflow: hidden; height: calc(100vh - 52px); }
 
 /* SIDEBAR */
-.sidebar { width: var(--sidebar-w); background: var(--bg2); border-right: 1px solid var(--border); padding: 20px 12px; display: flex; flex-direction: column; gap: 8px; position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto; }
+.sidebar { width: var(--sidebar-w); background: var(--bg2); border-right: 1px solid var(--border); padding: 20px 12px; display: flex; flex-direction: column; gap: 8px; }
 .sidebar-section-label { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); padding: 4px 8px; margin-top: 8px; }
 .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text2); text-decoration: none; transition: all 0.15s; }
 .sidebar-item:hover { background: var(--bg3); color: var(--text); }

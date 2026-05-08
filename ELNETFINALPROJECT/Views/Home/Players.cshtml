@@ -134,7 +134,7 @@
         .user-role { font-size: 10px; color: var(--text3); }
 
         /* LAYOUT */
-        .app-body { display: flex; flex: 1; overflow: hidden; }
+        .app-body { display: flex; flex: 1; overflow: hidden; height: calc(100vh - 52px); }
 
         /* SIDEBAR */
         .sidebar {
@@ -142,8 +142,6 @@
             border-right: 1px solid var(--border);
             padding: 20px 12px;
             display: flex; flex-direction: column; gap: 8px;
-            position: sticky; top: 52px;
-            height: calc(100vh - 52px); overflow-y: auto;
         }
         .sidebar-section-label {
             font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
@@ -363,7 +361,6 @@
     </div>
     <div class="topnav-right">
         <div class="status-pill"><div class="status-dot"></div></div>
-        <div class="topnav-icon-btn"><i class="bi bi-gear"></i></div>
         <div class="topnav-icon-btn">
             <i class="bi bi-bell"></i>
         </div>
@@ -379,38 +376,7 @@
 
 <div class="app-body">
     <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="sidebar-section-label">Navigation</div>
-        <a class="sidebar-item" href="@Url.Action("Dashboard", "Home")"><i class="bi bi-speedometer2"></i> Dashboard</a>
-        <a class="sidebar-item active" href="@Url.Action("Players", "Home")"><i class="bi bi-people-fill"></i> Players</a>
-        <a class="sidebar-item" href="@Url.Action("Stations", "Home")"><i class="bi bi-display"></i> Stations</a>
-        <a class="sidebar-item" href="@Url.Action("Games", "Home")"><i class="bi bi-controller"></i> Games</a>
-
-        <div class="sidebar-section-label">System</div>
-        <a class="sidebar-item" href="@Url.Action("Settings", "Home")"><i class="bi bi-gear"></i> Settings</a>
-        <a class="sidebar-item" href="@Url.Action("Support", "Home")"><i class="bi bi-headset"></i> Support</a>
-
-        <div class="sidebar-bottom">
-            <div class="station-occ">
-                <div class="occ-header">
-                    <span class="occ-label">Station Occupancy</span>
-                    <span class="occ-count" id="occCount">—</span>
-                </div>
-                <div class="occ-bar"><div class="occ-fill" id="occFill"></div></div>
-                <div class="occ-sub" id="occSub">Loading...</div>
-            </div>
-            <div class="server-load">
-                <div class="server-left">
-                    <i class="bi bi-hdd-network server-icon"></i>
-                    <div class="server-info">
-                        <div class="server-title">Server Load</div>
-                        <div class="server-sub">Online</div>
-                    </div>
-                </div>
-                <div class="server-dot"></div>
-            </div>
-        </div>
-    </aside>
+    <partial name="_Sidebar" />
 
     <!-- MAIN CONTENT -->
     <main class="main">

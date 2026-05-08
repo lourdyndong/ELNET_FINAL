@@ -179,6 +179,7 @@
             display: flex;
             flex: 1;
             overflow: hidden;
+            height: calc(100vh - 52px);
         }
 
         /* SIDEBAR */
@@ -190,10 +191,6 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            position: sticky;
-            top: 52px;
-            height: calc(100vh - 52px);
-            overflow-y: auto;
         }
         .sidebar-section-label {
             font-size: 10px;
@@ -779,7 +776,6 @@
     </div>
     <div class="topnav-right">
         <div class="status-pill"><div class="status-dot"></div> All Systems Online</div>
-        <div class="topnav-icon-btn"><i class="bi bi-gear"></i></div>
         <div class="topnav-icon-btn">
             <i class="bi bi-bell"></i>
             <span class="notif-badge">3</span>
