@@ -77,5 +77,26 @@ namespace ELNETFINALPROJECT.Controllers
         {
             return RequireAdmin() ?? View();
         }
+
+        public IActionResult Games()
+        {
+            return RequireAdmin() ?? View();
+        }
+
+        public IActionResult Settings()
+        {
+            return RequireAdmin() ?? View();
+        }
+
+        public IActionResult Support()
+        {
+            return RequireAdmin() ?? View();
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("IsAdmin");
+            return RedirectToAction("Index");
+        }
     }
 }
