@@ -55,7 +55,9 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
-Controllers/HomeController.cs
+Controllers/
+ HomeController.cs
+ PlayerController.cs
 Data/AppDbContext.cs
 Helpers/PasswordHelper.cs
 Models/
@@ -424,12 +426,16 @@ obj/Debug/net10.0/ELNETFINALPROJECT.GeneratedMSBuildEditorConfig.editorconfig
 [additionalFiles]
 Views/Home/
  Dashboard.cshtml
- Games.cshtml
  Index.cshtml
  Players.cshtml
  Privacy.cshtml
  Stations.cshtml
+Views/Player/
+ Dashboard.cshtml
+ Login.cshtml
+ Profile.cshtml
 Views/Shared/
+ _Header.cshtml
  _Layout.cshtml
  _RegisterModal.cshtml
  _Sidebar.cshtml
@@ -441,12 +447,16 @@ Views/
 [dynamicFiles]
 Views/Home/
  Dashboard.cshtml
- Games.cshtml
  Index.cshtml
  Players.cshtml
  Privacy.cshtml
  Stations.cshtml
+Views/Player/
+ Dashboard.cshtml
+ Login.cshtml
+ Profile.cshtml
 Views/Shared/
+ _Header.cshtml
  _Layout.cshtml
  _RegisterModal.cshtml
  _Sidebar.cshtml

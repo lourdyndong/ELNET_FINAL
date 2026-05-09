@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ELNETFINALPROJECT.Data;
+using ELNETFINALPROJECT.Models;
+using ELNETFINALPROJECT.Helpers;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 
@@ -8,10 +10,12 @@ namespace ELNETFINALPROJECT.Controllers
     public class PlayerController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<PlayerController> _logger;
 
-        public PlayerController(AppDbContext context)
+        public PlayerController(AppDbContext context, ILogger<PlayerController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -23,17 +27,27 @@ namespace ELNETFINALPROJECT.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
+            var identifier = request?.Identifier?.Trim();
+            var password = request?.Password?.Trim();
+
+            if (string.IsNullOrEmpty(identifier) || string.IsNullOrEmpty(password))
             {
                 return BadRequest("Invalid request.");
             }
 
-            var account = _context.Accounts.FirstOrDefault(a => a.Email == request.Email && a.Password == request.Password && a.Role == "Player");
+            var account = _context.Accounts.FirstOrDefault(a =>
+                a.Role == "Player" &&
+                (a.Email == identifier || a.Username == identifier) &&
+                a.Password == password);
 
             if (account != null)
             {
+                HttpContext.Session.SetInt32("UserId", account.Id);
                 HttpContext.Session.SetString("UserEmail", account.Email);
+                HttpContext.Session.SetString("UserName", account.Username);
                 HttpContext.Session.SetString("Role", "Player");
+                account.LastLogin = DateTime.UtcNow;
+                _context.SaveChanges();
                 return Ok(new { success = true });
             }
 
@@ -42,26 +56,217 @@ namespace ELNETFINALPROJECT.Controllers
 
         public IActionResult Dashboard()
         {
-            if (HttpContext.Session.GetString("Role") != "Player")
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
             {
-                return RedirectToAction("Login");
+                return RedirectToAction("Login", "Player");
             }
-            return View(); // Returns Views/Player/Dashboard.cshtml
+
+            var account = _context.Accounts.FirstOrDefault(a => a.Id == userId);
+            if (account == null)
+            {
+                return RedirectToAction("Login", "Player");
+            }
+
+            ViewData["Username"] = account.Username;
+            ViewData["Email"] = account.Email;
+            ViewData["Id"] = account.Id;
+            ViewData["Balance"] = account.Balance;
+            ViewData["DisplayName"] = account.DisplayName ?? account.Username;
+            ViewData["IsVerified"] = account.IsVerified;
+
+            return View();
         }
 
-        public IActionResult Profile()
+        [HttpPost]
+        public IActionResult UpdateProfile(IFormFile profilePicture)
         {
-            if (HttpContext.Session.GetString("Role") != "Player")
+            try
             {
-                return RedirectToAction("Login");
+                var userId = HttpContext.Session.GetInt32("UserId");
+                if (userId == null)
+                {
+                    return Json(new { success = false, message = "Not authenticated" });
+                }
+
+                var account = _context.Accounts.FirstOrDefault(a => a.Id == userId);
+                if (account == null)
+                {
+                    return Json(new { success = false, message = "Account not found" });
+                }
+
+                if (profilePicture != null && profilePicture.Length > 0)
+                {
+                    const long maxFileSize = 5 * 1024 * 1024; // 5MB
+                    if (profilePicture.Length > maxFileSize)
+                    {
+                        return Json(new { success = false, message = "File size exceeds 5MB limit" });
+                    }
+
+                    var allowedMimeTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/webp" };
+                    if (!allowedMimeTypes.Contains(profilePicture.ContentType))
+                    {
+                        return Json(new { success = false, message = "Invalid image format" });
+                    }
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        profilePicture.CopyTo(memoryStream);
+                        account.ProfilePicture = memoryStream.ToArray();
+                    }
+                }
+
+                _context.Accounts.Update(account);
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Profile updated successfully" });
             }
-            return View(); // Returns Views/Player/Profile.cshtml
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating profile");
+                return Json(new { success = false, message = "Error updating profile: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCredentials(string currentPassword, string newPassword, string confirmPassword)
+        {
+            try
+            {
+                var userId = HttpContext.Session.GetInt32("UserId");
+                if (userId == null)
+                {
+                    return Json(new { success = false, message = "Not authenticated" });
+                }
+
+                if (string.IsNullOrEmpty(currentPassword) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword))
+                {
+                    return Json(new { success = false, message = "All fields are required" });
+                }
+
+                if (newPassword != confirmPassword)
+                {
+                    return Json(new { success = false, message = "Passwords do not match" });
+                }
+
+                if (newPassword.Length < 6)
+                {
+                    return Json(new { success = false, message = "Password must be at least 6 characters" });
+                }
+
+                var account = _context.Accounts.FirstOrDefault(a => a.Id == userId);
+                if (account == null)
+                {
+                    return Json(new { success = false, message = "Account not found" });
+                }
+
+                // Verify current password
+                if (!PasswordHelper.Verify(currentPassword, account.Password))
+                {
+                    return Json(new { success = false, message = "Current password is incorrect" });
+                }
+
+                // Update password
+                account.Password = PasswordHelper.Hash(newPassword);
+
+                _context.Accounts.Update(account);
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Password updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating credentials");
+                return Json(new { success = false, message = "Error updating credentials: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult TopUpBalance(decimal amount)
+        {
+            try
+            {
+                var userId = HttpContext.Session.GetInt32("UserId");
+                if (userId == null)
+                {
+                    return Json(new { success = false, message = "Not authenticated" });
+                }
+
+                if (amount <= 0)
+                {
+                    return Json(new { success = false, message = "Amount must be greater than 0" });
+                }
+
+                var account = _context.Accounts.FirstOrDefault(a => a.Id == userId);
+                if (account == null)
+                {
+                    return Json(new { success = false, message = "Account not found" });
+                }
+
+                account.Balance += amount;
+
+                _context.Accounts.Update(account);
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Top-up successful", newBalance = account.Balance });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during top-up");
+                return Json(new { success = false, message = "Error processing top-up: " + ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetProfileData()
+        {
+            try
+            {
+                var userId = HttpContext.Session.GetInt32("UserId");
+                if (userId == null)
+                {
+                    return Json(new { success = false, message = "Not authenticated" });
+                }
+
+                var account = _context.Accounts.FirstOrDefault(a => a.Id == userId);
+                if (account == null)
+                {
+                    return Json(new { success = false, message = "Account not found" });
+                }
+
+                var profilePictureBase64 = account.ProfilePicture != null 
+                    ? "data:image/png;base64," + Convert.ToBase64String(account.ProfilePicture)
+                    : null;
+
+                return Json(new 
+                { 
+                    success = true, 
+                    username = account.Username,
+                    email = account.Email,
+                    displayName = account.DisplayName ?? account.Username,
+                    balance = account.Balance,
+                    isVerified = account.IsVerified,
+                    profilePicture = profilePictureBase64
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting profile data");
+                return Json(new { success = false, message = "Error: " + ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Player");
         }
     }
 
     public class LoginRequest
     {
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        public string Identifier { get; set; }
+        public string Password { get; set; }
     }
 }

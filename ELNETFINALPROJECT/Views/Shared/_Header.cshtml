@@ -1,0 +1,51 @@
+@using Microsoft.AspNetCore.Http
+@{
+    // Get user info from session
+    var userName = Context.Session.GetString("UserName") ?? "Admin";
+    var userEmail = Context.Session.GetString("UserEmail") ?? "";
+    var userRole = Context.Session.GetString("Role") ?? "Manager";
+    
+    // Generate user avatar initials
+    var initials = string.Join("", 
+        (userName?.Split(' ') ?? new[] { "A" })
+        .Where(x => !string.IsNullOrEmpty(x))
+        .Select(x => x[0].ToString().ToUpper())
+        .Take(2)
+    );
+    if (string.IsNullOrEmpty(initials)) initials = "A";
+}
+
+<!-- TOP NAV -->
+<nav class="topnav">
+    <a class="topnav-brand" href="#">
+        <div class="brand-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8h4M5 6v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="10.5" cy="7" r="0.8" fill="currentColor"/>
+                <circle cx="12.5" cy="9" r="0.8" fill="currentColor"/>
+                <path d="M1 6C1 4.9 1.9 4 3 4h10C14.1 4 15 4.9 15 6v3c0 1.7-1.3 3-3 3H4C2.3 12 1 10.7 1 9V6z" stroke="currentColor" stroke-width="1.4" fill="none"/>
+            </svg>
+        </div>
+        <span class="brand-label"><span>Game</span>Time</span>
+        <span class="admin-pill">@(userRole?.ToUpper() ?? "ADMIN")</span>
+    </a>
+    <div class="topnav-search">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" placeholder="Search players, stations..." />
+    </div>
+    <div class="topnav-right">
+        <div class="status-pill"><div class="status-dot"></div> All Systems Online</div>
+        <div class="topnav-icon-btn">
+            <i class="bi bi-bell"></i>
+            <span class="notif-badge">3</span>
+        </div>
+        <div class="user-chip">
+            <div class="user-avatar">@initials</div>
+            <div class="user-info">
+                <div class="user-name">@userName</div>
+                <div class="user-role">@(userRole == "Admin" ? "Manager" : userRole)</div>
+            </div>
+            <i class="bi bi-chevron-down" style="font-size:10px;color:var(--text3);margin-left:2px;"></i>
+        </div>
+    </div>
+</nav>

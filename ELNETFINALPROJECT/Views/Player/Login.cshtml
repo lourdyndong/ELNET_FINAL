@@ -647,7 +647,7 @@
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const email = document.querySelector('input[name="email"]').value;
+            const identifier = document.querySelector('input[name="email"]').value;
             const password = document.getElementById('playerPassword').value;
 
             try {
@@ -656,7 +656,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ identifier, email: identifier, password })
                 });
 
                 if (response.ok) {
