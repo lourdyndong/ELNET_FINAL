@@ -10,5 +10,9 @@ namespace ELNETFINALPROJECT.Models
         public string Role { get; set; } = string.Empty;
         public string Status { get; set; } = "Offline";
         public DateTime RegisteredDate { get; set; } = DateTime.UtcNow;
+        public byte[]? ProfilePicture { get; set; }
+        public string? DisplayName { get; set; }
+        public DateTime? LastLogin { get; set; }
+        public bool IsVerified { get; set; } = false;
     }
 }
