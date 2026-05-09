@@ -418,7 +418,7 @@
             padding: 36px 40px;
             position: relative;
             overflow: hidden;
-            min-height: 200px;
+            min-height: 280px;
         }
         /* Network lines background */
         .hero-card-bg {
@@ -1323,11 +1323,11 @@
         <!-- User section -->
         <div class="sidebar-user">
             <div class="sidebar-user-avatar" id="sidebarAvatar">
-                <span id="sidebarAvatarInitials">CG</span>
+                <span id="sidebarAvatarInitials">@(ViewData["DisplayName"]?.ToString()?.Substring(0, 2).ToUpper() ?? "CG")</span>
             </div>
             <div class="sidebar-user-info">
-                <div class="sidebar-username" id="sidebarUsername">CyberGhost</div>
-                <div class="sidebar-rank">Platinum Rank</div>
+                <div class="sidebar-username" id="sidebarUsername">@ViewData["DisplayName"] ?? "User"</div>
+                <div class="sidebar-rank" id="sidebarRank">--</div>
             </div>
         </div>
 
@@ -1343,7 +1343,7 @@
         <div class="topbar">
             <div class="topbar-left">
                 <span class="topbar-section">Command Center</span>
-                <span class="topbar-title">Welcome back, Agent <span id="topbarName">Ghost</span></span>
+                <span class="topbar-title">Welcome back, Agent <span id="topbarName">@(ViewData["DisplayName"]?.ToString() ?? "Guest")</span></span>
             </div>
             <div class="topbar-right">
                 <div class="topbar-status">
@@ -1394,9 +1394,9 @@
 
                 <div class="hero-content">
                     <div class="hero-label">Available Time Credits</div>
-                    <div class="hero-balance" id="balanceDisplay">₱1,458</div>
+                    <div class="hero-balance" id="balanceDisplay">₱@((ViewData["Balance"] is decimal balance ? balance.ToString("F2") : "0.00"))</div>
                     <div class="hero-time-label">Remaining Play Time</div>
-                    <div class="hero-time-value" id="remainingTime">72h 54m</div>
+                    <div class="hero-time-value" id="remainingTime">--:--</div>
                     <button class="topup-btn" onclick="openTopUp()">
                         Top Up Balance &nbsp;<i class="bi bi-lightning-fill"></i>
                     </button>
@@ -1410,7 +1410,7 @@
                 <div class="profile-identity">
                     <div class="profile-photo-wrap">
                         <div class="profile-photo" id="profilePhoto">
-                            <span id="profilePhotoInitials">CG</span>
+                            <span id="profilePhotoInitials">@(ViewData["DisplayName"]?.ToString()?.Substring(0, 2).ToUpper() ?? "CG")</span>
                         </div>
                         <div class="profile-edit-btn" onclick="document.getElementById('profilePictureInput').click()">
                             <i class="bi bi-pencil-fill"></i>
@@ -1418,17 +1418,17 @@
                         <input type="file" id="profilePictureInput" accept="image/*" style="display:none;" onchange="handleProfilePictureUpload(this)" />
                     </div>
                     <div class="profile-info">
-                        <div class="profile-username-text" id="profileUsername">CyberGhost</div>
-                        <div class="profile-email-text" id="profileEmail">cyber.ghost@gametime.sys</div>
+                        <div class="profile-username-text" id="profileUsername">@ViewData["DisplayName"] ?? "User"</div>
+                        <div class="profile-email-text" id="profileEmail">@ViewData["Email"]</div>
                         <span class="verified-badge">
                             <i class="bi bi-check-circle-fill" style="font-size:10px;"></i>
-                            Verified Player
+                            @((bool)ViewData["IsVerified"] ? "Verified Player" : "Unverified")
                         </span>
                     </div>
                 </div>
 
                 <div class="field-label">Player Name</div>
-                <input type="text" class="field-input" id="profileDisplayName" value="CyberGhost" disabled />
+                <input type="text" class="field-input" id="profileDisplayName" value="@ViewData["DisplayName"] ?? \"User\"" disabled />
 
                 <button class="update-profile-btn" id="updateProfileBtn" onclick="saveProfile()" disabled>
                     Update Profile
@@ -1591,65 +1591,159 @@
                                         <input type="text" class="modal-input" placeholder="MM/YY" maxlength="5" style="font-family:'JetBrains Mono',monospace;" />
                                     </div>
                                     <div class="card-field">
-                                        <div class="card-field-label">CVV Code</div>
-                                        <input type="password" class="modal-input" placeholder="***" maxlength="4" style="font-family:'JetBrains Mono',monospace;" />
+                                        <div class="card-field-label">CVV</div>
+                                        <input type="text" class="modal-input" placeholder="123" maxlength="3" style="font-family:'JetBrains Mono',monospace;" />
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Gcash fields -->
                             <div id="gcashFields" style="display:none;">
-                                <div class="card-fields-label"><i class="bi bi-qr-code"></i> Gcash QR Payment</div>
-                                <div style="background:#111820;border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:30px;text-align:center;color:rgba(255,255,255,0.25);">
-                                    <i class="bi bi-qr-code" style="font-size:60px;display:block;margin-bottom:10px;"></i>
-                                    <div style="font-size:11px;">Scan with GCash app</div>
+                                <div class="card-fields-label"><i class="bi bi-qr-code"></i> Gcash Payment</div>
+                                <div class="card-field">
+                                    <div class="card-field-label">Gcash Number</div>
+                                    <input type="text" class="modal-input" placeholder="09XXXXXXXXX" maxlength="11" style="font-family:'JetBrains Mono',monospace;" />
                                 </div>
                             </div>
 
+                            <!-- Wallet fields -->
                             <div id="walletFields" style="display:none;">
-                                <div class="card-fields-label"><i class="bi bi-wallet2"></i> Digital Wallet</div>
-                                <div style="background:#111820;border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:30px;text-align:center;color:rgba(255,255,255,0.25);">
-                                    <i class="bi bi-wallet2" style="font-size:40px;display:block;margin-bottom:10px;"></i>
-                                    <div style="font-size:11px;">Select your wallet provider</div>
+                                <div class="card-fields-label"><i class="bi bi-wallet2"></i> Digital Wallets</div>
+                                <div class="card-field">
+                                    <div class="card-field-label">Wallet Address</div>
+                                    <input type="text" class="modal-input" placeholder="0xabcd...1234" style="font-family:'JetBrains Mono',monospace;" />
                                 </div>
                             </div>
-
-                            <div class="modal-summary">
-                                <div class="modal-summary-row">
-                                    <span>Current Balance</span>
-                                    <span id="summaryBalance">₱0.00</span>
-                                </div>
-                                <div class="modal-summary-row">
-                                    <span>Top-up Amount</span>
-                                    <span class="green" id="summaryTopup">+₱100.00</span>
-                                </div>
-                            </div>
-
-                            <button class="execute-btn" onclick="executePayment()">
-                                EXECUTE PAYMENT <i class="bi bi-lightning-fill"></i>
-                            </button>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="modal-footer">
-                <div class="modal-footer-inner">
-                    <div class="mf-check"><i class="bi bi-check"></i></div>
-                    <div>
-                        <div class="mf-text-title">Protocol Verified</div>
-                        <div class="mf-text-sub">Payment processor is ready for secure deployment.</div>
+                    <div class="execute-btn" onclick="executePaymentWithValidation()">
+                        <i class="bi bi-check-lg"></i> Confirm Top Up
                     </div>
-                    <i class="bi bi-three-dots-vertical" style="color:rgba(255,255,255,0.25);cursor:pointer;"></i>
+
+                    <div class="modal-footer">
+                        <div class="modal-footer-inner">
+                            <div class="mf-text-title">Secure Payment Gateway</div>
+                            <div class="mf-check" style="display:none;">✔</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Live Session JavaScript -->
-    <script src="~/js/live-session.js"></script>
-    
-    <!-- Payment Control JavaScript -->
-    <script src="~/js/payment-control.js"></script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/payment-control.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/live-session.js"></script>
+    <script>
+        // Sidebar avatar fallback initials
+        function setDefaultAvatar() {
+            $('.sidebar-user-avatar').each(function() {
+                var initials = $(this).text().trim();
+                if (initials === '') {
+                    $(this).text('CG').css('background', '#00ff88');
+                }
+            });
+        }
 
+        setDefaultAvatar();
+
+        // Confirm logout function
+        function confirmLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Redirect to logout endpoint
+                window.location.href = '/Player/Logout';
+            }
+        }
+
+        // Top up modal functions
+        function openTopUp() {
+            $('#topUpModal').addClass('open');
+            $('body').css('overflow', 'hidden');
+        }
+
+        function closeTopUp() {
+            $('#topUpModal').removeClass('open');
+            $('body').css('overflow', '');
+        }
+
+        function selectAmount(amount) {
+            topUpAmount = amount;
+            $('.amount-preset').removeClass('selected');
+            $(event.currentTarget).addClass('selected');
+            $('#customAmount').val('');
+        }
+
+        function onCustomAmount(value) {
+            topUpAmount = parseFloat(value) || 0;
+            $('.amount-preset').removeClass('selected');
+        }
+
+        function clearPresets() {
+            $('.amount-preset').removeClass('selected');
+        }
+
+        function showPayMethod(method) {
+            $('#cardFields').hide();
+            $('#gcashFields').hide();
+            $('#walletFields').hide();
+            $('#' + method + 'Fields').show();
+        }
+
+        // Initial setup
+        $(document).ready(function() {
+            showPayMethod('card'); // Show card fields by default
+
+            // Load real dashboard data from backend
+            loadDashboardData();
+            getProfileData();
+            
+            // Refresh dashboard data every 30 seconds
+            setInterval(loadDashboardData, 30000);
+        });
+
+        /**
+         * Load real dashboard data from backend
+         */
+        function loadDashboardData() {
+            fetch('/Player/GetDashboardData')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update balance
+                        const balance = '₱' + data.balance.toFixed(2);
+                        $('#balanceDisplay').text(balance);
+                        
+                        // Update player rank
+                        $('#sidebarRank').text(data.playerRank);
+                        
+                        // Update remaining playtime
+                        const remainingTime = `${data.remainingPlaytimeHours}h ${String(data.remainingPlaytimeMinutes).padStart(2, '0')}m`;
+                        $('#remainingTime').text(remainingTime);
+                        
+                        // Update live session if active
+                        if (data.currentGame && data.sessionStartTime) {
+                            const sessionStart = new Date(data.sessionStartTime);
+                            const elapsedMs = Date.now() - sessionStart.getTime();
+                            const elapsedHours = Math.floor(elapsedMs / (1000 * 60 * 60));
+                            const elapsedMinutes = Math.floor((elapsedMs % (1000 * 60 * 60)) / (1000 * 60));
+                            
+                            $('#liveSessionCard').show();
+                            $('#sessionGame').text(data.currentGame);
+                            $('#sessionStation').text(data.currentStation || 'N/A');
+                            $('#sessionElapsed').text(`${elapsedHours}h ${String(elapsedMinutes).padStart(2, '0')}m`);
+                            $('#sessionRate').text(`₱${data.sessionHourlyRate.toFixed(2)} / hr`);
+                            $('#sessionRemaining').text(remainingTime);
+                        } else {
+                            $('#liveSessionCard').hide();
+                        }
+                    }
+                })
+                .catch(error => console.error('Error loading dashboard data:', error));
+        }
+    </script>
 </body>
 </html>
