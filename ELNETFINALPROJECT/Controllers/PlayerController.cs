@@ -251,16 +251,90 @@ namespace ELNETFINALPROJECT.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting profile data");
-                return Json(new { success = false, message = "Error: " + ex.Message });
+                _logger.LogError(ex, "Error loading profile");
+                return Json(new { success = false, message = "Error loading profile: " + ex.Message });
             }
         }
 
+        /// <summary>
+        /// Get real dashboard data - player stats, rank, playtime, etc.
+        /// </summary>
         [HttpGet]
+        public IActionResult GetDashboardData()
+        {
+            try
+            {
+                var userId = HttpContext.Session.GetInt32("UserId");
+                if (userId == null)
+                {
+                    return Json(new { success = false, message = "Not authenticated" });
+                }
+
+                var account = _context.Accounts.FirstOrDefault(a => a.Id == userId);
+                if (account == null)
+                {
+                    return Json(new { success = false, message = "Account not found" });
+                }
+
+                // Calculate player rank based on account age and activity
+                string playerRank = GetPlayerRank(account);
+
+                // Calculate total playtime (hours and minutes)
+                var totalPlaytimeHours = account.TotalPlaytimeMinutes / 60;
+                var totalPlaytimeMinutes = account.TotalPlaytimeMinutes % 60;
+
+                // Calculate remaining playtime from balance (assuming ₱25/hour rate)
+                decimal hourlyRate = 25m;
+                int remainingHours = (int)(account.Balance / hourlyRate);
+                int remainingMinutes = (int)((account.Balance % hourlyRate / hourlyRate) * 60);
+
+                return Json(new
+                {
+                    success = true,
+                    balance = account.Balance,
+                    playerRank = playerRank,
+                    totalPlaytimeHours = totalPlaytimeHours,
+                    totalPlaytimeMinutes = totalPlaytimeMinutes,
+                    remainingPlaytimeHours = remainingHours,
+                    remainingPlaytimeMinutes = remainingMinutes,
+                    accountCreatedDate = account.CreatedAt,
+                    lastLogin = account.LastLogin,
+                    totalSessions = account.TotalSessions
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading dashboard data");
+                return Json(new { success = false, message = "Error loading dashboard: " + ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Determine player rank based on account metrics
+        /// </summary>
+        private string GetPlayerRank(Account account)
+        {
+            var accountAgeInDays = (DateTime.UtcNow - account.CreatedAt).TotalDays;
+            
+            // Rank progression: Bronze -> Silver -> Gold -> Platinum -> Diamond -> Legend
+            if (account.TotalSessions >= 100 && accountAgeInDays >= 90)
+                return "Legend";
+            if (account.TotalSessions >= 75 && accountAgeInDays >= 60)
+                return "Diamond";
+            if (account.TotalSessions >= 50 && accountAgeInDays >= 30)
+                return "Platinum";
+            if (account.TotalSessions >= 25 && accountAgeInDays >= 14)
+                return "Gold";
+            if (account.TotalSessions >= 10 && accountAgeInDays >= 7)
+                return "Silver";
+            
+            return "Bronze";
+        }
+
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Login", "Player");
+            return RedirectToAction("Login");
         }
     }
 
