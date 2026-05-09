@@ -1344,6 +1344,12 @@
                     </div>
                 </div>
 
+                <div class="sec-label">Current Access Key</div>
+                <div class="sec-input-wrap">
+                    <input type="password" class="sec-input" id="currentPassword" placeholder="••••••••••" />
+                    <i class="bi bi-lock sec-input-icon"></i>
+                </div>
+
                 <div class="sec-label">New Access Key</div>
                 <div class="sec-input-wrap">
                     <input type="password" class="sec-input" id="newPassword" placeholder="••••••••••" />
@@ -1621,11 +1627,14 @@
         }
 
         function updateCredentials() {
+            const cp = document.getElementById('currentPassword').value;
             const np = document.getElementById('newPassword').value;
-            const cp = document.getElementById('confirmPassword').value;
-            if (!np || np.length < 6) { alert('Password must be at least 6 characters.'); return; }
-            if (np !== cp) { alert('Passwords do not match.'); return; }
+            const cnp = document.getElementById('confirmPassword').value;
+            if (!cp) { alert('Please enter your current access key.'); return; }
+            if (!np || np.length < 6) { alert('New password must be at least 6 characters.'); return; }
+            if (np !== cnp) { alert('New passwords do not match.'); return; }
             alert('Credentials updated! (Connect to backend to save)');
+            document.getElementById('currentPassword').value = '';
             document.getElementById('newPassword').value = '';
             document.getElementById('confirmPassword').value = '';
         }
