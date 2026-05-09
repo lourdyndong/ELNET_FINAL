@@ -1343,7 +1343,7 @@
                 <div class="field-label">Player Name</div>
                 <input type="text" class="field-input" id="profileDisplayName" value="CyberGhost" disabled />
 
-                <button class="update-profile-btn" id="updateProfileBtn" disabled>
+                <button class="update-profile-btn" id="updateProfileBtn" onclick="saveProfile()" disabled>
                     Update Profile
                 </button>
             </div>
@@ -1636,8 +1636,30 @@
 
         function executePayment() {
             if (selectedAmount <= 0) { alert('Please select or enter an amount.'); return; }
-            alert('Payment of ₱' + selectedAmount.toFixed(2) + ' submitted!\n(Connect to backend to process real payments)');
-            closeTopUp();
+            
+            fetch('/Player/TopUpBalance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'amount': selectedAmount
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Payment of ₱' + selectedAmount.toFixed(2) + ' processed successfully!');
+                    document.getElementById('balanceDisplay').textContent = '₱' + data.newBalance.toLocaleString('en-PH', {minimumFractionDigits:0, maximumFractionDigits:2});
+                    closeTopUp();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error processing payment');
+            });
         }
 
         function updateCredentials() {
@@ -1647,10 +1669,33 @@
             if (!cp) { alert('Please enter your current access key.'); return; }
             if (!np || np.length < 6) { alert('New password must be at least 6 characters.'); return; }
             if (np !== cnp) { alert('New passwords do not match.'); return; }
-            alert('Credentials updated! (Connect to backend to save)');
-            document.getElementById('currentPassword').value = '';
-            document.getElementById('newPassword').value = '';
-            document.getElementById('confirmPassword').value = '';
+
+            fetch('/Player/UpdateCredentials', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'currentPassword': cp,
+                    'newPassword': np,
+                    'confirmPassword': cnp
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Credentials updated successfully!');
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error updating credentials');
+            });
         }
 
         function handleProfilePictureUpload(input) {
@@ -1662,6 +1707,36 @@
                 };
                 reader.readAsDataURL(input.files[0]);
             }
+        }
+
+        function saveProfile() {
+            const fileInput = document.getElementById('profilePictureInput');
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert('Please upload a profile picture first');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('profilePicture', fileInput.files[0]);
+
+            fetch('/Player/UpdateProfile', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Profile updated successfully!');
+                    fileInput.value = '';
+                    document.getElementById('updateProfileBtn').disabled = true;
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error updating profile');
+            });
         }
 
         function confirmLogout() {
