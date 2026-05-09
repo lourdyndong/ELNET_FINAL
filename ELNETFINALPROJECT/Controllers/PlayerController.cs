@@ -161,13 +161,13 @@ namespace ELNETFINALPROJECT.Controllers
                 }
 
                 // Verify current password
-                if (!PasswordHelper.VerifyPassword(currentPassword, account.Password))
+                if (!PasswordHelper.Verify(currentPassword, account.Password))
                 {
                     return Json(new { success = false, message = "Current password is incorrect" });
                 }
 
                 // Update password
-                account.Password = PasswordHelper.HashPassword(newPassword);
+                account.Password = PasswordHelper.Hash(newPassword);
 
                 _context.Accounts.Update(account);
                 _context.SaveChanges();
