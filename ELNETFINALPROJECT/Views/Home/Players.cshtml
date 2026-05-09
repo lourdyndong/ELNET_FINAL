@@ -517,7 +517,8 @@
         try {
             const res = await fetch('/Home/GetPlayers');
             if (res.ok) {
-                players = await res.json();
+                const data = await res.json();
+                players = data.success ? data.players : data;
                 renderPlayers();
                 updateStats();
             }
@@ -660,9 +661,15 @@
         const active = players.filter(p => p.status === 'Active').length;
         const total = players.length;
         const cash = players.reduce((s, p) => s + p.balance, 0);
-        document.getElementById('statPlayersIn').textContent = active;
-        document.getElementById('statTotalReg').textContent = total;
-        document.getElementById('statCash').textContent = '₱' + cash.toFixed(2);
+        
+        const elPlayersIn = document.getElementById('statPlayersIn');
+        if (elPlayersIn) elPlayersIn.textContent = active;
+        
+        const elTotalReg = document.getElementById('statTotalReg');
+        if (elTotalReg) elTotalReg.textContent = total;
+        
+        const elCash = document.getElementById('statCash');
+        if (elCash) elCash.textContent = '₱' + cash.toFixed(2);
     }
 
     // Close modal on outside click
