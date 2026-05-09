@@ -435,6 +435,7 @@ Views/Player/
  Login.cshtml
  Profile.cshtml
 Views/Shared/
+ _Header.cshtml
  _Layout.cshtml
  _RegisterModal.cshtml
  _Sidebar.cshtml
@@ -455,6 +456,7 @@ Views/Player/
  Login.cshtml
  Profile.cshtml
 Views/Shared/
+ _Header.cshtml
  _Layout.cshtml
  _RegisterModal.cshtml
  _Sidebar.cshtml

@@ -1202,6 +1202,79 @@
             font-size: 9px;
             color: rgba(255,255,255,0.3);
         }
+
+        /* ── LIVE SESSION PANEL ── */
+        .live-session-card {
+            background: rgba(0,255,136,0.06);
+            border: 1px solid rgba(0,255,136,0.25);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .live-session-header {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--green);
+        }
+
+        .live-session-header i {
+            font-size: 13px;
+            animation: pulse-glow 2s infinite;
+        }
+
+        @@keyframes pulse-glow {
+            0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(0,255,136,0.6); }
+            50% { opacity: 0.5; text-shadow: 0 0 4px rgba(0,255,136,0.3); }
+        }
+
+        .session-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .session-label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .session-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--green);
+            letter-spacing: 1px;
+        }
+
+        .session-value.game {
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+        }
+
+        .session-value.station {
+            font-size: 15px;
+        }
+
+        .session-value.remaining {
+            color: var(--amber);
+        }
     </style>
 </head>
 <body>
@@ -1285,6 +1358,20 @@
 
         <!-- CONTENT -->
         <div class="content">
+
+            <!-- LIVE SESSION CARD -->
+            <div class="live-session-card" id="liveSessionCard" style="display:none;">
+                <div class="live-session-header"><i class="bi bi-play-circle-fill"></i> LIVE SESSION</div>
+                <div>
+                    <div class="session-item"><span class="session-label">Game</span><span class="session-value game" id="sessionGame">—</span></div>
+                    <div class="session-item"><span class="session-label">Station</span><span class="session-value station" id="sessionStation">—</span></div>
+                </div>
+                <div>
+                    <div class="session-item"><span class="session-label">Elapsed</span><span class="session-value" id="sessionElapsed">0h 00m</span></div>
+                    <div class="session-item"><span class="session-label">Rate</span><span class="session-value" id="sessionRate">₱25 / hr</span></div>
+                </div>
+                <div class="session-item" style="grid-column: 1 / -1;"><span class="session-label">Remaining</span><span class="session-value remaining" id="sessionRemaining">0h 00m</span></div>
+            </div>
 
             <!-- BALANCE HERO CARD -->
             <div class="hero-card">
@@ -1418,7 +1505,7 @@
                         <div>
                             <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
                                 <div style="width:26px;height:26px;background:var(--green);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h4M5 6v4" stroke="#111" stroke-width="2" stroke-linecap="round" /><circle cx="10.5" cy="7" r="0.9" fill="#111" /><circle cx="12.5" cy="9" r="0.9" fill="#111" /></svg>
+                                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h4M5 6v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle cx="10.5" cy="7" r="0.9" fill="currentColor" /><circle cx="12.5" cy="9" r="0.9" fill="currentColor" /></svg>
                                 </div>
                                 <div>
                                     <div style="font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;color:#fff;">BALANCE PROTOCOL</div>
@@ -1547,12 +1634,10 @@
 
             <div class="modal-footer">
                 <div class="modal-footer-inner">
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <div class="mf-check"><i class="bi bi-check"></i></div>
-                        <div>
-                            <div class="mf-text-title">Protocol Verified</div>
-                            <div class="mf-text-sub">Payment processor is ready for secure deployment.</div>
-                        </div>
+                    <div class="mf-check"><i class="bi bi-check"></i></div>
+                    <div>
+                        <div class="mf-text-title">Protocol Verified</div>
+                        <div class="mf-text-sub">Payment processor is ready for secure deployment.</div>
                     </div>
                     <i class="bi bi-three-dots-vertical" style="color:rgba(255,255,255,0.25);cursor:pointer;"></i>
                 </div>
@@ -1560,196 +1645,8 @@
         </div>
     </div>
 
-    <script>
-        let selectedAmount = 100;
+    <!-- Live Session JavaScript -->
+    <script src="~/js/live-session.js"></script>
 
-        // ── Load player data from Razor ViewData ──
-        const playerData = {
-            username: '@(ViewData["Username"]?.ToString() ?? string.Empty)',
-            email: '@(ViewData["Email"]?.ToString() ?? string.Empty)',
-            id: '@(ViewData["Id"]?.ToString() ?? string.Empty)',
-            balance: Number('@(ViewData["Balance"]?.ToString() ?? "0")') || 0
-        };
-
-        function loadPlayerData() {
-            try { updateUI(playerData); } catch(e) { console.error(e); }
-        }
-
-        function updateUI(data) {
-            const name = data.username || '—';
-            const initials = name.replace(/\s+/g, '').slice(0, 2).toUpperCase();
-
-            document.getElementById('topbarName').textContent = name;
-            document.getElementById('sidebarUsername').textContent = name;
-            document.getElementById('sidebarAvatarInitials').textContent = initials;
-            document.getElementById('profileUsername').textContent = name;
-            document.getElementById('profileEmail').textContent = data.email || '—';
-            document.getElementById('profileDisplayName').value = name;
-            document.getElementById('profilePhotoInitials').textContent = initials;
-
-            const balance = data.balance || 0;
-            document.getElementById('balanceDisplay').textContent = '₱' + balance.toLocaleString('en-PH', {minimumFractionDigits:0, maximumFractionDigits:2});
-
-            const hours = Math.floor(balance / 20);
-            const mins = Math.floor((balance % 20) / 20 * 60);
-            document.getElementById('remainingTime').textContent = hours + 'h ' + String(mins).padStart(2,'0') + 'm';
-        }
-
-        function openTopUp() {
-            const txId = 'GT-' + Math.floor(10000 + Math.random() * 90000) + '-TX';
-            document.getElementById('txId').textContent = 'TRANSACTION ID: ' + txId;
-            document.getElementById('summaryBalance').textContent = document.getElementById('balanceDisplay').textContent;
-            document.getElementById('summaryTopup').textContent = '+₱' + selectedAmount.toFixed(2);
-            document.getElementById('topUpModal').classList.add('open');
-        }
-
-        function closeTopUp() {
-            document.getElementById('topUpModal').classList.remove('open');
-        }
-
-        function selectAmount(amount) {
-            selectedAmount = amount;
-            document.getElementById('customAmount').value = '';
-            document.getElementById('summaryTopup').textContent = '+₱' + amount.toFixed(2);
-            document.querySelectorAll('.amount-preset').forEach(el => el.classList.remove('selected'));
-            const amounts = [50, 100, 250];
-            const idx = amounts.indexOf(amount);
-            if (idx >= 0) document.querySelectorAll('.amount-preset')[idx].classList.add('selected');
-        }
-
-        function onCustomAmount(val) {
-            selectedAmount = parseFloat(val) || 0;
-            document.getElementById('summaryTopup').textContent = '+₱' + selectedAmount.toFixed(2);
-        }
-
-        function clearPresets() {
-            document.querySelectorAll('.amount-preset').forEach(el => el.classList.remove('selected'));
-        }
-
-        function showPayMethod(method) {
-            document.getElementById('cardFields').style.display = method === 'card' ? 'block' : 'none';
-            document.getElementById('gcashFields').style.display = method === 'gcash' ? 'block' : 'none';
-            document.getElementById('walletFields').style.display = method === 'wallet' ? 'block' : 'none';
-            document.querySelectorAll('.pay-label').forEach(el => el.classList.remove('active'));
-            event.currentTarget.closest('.pay-label')?.classList.add('active');
-        }
-
-        function executePayment() {
-            if (selectedAmount <= 0) { alert('Please select or enter an amount.'); return; }
-            
-            fetch('/Player/TopUpBalance', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    'amount': selectedAmount
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Payment of ₱' + selectedAmount.toFixed(2) + ' processed successfully!');
-                    document.getElementById('balanceDisplay').textContent = '₱' + data.newBalance.toLocaleString('en-PH', {minimumFractionDigits:0, maximumFractionDigits:2});
-                    closeTopUp();
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error processing payment');
-            });
-        }
-
-        function updateCredentials() {
-            const cp = document.getElementById('currentPassword').value;
-            const np = document.getElementById('newPassword').value;
-            const cnp = document.getElementById('confirmPassword').value;
-            if (!cp) { alert('Please enter your current access key.'); return; }
-            if (!np || np.length < 6) { alert('New password must be at least 6 characters.'); return; }
-            if (np !== cnp) { alert('New passwords do not match.'); return; }
-
-            fetch('/Player/UpdateCredentials', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    'currentPassword': cp,
-                    'newPassword': np,
-                    'confirmPassword': cnp
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Credentials updated successfully!');
-                    document.getElementById('currentPassword').value = '';
-                    document.getElementById('newPassword').value = '';
-                    document.getElementById('confirmPassword').value = '';
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error updating credentials');
-            });
-        }
-
-        function handleProfilePictureUpload(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profilePhoto').innerHTML = '<img src="' + e.target.result + '" />';
-                    document.getElementById('updateProfileBtn').disabled = false;
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function saveProfile() {
-            const fileInput = document.getElementById('profilePictureInput');
-            if (!fileInput.files || fileInput.files.length === 0) {
-                alert('Please upload a profile picture first');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('profilePicture', fileInput.files[0]);
-
-            fetch('/Player/UpdateProfile', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Profile updated successfully!');
-                    fileInput.value = '';
-                    document.getElementById('updateProfileBtn').disabled = true;
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error updating profile');
-            });
-        }
-
-        function confirmLogout() {
-            if (confirm('Log out of your session?')) {
-                window.location.href = '/Player/Logout';
-            }
-        }
-
-        document.getElementById('topUpModal').addEventListener('click', function(e) {
-            if (e.target === this) closeTopUp();
-        });
-
-        loadPlayerData();
-    </script>
 </body>
 </html>
