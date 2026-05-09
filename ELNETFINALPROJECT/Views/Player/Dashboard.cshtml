@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap/icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after {
@@ -642,6 +642,17 @@
         }
 
             .update-profile-btn:hover {
+                border-color: rgba(0,255,136,0.3);
+                color: var(--green);
+            }
+
+            .update-profile-btn:disabled {
+                cursor: not-allowed;
+                opacity: 0.5;
+                color: var(--text3);
+            }
+
+            .update-profile-btn:not(:disabled):hover {
                 border-color: rgba(0,255,136,0.3);
                 color: var(--green);
             }
@@ -1314,7 +1325,10 @@
                         <div class="profile-photo" id="profilePhoto">
                             <span id="profilePhotoInitials">CG</span>
                         </div>
-                        <div class="profile-edit-btn"><i class="bi bi-pencil-fill"></i></div>
+                        <div class="profile-edit-btn" onclick="document.getElementById('profilePictureInput').click()">
+                            <i class="bi bi-pencil-fill"></i>
+                        </div>
+                        <input type="file" id="profilePictureInput" accept="image/*" style="display:none;" onchange="handleProfilePictureUpload(this)" />
                     </div>
                     <div class="profile-info">
                         <div class="profile-username-text" id="profileUsername">CyberGhost</div>
@@ -1327,9 +1341,9 @@
                 </div>
 
                 <div class="field-label">Player Name</div>
-                <input type="text" class="field-input" id="profileDisplayName" value="CyberGhost" />
+                <input type="text" class="field-input" id="profileDisplayName" value="CyberGhost" disabled />
 
-                <button class="update-profile-btn">
+                <button class="update-profile-btn" id="updateProfileBtn" disabled>
                     Update Profile
                 </button>
             </div>
@@ -1637,6 +1651,17 @@
             document.getElementById('currentPassword').value = '';
             document.getElementById('newPassword').value = '';
             document.getElementById('confirmPassword').value = '';
+        }
+
+        function handleProfilePictureUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePhoto').innerHTML = '<img src="' + e.target.result + '" />';
+                    document.getElementById('updateProfileBtn').disabled = false;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         function confirmLogout() {
