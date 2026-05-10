@@ -352,6 +352,7 @@
             box-shadow: 0 0 6px var(--green);
             animation: pulse 2s infinite;
         }
+
         @@keyframes pulse {
             0%, 100% {
                 opacity: 1;
@@ -1229,14 +1230,21 @@
             color: var(--green);
         }
 
-        .live-session-header i {
-            font-size: 13px;
-            animation: pulse-glow 2s infinite;
-        }
+            .live-session-header i {
+                font-size: 13px;
+                animation: pulse-glow 2s infinite;
+            }
 
         @@keyframes pulse-glow {
-            0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(0,255,136,0.6); }
-            50% { opacity: 0.5; text-shadow: 0 0 4px rgba(0,255,136,0.3); }
+            0%, 100% {
+                opacity: 1;
+                text-shadow: 0 0 8px rgba(0,255,136,0.6);
+            }
+
+            50% {
+                opacity: 0.5;
+                text-shadow: 0 0 4px rgba(0,255,136,0.3);
+            }
         }
 
         .session-item {
@@ -1262,19 +1270,19 @@
             letter-spacing: 1px;
         }
 
-        .session-value.game {
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
-        }
+            .session-value.game {
+                color: var(--text);
+                font-family: 'DM Sans', sans-serif;
+                font-size: 14px;
+            }
 
-        .session-value.station {
-            font-size: 15px;
-        }
+            .session-value.station {
+                font-size: 15px;
+            }
 
-        .session-value.remaining {
-            color: var(--amber);
-        }
+            .session-value.remaining {
+                color: var(--amber);
+            }
     </style>
 </head>
 <body>
@@ -1359,18 +1367,34 @@
         <!-- CONTENT -->
         <div class="content">
 
-            <!-- LIVE SESSION CARD -->
-            <div class="live-session-card" id="liveSessionCard" style="display:none;">
-                <div class="live-session-header"><i class="bi bi-play-circle-fill"></i> LIVE SESSION</div>
-                <div>
-                    <div class="session-item"><span class="session-label">Game</span><span class="session-value game" id="sessionGame">—</span></div>
-                    <div class="session-item"><span class="session-label">Station</span><span class="session-value station" id="sessionStation">—</span></div>
+            <!-- LIVE SESSION CARD — always visible, dashes when idle -->
+            <div class="live-session-card" id="liveSessionCard">
+                <div class="live-session-header">
+                    <i class="bi bi-activity" id="sessionPulseIcon"></i>
+                    LIVE SESSION
                 </div>
-                <div>
-                    <div class="session-item"><span class="session-label">Elapsed</span><span class="session-value" id="sessionElapsed">0h 00m</span></div>
-                    <div class="session-item"><span class="session-label">Rate</span><span class="session-value" id="sessionRate">₱25 / hr</span></div>
+                <div class="session-rows">
+                    <div class="session-item">
+                        <span class="session-label">Game</span>
+                        <span class="session-value" id="sessionGame">—</span>
+                    </div>
+                    <div class="session-item">
+                        <span class="session-label">Station</span>
+                        <span class="session-value" id="sessionStation">—</span>
+                    </div>
+                    <div class="session-item">
+                        <span class="session-label">Elapsed</span>
+                        <span class="session-value" id="sessionElapsed">0h 00m</span>
+                    </div>
+                    <div class="session-item">
+                        <span class="session-label">Remaining</span>
+                        <span class="session-value" id="sessionRemaining">0h 00m</span>
+                    </div>
+                    <div class="session-item">
+                        <span class="session-label">Rate</span>
+                        <span class="session-value" id="sessionRate">—</span>
+                    </div>
                 </div>
-                <div class="session-item" style="grid-column: 1 / -1;"><span class="session-label">Remaining</span><span class="session-value remaining" id="sessionRemaining">0h 00m</span></div>
             </div>
 
             <!-- BALANCE HERO CARD -->
@@ -1428,7 +1452,7 @@
                 </div>
 
                 <div class="field-label">Player Name</div>
-                <input type="text" class="field-input" id="profileDisplayName" value="@ViewData["DisplayName"] ?? \"User\"" disabled />
+                <input type="text" class="field-input" id="profileDisplayName" value="@ViewData["DisplayName"] ?? \" User\"" disabled />
 
                 <button class="update-profile-btn" id="updateProfileBtn" onclick="saveProfile()" disabled>
                     Update Profile
@@ -1637,7 +1661,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/payment-control.js"></script>
     <script src="/js/dashboard.js"></script>
-    <script src="/js/live-session.js"></script>
     <script>
         // Sidebar avatar fallback initials
         function setDefaultAvatar() {
@@ -1700,10 +1723,98 @@
             // Load real dashboard data from backend
             loadDashboardData();
             getProfileData();
-            
+
             // Refresh dashboard data every 30 seconds
             setInterval(loadDashboardData, 30000);
         });
+
+        // ── Live session state (replaces live-session.js) ─────────────────────
+        let _liveSessionData = null;      // set when a session is active
+        let _liveSessionInterval = null;  // ticks every second to update elapsed
+
+        /**
+         * Derive hourly rate from station string.
+         * "Station 01" … "Station 10" → ₱25 / hr
+         * "Station 11" … "Station 40" → ₱20 / hr
+         */
+        function getRateForStation(stationStr) {
+            if (!stationStr) return 20;
+            const match = stationStr.match(/\d+/);
+            const num = match ? parseInt(match[0], 10) : 0;
+            return (num >= 1 && num <= 10) ? 25 : 20;
+        }
+
+        function fmtTime(totalMs) {
+            const totalSec = Math.max(0, Math.floor(totalMs / 1000));
+            const h = Math.floor(totalSec / 3600);
+            const m = Math.floor((totalSec % 3600) / 60);
+            return `${h}h ${String(m).padStart(2, '0')}m`;
+        }
+
+        /** Tick — updates elapsed & remaining every second */
+        function _tickLiveSession() {
+            if (!_liveSessionData) return;
+            const elapsed = Date.now() - _liveSessionData.startMs;
+            const remaining = Math.max(0, _liveSessionData.balanceMs - elapsed);
+
+            const elEl = document.getElementById('sessionElapsed');
+            const remEl = document.getElementById('sessionRemaining');
+            if (elEl) {
+                elEl.textContent = fmtTime(elapsed);
+                elEl.className = 'session-value active-time';
+            }
+            if (remEl) {
+                remEl.textContent = fmtTime(remaining);
+                remEl.className = 'session-value active-time';
+            }
+        }
+
+        function _startLiveTicker() {
+            if (_liveSessionInterval) clearInterval(_liveSessionInterval);
+            _liveSessionInterval = setInterval(_tickLiveSession, 1000);
+        }
+
+        function _stopLiveTicker() {
+            if (_liveSessionInterval) { clearInterval(_liveSessionInterval); _liveSessionInterval = null; }
+            _liveSessionData = null;
+        }
+
+        /** Apply session data to the card DOM */
+        function _renderLiveSession(data) {
+            const rate    = getRateForStation(data.currentStation);
+            const stLabel = data.currentStation
+                ? 'PC ' + data.currentStation.replace(/\D/g, '').padStart(2, '0')
+                : '—';
+
+            const el = id => document.getElementById(id);
+
+            // Game — plain text, dim if none
+            el('sessionGame').textContent = data.currentGame || '—';
+            el('sessionGame').className   = 'session-value' + (data.currentGame ? '' : '');
+
+            // Station — green when assigned
+            el('sessionStation').textContent = stLabel;
+            el('sessionStation').className   = data.currentStation ? 'session-value active-station' : 'session-value';
+
+            // Rate
+            el('sessionRate').textContent = data.currentGame ? `₱${rate} / hr` : '—';
+            el('sessionRate').className   = data.currentGame ? 'session-value active-rate' : 'session-value';
+
+            // Start ticker if active
+            if (data.currentGame && data.sessionStartTime) {
+                const startMs   = new Date(data.sessionStartTime).getTime();
+                const balanceMs = data.balance * 3600000 / rate; // balance ÷ rate → hours → ms
+                _liveSessionData = { startMs, balanceMs };
+                _startLiveTicker();
+                _tickLiveSession(); // immediate first tick
+            } else {
+                _stopLiveTicker();
+                el('sessionElapsed').textContent  = '0h 00m';
+                el('sessionElapsed').className    = 'session-value';
+                el('sessionRemaining').textContent = '0h 00m';
+                el('sessionRemaining').className  = 'session-value';
+            }
+        }
 
         /**
          * Load real dashboard data from backend
@@ -1713,33 +1824,18 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Update balance
-                        const balance = '₱' + data.balance.toFixed(2);
-                        $('#balanceDisplay').text(balance);
-                        
+                        // Update balance display
+                        $('#balanceDisplay').text('₱' + data.balance.toFixed(2));
+
                         // Update player rank
                         $('#sidebarRank').text(data.playerRank);
-                        
-                        // Update remaining playtime
+
+                        // Update remaining playtime in hero card
                         const remainingTime = `${data.remainingPlaytimeHours}h ${String(data.remainingPlaytimeMinutes).padStart(2, '0')}m`;
                         $('#remainingTime').text(remainingTime);
-                        
-                        // Update live session if active
-                        if (data.currentGame && data.sessionStartTime) {
-                            const sessionStart = new Date(data.sessionStartTime);
-                            const elapsedMs = Date.now() - sessionStart.getTime();
-                            const elapsedHours = Math.floor(elapsedMs / (1000 * 60 * 60));
-                            const elapsedMinutes = Math.floor((elapsedMs % (1000 * 60 * 60)) / (1000 * 60));
-                            
-                            $('#liveSessionCard').show();
-                            $('#sessionGame').text(data.currentGame);
-                            $('#sessionStation').text(data.currentStation || 'N/A');
-                            $('#sessionElapsed').text(`${elapsedHours}h ${String(elapsedMinutes).padStart(2, '0')}m`);
-                            $('#sessionRate').text(`₱${data.sessionHourlyRate.toFixed(2)} / hr`);
-                            $('#sessionRemaining').text(remainingTime);
-                        } else {
-                            $('#liveSessionCard').hide();
-                        }
+
+                        // Update live session card (always rendered)
+                        _renderLiveSession(data);
                     }
                 })
                 .catch(error => console.error('Error loading dashboard data:', error));
