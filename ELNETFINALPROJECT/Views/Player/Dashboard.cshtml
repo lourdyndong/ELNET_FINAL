@@ -1212,9 +1212,11 @@
             padding: 20px;
             margin-bottom: 20px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 20px;
             align-items: start;
+            grid-column: 1 / 3;
+            width: 100%;
         }
 
         .live-session-header {
@@ -1335,7 +1337,7 @@
             </div>
             <div class="sidebar-user-info">
                 <div class="sidebar-username" id="sidebarUsername">@ViewData["DisplayName"] ?? "User"</div>
-                <div class="sidebar-rank" id="sidebarRank">--</div>
+                <div class="sidebar-rank" id="sidebarRank">@((string?)ViewData["PlayerRank"] ?? "Bronze")</div>
             </div>
         </div>
 
@@ -1374,13 +1376,10 @@
                     LIVE SESSION
                 </div>
                 <div class="session-rows">
-                    <div class="session-item">
-                        <span class="session-label">Game</span>
-                        <span class="session-value" id="sessionGame">—</span>
-                    </div>
+                    <!-- Game row removed per request -->
                     <div class="session-item">
                         <span class="session-label">Station</span>
-                        <span class="session-value" id="sessionStation">—</span>
+                        <span class="session-value" id="sessionStation">@((string?)ViewData["CurrentStation"] ?? "—")</span>
                     </div>
                     <div class="session-item">
                         <span class="session-label">Elapsed</span>
@@ -1392,7 +1391,7 @@
                     </div>
                     <div class="session-item">
                         <span class="session-label">Rate</span>
-                        <span class="session-value" id="sessionRate">—</span>
+                        <span class="session-value" id="sessionRate">@((decimal?)ViewData["SessionHourlyRate"] != null ? $"₱{((decimal)ViewData["SessionHourlyRate"]):0} / hr" : "—")</span>
                     </div>
                 </div>
             </div>
@@ -1420,7 +1419,7 @@
                     <div class="hero-label">Available Time Credits</div>
                     <div class="hero-balance" id="balanceDisplay">₱@((ViewData["Balance"] is decimal balance ? balance.ToString("F2") : "0.00"))</div>
                     <div class="hero-time-label">Remaining Play Time</div>
-                    <div class="hero-time-value" id="remainingTime">--:--</div>
+                    <div class="hero-time-value" id="remainingTime">@((int?)ViewData["RemainingHours"] ?? 0)h @(String.Format("{0:D2}", (int?)ViewData["RemainingMinutes"] ?? 0))m</div>
                     <button class="topup-btn" onclick="openTopUp()">
                         Top Up Balance &nbsp;<i class="bi bi-lightning-fill"></i>
                     </button>
@@ -1788,20 +1787,16 @@
 
             const el = id => document.getElementById(id);
 
-            // Game — plain text, dim if none
-            el('sessionGame').textContent = data.currentGame || '—';
-            el('sessionGame').className   = 'session-value' + (data.currentGame ? '' : '');
-
             // Station — green when assigned
             el('sessionStation').textContent = stLabel;
             el('sessionStation').className   = data.currentStation ? 'session-value active-station' : 'session-value';
 
-            // Rate
-            el('sessionRate').textContent = data.currentGame ? `₱${rate} / hr` : '—';
-            el('sessionRate').className   = data.currentGame ? 'session-value active-rate' : 'session-value';
+            // Rate — shown when a station is assigned
+            el('sessionRate').textContent = data.currentStation ? `₱${rate} / hr` : '—';
+            el('sessionRate').className   = data.currentStation ? 'session-value active-rate' : 'session-value';
 
-            // Start ticker if active
-            if (data.currentGame && data.sessionStartTime) {
+            // Start ticker if station assigned and session has a start time
+            if (data.currentStation && data.sessionStartTime) {
                 const startMs   = new Date(data.sessionStartTime).getTime();
                 const balanceMs = data.balance * 3600000 / rate; // balance ÷ rate → hours → ms
                 _liveSessionData = { startMs, balanceMs };
@@ -1832,7 +1827,7 @@
 
                         // Update remaining playtime in hero card
                         const remainingTime = `${data.remainingPlaytimeHours}h ${String(data.remainingPlaytimeMinutes).padStart(2, '0')}m`;
-                        $('#remainingTime').text(remainingTime);
+                            $('#remainingTime').text(remainingTime);
 
                         // Update live session card (always rendered)
                         _renderLiveSession(data);

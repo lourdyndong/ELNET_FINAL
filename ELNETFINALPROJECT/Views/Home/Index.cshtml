@@ -702,6 +702,12 @@
         }
 
         // Dashboard entry is now handled by the form POST
+        function enterDashboard() {
+            const form = document.querySelector('.admin-access-box');
+            if (form) {
+                form.submit();
+            }
+        }
 
         // Allow Enter key to submit
         document.getElementById('adminPassword').addEventListener('keypress', function(e) {

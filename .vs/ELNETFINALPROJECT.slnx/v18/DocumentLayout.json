@@ -15,10 +15,6 @@
       "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\views\\home\\players.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|d:\\elnet_final\\elnetfinalproject\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|d:\\elnet_final\\elnetfinalproject\\controllers\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C4D0F2F1-8943-8CFA-48DF-4C41EF207FBA}|ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj|solutionrelative:elnetfinalproject\\controllers\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -142,7 +138,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 25,
               "Title": "QUICK_ACTION_CHECKLIST.md",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\QUICK_ACTION_CHECKLIST.md",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\QUICK_ACTION_CHECKLIST.md",
@@ -154,7 +150,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 24,
               "Title": "REAL_DATA_IMPLEMENTATION_COMPLETE.md",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\REAL_DATA_IMPLEMENTATION_COMPLETE.md",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\REAL_DATA_IMPLEMENTATION_COMPLETE.md",
@@ -179,19 +175,6 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Controllers\\HomeController.cs",
-              "ToolTip": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "ELNETFINALPROJECT\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAADwAAAAAAAAAAAAiwEQAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-29T01:00:40.173Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Players.cshtml",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Home\\Players.cshtml",
@@ -205,7 +188,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 26,
               "Title": "FINAL_COMPLETION_REPORT.md",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\FINAL_COMPLETION_REPORT.md",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\FINAL_COMPLETION_REPORT.md",
@@ -217,7 +200,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 27,
               "Title": "VISUAL_REFERENCE_GUIDE.md",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\VISUAL_REFERENCE_GUIDE.md",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\VISUAL_REFERENCE_GUIDE.md",
@@ -229,7 +212,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "PlayerController.cs",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Controllers\\PlayerController.cs",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Controllers\\PlayerController.cs",
@@ -241,7 +224,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "IMPLEMENTATION_SUMMARY.md",
               "DocumentMoniker": "D:\\ELNET_FINAL\\IMPLEMENTATION_SUMMARY.md",
               "RelativeDocumentMoniker": "IMPLEMENTATION_SUMMARY.md",
@@ -253,7 +236,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "QUICK_REFERENCE.md",
               "DocumentMoniker": "D:\\ELNET_FINAL\\QUICK_REFERENCE.md",
               "RelativeDocumentMoniker": "QUICK_REFERENCE.md",
@@ -265,7 +248,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 23,
               "Title": "DUMMY_DATA_REMOVAL_SUMMARY.md",
               "DocumentMoniker": "D:\\ELNET_FINAL\\DUMMY_DATA_REMOVAL_SUMMARY.md",
               "RelativeDocumentMoniker": "DUMMY_DATA_REMOVAL_SUMMARY.md",
@@ -277,7 +260,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 21,
               "Title": "COMPLETE_IMPLEMENTATION_GUIDE.md",
               "DocumentMoniker": "D:\\ELNET_FINAL\\COMPLETE_IMPLEMENTATION_GUIDE.md",
               "RelativeDocumentMoniker": "COMPLETE_IMPLEMENTATION_GUIDE.md",
@@ -289,7 +272,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 22,
               "Title": "dashboard.js",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\wwwroot\\js\\dashboard.js",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\wwwroot\\js\\dashboard.js",
@@ -301,7 +284,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "README_IMPLEMENTATION.md",
               "DocumentMoniker": "D:\\ELNET_FINAL\\README_IMPLEMENTATION.md",
               "RelativeDocumentMoniker": "README_IMPLEMENTATION.md",
@@ -313,7 +296,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "COMMIT_SUMMARY.md",
               "DocumentMoniker": "D:\\ELNET_FINAL\\COMMIT_SUMMARY.md",
               "RelativeDocumentMoniker": "COMMIT_SUMMARY.md",
@@ -325,7 +308,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 18,
               "Title": "Stations.cshtml",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Home\\Stations.cshtml",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Views\\Home\\Stations.cshtml",
@@ -337,7 +320,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 17,
               "Title": "_Sidebar.cshtml",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Shared\\_Sidebar.cshtml",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Views\\Shared\\_Sidebar.cshtml",
@@ -349,7 +332,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 16,
               "Title": "Games.cshtml",
               "DocumentMoniker": "C:\\Users\\Euwen\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1655830389\\Games.cshtml",
               "ToolTip": "C:\\Users\\Euwen\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1655830389\\Games.cshtml",
@@ -359,7 +342,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Program.cs",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Program.cs",
@@ -371,7 +354,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "Account.cs",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Models\\Account.cs",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Models\\Account.cs",
@@ -383,7 +366,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 8,
               "Title": "Dashboard.cshtml",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Home\\Dashboard.cshtml",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Views\\Home\\Dashboard.cshtml",
@@ -395,7 +378,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 20,
               "Title": "Login.cshtml",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Player\\Login.cshtml",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Views\\Player\\Login.cshtml",
@@ -407,7 +390,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 19,
               "Title": "stations.css",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\wwwroot\\css\\stations.css",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\wwwroot\\css\\stations.css",
@@ -419,7 +402,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 15,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Data\\AppDbContext.cs",
@@ -431,7 +414,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 11,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Views\\Home\\Index.cshtml",
@@ -443,7 +426,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 12,
               "Title": "Privacy.cshtml",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Views\\Home\\Privacy.cshtml",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Views\\Home\\Privacy.cshtml",
@@ -455,7 +438,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 13,
               "Title": "PasswordHelper.cs",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\Helpers\\PasswordHelper.cs",
@@ -467,7 +450,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 14,
               "Title": "ELNETFINALPROJECT.csproj",
               "DocumentMoniker": "D:\\ELNET_FINAL\\ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",
               "RelativeDocumentMoniker": "ELNETFINALPROJECT\\ELNETFINALPROJECT.csproj",

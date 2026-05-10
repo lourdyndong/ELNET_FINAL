@@ -10,5 +10,18 @@ namespace ELNETFINALPROJECT.Data
         }
 
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Station> Stations { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Configure Station-Account relationship
+            modelBuilder.Entity<Station>()
+                .HasOne(s => s.CurrentPlayerAccount)
+                .WithMany()
+                .HasForeignKey(s => s.CurrentPlayerId)
+                .OnDelete(DeleteBehavior.SetNull);
+        }
     }
 }

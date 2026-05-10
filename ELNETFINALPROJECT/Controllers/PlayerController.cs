@@ -74,6 +74,15 @@ namespace ELNETFINALPROJECT.Controllers
             ViewData["Balance"] = account.Balance;
             ViewData["DisplayName"] = account.DisplayName ?? account.Username;
             ViewData["IsVerified"] = account.IsVerified;
+            // Provide initial dashboard values to avoid placeholder dashes
+            ViewData["PlayerRank"] = GetPlayerRank(account);
+            decimal hourlyRate = account.SessionHourlyRate > 0 ? account.SessionHourlyRate : 25m;
+            ViewData["SessionHourlyRate"] = hourlyRate;
+            ViewData["CurrentStation"] = account.CurrentStation;
+            var remainingHours = (int)(account.Balance / hourlyRate);
+            var remainingMinutes = (int)((account.Balance % hourlyRate / hourlyRate) * 60);
+            ViewData["RemainingHours"] = remainingHours;
+            ViewData["RemainingMinutes"] = remainingMinutes;
 
             return View();
         }
@@ -297,6 +306,9 @@ namespace ELNETFINALPROJECT.Controllers
                     totalPlaytimeMinutes = totalPlaytimeMinutes,
                     remainingPlaytimeHours = remainingHours,
                     remainingPlaytimeMinutes = remainingMinutes,
+                    currentStation = account.CurrentStation,
+                    sessionStartTime = account.SessionStartTime,
+                    sessionHourlyRate = account.SessionHourlyRate,
                     accountCreatedDate = account.CreatedAt,
                     lastLogin = account.LastLogin,
                     totalSessions = account.TotalSessions

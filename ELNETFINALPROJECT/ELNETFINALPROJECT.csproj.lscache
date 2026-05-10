@@ -63,6 +63,7 @@ Helpers/PasswordHelper.cs
 Models/
  Account.cs
  ErrorViewModel.cs
+ Station.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  ELNETFINALPROJECT.AssemblyInfo.cs

@@ -3,7 +3,6 @@
 let currentSession = {
     isActive: false,
     stationNumber: null,
-    gameName: 'Counter-Strike 2',
     startTime: null,
     remainingTime: 0, // in minutes
     rate: 25 // per hour
@@ -17,10 +16,9 @@ let sessionUpdateInterval = null;
  * @param {number} paidMinutes - Total minutes paid for
  * @param {string} gameName - Name of the game being played
  */
-function initializeSession(stationNumber, paidMinutes, gameName = 'Counter-Strike 2') {
+function initializeSession(stationNumber, paidMinutes) {
     currentSession.isActive = true;
     currentSession.stationNumber = stationNumber;
-    currentSession.gameName = gameName;
     currentSession.startTime = new Date();
     currentSession.remainingTime = paidMinutes;
     
@@ -95,7 +93,6 @@ function updateSessionDisplay() {
     const remainingDisplay = `${remainingHours}h ${String(remainingMins).padStart(2, '0')}m`;
     
     // Update DOM elements
-    updateElement('sessionGame', currentSession.gameName);
     updateElement('sessionStation', `PC ${String(currentSession.stationNumber).padStart(2, '0')}`);
     updateElement('sessionElapsed', elapsedDisplay);
     updateElement('sessionRemaining', remainingDisplay);

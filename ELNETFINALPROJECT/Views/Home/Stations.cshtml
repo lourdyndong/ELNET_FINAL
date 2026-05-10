@@ -68,7 +68,7 @@
                     </div>
                     <div class="header-actions">
                         <button class="btn btn-ghost" onclick="toggleAllStations()"><i class="bi bi-arrow-repeat"></i> Refresh</button>
-                        <button class="btn btn-primary" onclick="openAddStationModal()"><i class="bi bi-plus-lg"></i> Add Station</button>
+                        <button class="btn btn-primary" onclick="addStation()"><i class="bi bi-plus-lg"></i> Add Station</button>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,6 @@
                     </div>
                     <div class="legend">
                         <div class="legend-item"><div class="legend-dot dot-green"></div> Active</div>
-                        <div class="legend-item"><div class="legend-dot dot-amber"></div> In Use</div>
                         <div class="legend-item"><div class="legend-dot dot-red"></div> Offline</div>
                         <div class="legend-item"><div class="legend-dot" style="background:var(--text3);"></div> Available</div>
                     </div>
@@ -125,6 +124,16 @@
                             <button class="pc-action-btn power" id="pcPowerBtn" onclick="togglePCPower()">
                                 <i class="bi bi-power"></i> Power
                             </button>
+                            <button class="pc-action-btn warn" onclick="markPCUnavailable()">
+                                <i class="bi bi-exclamation-triangle"></i> Mark Unavailable
+                            </button>
+                            <button class="pc-action-btn" style="background:#2a1010;border-color:#5a1b1b;color:#ffb5b5;" onclick="removeStation()">
+                                <i class="bi bi-trash"></i> Remove Station
+                            </button>
+                            <div style="display:flex;gap:8px;align-items:center;">
+                                <input id="assignPlayerName" placeholder="Assign player name" style="padding:6px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--text);" />
+                                <button class="pc-action-btn primary" onclick="(function(){ assignPlayerToPC(document.getElementById('assignPlayerName').value, 60); })()">Assign</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -147,10 +156,6 @@
                         <div class="info-stat">
                             <span class="info-stat-label">Active</span>
                             <span class="info-stat-value green" id="infoActive">0</span>
-                        </div>
-                        <div class="info-stat">
-                            <span class="info-stat-label">In Use</span>
-                            <span class="info-stat-value amber" id="infoInUse">0</span>
                         </div>
                         <div class="info-stat">
                             <span class="info-stat-label">Offline</span>
@@ -205,36 +210,6 @@
             <div id="guestError" class="form-error"></div>
             <button type="submit" class="form-button"><i class="bi bi-check-circle"></i> Confirm & Start Session</button>
         </form>
-    </div>
-</div>
-
-<!-- Add Station Modal -->
-<div id="addStationModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center;">
-    <div style="background:var(--card); border:1px solid var(--border2); border-radius:16px; padding:28px; width:380px; max-width:90vw;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
-            <div style="font-size:16px; font-weight:700;"><i class="bi bi-display-fill" style="color:var(--green); margin-right:8px;"></i>Add Station</div>
-            <button onclick="closeAddStationModal()" style="background:none; border:none; color:var(--text2); font-size:18px; cursor:pointer;"><i class="bi bi-x-lg"></i></button>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:14px;">
-            <div>
-                <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Station Name / Number</label>
-                <input id="stationName" type="text" placeholder="e.g. Station 1"
-                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;" />
-            </div>
-            <div>
-                <label style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text3); display:block; margin-bottom:5px;">Initial Status</label>
-                <select id="stationStatus"
-                    style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; outline:none;">
-                    <option value="free">Free</option>
-                    <option value="idle">Idle</option>
-                    <option value="offline">Offline</option>
-                </select>
-            </div>
-            <div id="stationError" style="color:var(--red); font-size:12px; display:none;"></div>
-            <button onclick="addStation()" style="width:100%; padding:11px; background:var(--green); color:#0b1410; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif;">
-                Add Station
-            </button>
-        </div>
     </div>
 </div>
 

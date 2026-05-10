@@ -829,7 +829,7 @@
                     </div>
                     <div class="legend">
                         <div class="legend-item"><div class="legend-dot dot-green"></div> Active</div>
-                        <div class="legend-item"><div class="legend-dot dot-amber"></div> In Use</div>
+                        <div class="legend-item"><div class="legend-dot dot-amber"></div> Occupied</div>
                         <div class="legend-item"><div class="legend-dot dot-red"></div> Offline</div>
                         <div class="legend-item"><div class="legend-dot" style="background:var(--text3);"></div> Available</div>
                     </div>
@@ -1018,8 +1018,7 @@
                 cards[0].querySelector('.stat-num').textContent = data.onlinePlayers;
                 
                 // Available Stations
-                const availableStations = 42 - (data.activeSessions || 0);
-                cards[1].querySelector('.stat-num').textContent = availableStations;
+                cards[1].querySelector('.stat-num').textContent = data.availableStations ?? 0;
                 
                 // Active Sessions
                 cards[2].querySelector('.stat-num').textContent = data.activeSessions || 0;
@@ -1044,26 +1043,36 @@
             if (data.success && data.stations) {
                 const grid = document.getElementById('pcGrid');
                 
-                grid.innerHTML = data.stations.map(station => `
-                    <div class="station-card ${station.occupied ? 'occupied' : 'available'}">
+                grid.innerHTML = data.stations.map(station => {
+                    const isActive = station.status === 'active';
+                    const isUnavailable = station.status === 'unavailable';
+                    const isAvailable = station.status === 'available';
+                    const cardClass = isUnavailable ? 'unavailable' : isActive ? 'occupied' : isAvailable ? 'available' : 'offline';
+                    const dotClass = isUnavailable ? 'dot-red' : isActive ? 'dot-amber' : isAvailable ? 'dot-green' : 'dot-gray';
+                    const labelText = isUnavailable ? 'Unavailable' : isActive ? 'Active' : isAvailable ? 'Available' : 'Offline';
+                    const sessionText = station.sessionTime || '—';
+
+                    return `
+                    <div class="station-card ${cardClass}">
                         <div class="station-top">
                             <span class="station-num">PC ${station.stationNumber}</span>
-                            <span class="station-dot ${station.occupied ? 'dot-amber' : 'dot-gray'}"></span>
+                            <span class="station-dot ${dotClass}"></span>
                         </div>
                         <div class="station-avatar" style="background: var(--bg4);">
                             <i class="bi bi-display" style="font-size: 24px; color: var(--green);"></i>
                         </div>
                         <div style="text-align: center; font-size: 11px; color: var(--text3);">
-                            ${station.occupied ? `
-                                <div class="station-username">${station.playerName || 'In Use'}</div>
+                            ${isActive ? `
+                                <div class="station-username">${station.playerName || 'Active'}</div>
                                 <div class="station-game">${station.currentGame || 'Gaming'}</div>
-                                <div class="station-time"><i class="bi bi-hourglass-split"></i> ${station.sessionTime || '—'}</div>
+                                <div class="station-time"><i class="bi bi-hourglass-split"></i> ${sessionText}</div>
                             ` : `
-                                <div class="station-status-text">Available</div>
+                                <div class="station-status-text">${labelText}</div>
                             `}
                         </div>
                     </div>
-                `).join('');
+                `;
+                }).join('');
             }
         } catch (error) {
             console.error('Error loading stations:', error);
