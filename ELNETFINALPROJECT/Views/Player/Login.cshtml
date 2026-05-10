@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Player Login - GameTime";
     Layout = null;
 }
@@ -555,8 +555,6 @@
                 <div class="hero-stat"><i class="bi bi-trophy-fill"></i> Active Tournaments</div>
             </div>
         </div>
-
-        <div class="left-version">GT: BUILD/ALPHA/2026 v0.1.2</div>
     </div>
 
     <!-- RIGHT PANEL -->
@@ -565,7 +563,7 @@
             <div class="form-top-label">Welcome Back, Player</div>
             <h2 class="form-title">PLAYER LOGIN</h2>
 
-            <form id="loginForm">
+            <form asp-controller="Player" asp-action="Login" method="post" id="loginForm">
                 <!-- Error message -->
                 <div class="error-msg" id="errorMsg" style="display: none; color: #ff3355; margin-bottom: 16px; font-size: 13px; font-weight: 500; background: rgba(255, 51, 85, 0.1); padding: 10px; border-left: 3px solid #ff3355;">
                 </div>
@@ -583,7 +581,6 @@
                 <div class="field-group">
                     <div class="field-label">
                         <span>Active Input / Password</span>
-                        <a href="#" class="field-link">Forgot Password?</a>
                     </div>
                     <div class="password-wrap">
                         <input type="password" name="password" id="playerPassword" class="field-input" placeholder="••••••••••" required />
@@ -593,52 +590,17 @@
                     </div>
                 </div>
 
-                <!-- Remember me -->
-                <div class="remember-row">
-                    <input type="checkbox" id="rememberMe" class="remember-checkbox" />
-                    <label for="rememberMe" class="remember-label">Remember this device for 30 days</label>
-                </div>
-
                 <!-- Submit -->
                 <button type="submit" class="submit-btn">
                     Access Portal <i class="bi bi-arrow-right"></i>
                 </button>
             </form>
 
-            <!-- OR divider -->
-            <div class="or-divider">
-                <div class="or-divider-line"></div>
-                <span class="or-divider-text">Or Connect Via</span>
-                <div class="or-divider-line"></div>
-            </div>
-
-            <!-- Alt buttons -->
-            <div class="alt-btns">
-                <button class="alt-btn"><i class="bi bi-qr-code"></i> QR Code</button>
-                <button class="alt-btn"><i class="bi bi-person-badge"></i> Card ID</button>
-            </div>
-
             <!-- Register link -->
             <div class="register-row">
                 New to the arena? <a href="#" class="register-link">Register Profile</a>
             </div>
         </div>
-
-        <!-- Bottom status bar -->
-        <div class="status-bar">
-            <div class="status-left">
-                <div class="status-label">System Status</div>
-                <div class="status-value">
-                    <span class="status-dot"></span>
-                    Infrastructure Online
-                </div>
-            </div>
-            <div class="status-right">
-                VER: 1.0.2-STABLE<br>
-                <span style="color:var(--text3);">GT/2026</span>
-            </div>
-        </div>
-    </div>
 
     <script>
         // Show error if exists

@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Player Dashboard - GameTime";
     Layout = null;
 }
@@ -496,6 +496,61 @@
                 background: var(--green2);
             }
 
+        .hero-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            z-index: 2;
+            gap: 40px;
+        }
+
+        .hero-session-panel {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            min-width: 300px;
+            backdrop-filter: blur(4px);
+        }
+
+        .hero-session-header {
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--green);
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0,255,136,0.1);
+            padding-bottom: 10px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .hero-session-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .hero-session-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-session-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text2);
+            letter-spacing: 1px;
+        }
+
+        .hero-session-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--green);
+        }
+
         /* ── PROFILE CARD ── */
         .profile-card {
             background: var(--bg2);
@@ -550,22 +605,7 @@
                 border-radius: 8px;
             }
 
-        .profile-edit-btn {
-            position: absolute;
-            bottom: -4px;
-            right: -4px;
-            width: 22px;
-            height: 22px;
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 10px;
-            color: var(--text2);
-        }
+
 
         .profile-info {
             flex: 1;
@@ -1204,85 +1244,7 @@
             color: rgba(255,255,255,0.3);
         }
 
-        /* ── LIVE SESSION PANEL ── */
-        .live-session-card {
-            background: rgba(0,255,136,0.06);
-            border: 1px solid rgba(0,255,136,0.25);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            align-items: start;
-        }
 
-        .live-session-header {
-            grid-column: 1 / -1;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--green);
-        }
-
-            .live-session-header i {
-                font-size: 13px;
-                animation: pulse-glow 2s infinite;
-            }
-
-        @@keyframes pulse-glow {
-            0%, 100% {
-                opacity: 1;
-                text-shadow: 0 0 8px rgba(0,255,136,0.6);
-            }
-
-            50% {
-                opacity: 0.5;
-                text-shadow: 0 0 4px rgba(0,255,136,0.3);
-            }
-        }
-
-        .session-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-        }
-
-        .session-label {
-            font-size: 11px;
-            color: rgba(255,255,255,0.4);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-
-        .session-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--green);
-            letter-spacing: 1px;
-        }
-
-            .session-value.game {
-                color: var(--text);
-                font-family: 'DM Sans', sans-serif;
-                font-size: 14px;
-            }
-
-            .session-value.station {
-                font-size: 15px;
-            }
-
-            .session-value.remaining {
-                color: var(--amber);
-            }
     </style>
 </head>
 <body>
@@ -1335,7 +1297,7 @@
             </div>
             <div class="sidebar-user-info">
                 <div class="sidebar-username" id="sidebarUsername">@ViewData["DisplayName"] ?? "User"</div>
-                <div class="sidebar-rank" id="sidebarRank">--</div>
+                <div class="sidebar-rank" id="sidebarRank">@((string?)ViewData["PlayerRank"] ?? "Bronze")</div>
             </div>
         </div>
 
@@ -1353,49 +1315,12 @@
                 <span class="topbar-section">Command Center</span>
                 <span class="topbar-title">Welcome back, Agent <span id="topbarName">@(ViewData["DisplayName"]?.ToString() ?? "Guest")</span></span>
             </div>
-            <div class="topbar-right">
-                <div class="topbar-status">
-                    <span class="topbar-status-dot"></span>
-                    Network Secure
-                </div>
-                <div class="topbar-divider"></div>
-                <span class="topbar-terminal">&gt;_</span>
-                <button class="topbar-icon info">i</button>
-            </div>
         </div>
 
         <!-- CONTENT -->
         <div class="content">
 
-            <!-- LIVE SESSION CARD — always visible, dashes when idle -->
-            <div class="live-session-card" id="liveSessionCard">
-                <div class="live-session-header">
-                    <i class="bi bi-activity" id="sessionPulseIcon"></i>
-                    LIVE SESSION
-                </div>
-                <div class="session-rows">
-                    <div class="session-item">
-                        <span class="session-label">Game</span>
-                        <span class="session-value" id="sessionGame">—</span>
-                    </div>
-                    <div class="session-item">
-                        <span class="session-label">Station</span>
-                        <span class="session-value" id="sessionStation">—</span>
-                    </div>
-                    <div class="session-item">
-                        <span class="session-label">Elapsed</span>
-                        <span class="session-value" id="sessionElapsed">0h 00m</span>
-                    </div>
-                    <div class="session-item">
-                        <span class="session-label">Remaining</span>
-                        <span class="session-value" id="sessionRemaining">0h 00m</span>
-                    </div>
-                    <div class="session-item">
-                        <span class="session-label">Rate</span>
-                        <span class="session-value" id="sessionRate">—</span>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- BALANCE HERO CARD -->
             <div class="hero-card">
@@ -1416,14 +1341,38 @@
                     <circle cx="293" cy="237" r="3.5" fill="#00ff88" opacity="0.25" />
                 </svg>
 
-                <div class="hero-content">
-                    <div class="hero-label">Available Time Credits</div>
-                    <div class="hero-balance" id="balanceDisplay">₱@((ViewData["Balance"] is decimal balance ? balance.ToString("F2") : "0.00"))</div>
-                    <div class="hero-time-label">Remaining Play Time</div>
-                    <div class="hero-time-value" id="remainingTime">--:--</div>
-                    <button class="topup-btn" onclick="openTopUp()">
-                        Top Up Balance &nbsp;<i class="bi bi-lightning-fill"></i>
-                    </button>
+                <div class="hero-flex">
+                    <div class="hero-content">
+                        <div class="hero-label">Available Time Credits</div>
+                        <div class="hero-balance" id="balanceDisplay">₱@((ViewData["Balance"] is decimal balance ? balance.ToString("F2") : "0.00"))</div>
+                        <div class="hero-time-label">Remaining Play Time</div>
+                        <div class="hero-time-value" id="remainingTime">@((int?)ViewData["RemainingHours"] ?? 0)h @(String.Format("{0:D2}", (int?)ViewData["RemainingMinutes"] ?? 0))m</div>
+                        <button class="topup-btn" onclick="openTopUp()">
+                            Top Up Balance &nbsp;<i class="bi bi-lightning-fill"></i>
+                        </button>
+                    </div>
+
+                    <div class="hero-session-panel">
+                        <div class="hero-session-header">LIVE SESSION</div>
+                        <div class="hero-session-grid">
+                            <div class="hero-session-item">
+                                <span class="hero-session-label">STATION</span>
+                                <span class="hero-session-value" id="sessionStation">@((string?)ViewData["CurrentStation"] ?? "—")</span>
+                            </div>
+                            <div class="hero-session-item">
+                                <span class="hero-session-label">ELAPSED</span>
+                                <span class="hero-session-value" id="sessionElapsed">0h 00m</span>
+                            </div>
+                            <div class="hero-session-item">
+                                <span class="hero-session-label">REMAINING</span>
+                                <span class="hero-session-value" id="sessionRemaining">0h 00m</span>
+                            </div>
+                            <div class="hero-session-item">
+                                <span class="hero-session-label">RATE</span>
+                                <span class="hero-session-value" id="sessionRate">₱20 / hr</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1435,9 +1384,6 @@
                     <div class="profile-photo-wrap">
                         <div class="profile-photo" id="profilePhoto">
                             <span id="profilePhotoInitials">@(ViewData["DisplayName"]?.ToString()?.Substring(0, 2).ToUpper() ?? "CG")</span>
-                        </div>
-                        <div class="profile-edit-btn" onclick="document.getElementById('profilePictureInput').click()">
-                            <i class="bi bi-pencil-fill"></i>
                         </div>
                         <input type="file" id="profilePictureInput" accept="image/*" style="display:none;" onchange="handleProfilePictureUpload(this)" />
                     </div>
@@ -1454,8 +1400,8 @@
                 <div class="field-label">Player Name</div>
                 <input type="text" class="field-input" id="profileDisplayName" value="@ViewData["DisplayName"] ?? \" User\"" disabled />
 
-                <button class="update-profile-btn" id="updateProfileBtn" onclick="saveProfile()" disabled>
-                    Update Profile
+                <button class="update-profile-btn" id="updateProfileBtn" onclick="document.getElementById('profilePictureInput').click()">
+                    <i class="bi bi-camera"></i> Update Profile Photo
                 </button>
             </div>
 
@@ -1503,9 +1449,6 @@
                         <div class="status-text-sub">All protocols are running normally</div>
                     </div>
                 </div>
-                <div class="status-right">
-                    v0.4 &nbsp;&nbsp; © 2024 GAMETIME MANAGEMENT SYSTEM
-                </div>
             </div>
 
         </div>
@@ -1548,15 +1491,15 @@
                                 <span style="color:rgba(255,255,255,0.25);">PTS Equivalent</span>
                             </div>
                             <div class="amount-grid">
-                                <div class="amount-preset" onclick="selectAmount(50)">
+                                <div class="amount-preset" onclick="selectAmount(50, this)">
                                     <div class="ap-val">₱50</div>
                                     <div class="ap-pts">5,000 PTS</div>
                                 </div>
-                                <div class="amount-preset selected" onclick="selectAmount(100)">
+                                <div class="amount-preset selected" onclick="selectAmount(100, this)">
                                     <div class="ap-val">₱100</div>
                                     <div class="ap-pts">10,000 PTS</div>
                                 </div>
-                                <div class="amount-preset" onclick="selectAmount(250)">
+                                <div class="amount-preset" onclick="selectAmount(250, this)">
                                     <div class="ap-val">₱250</div>
                                     <div class="ap-pts">25,000 PTS</div>
                                 </div>
@@ -1693,10 +1636,10 @@
             $('body').css('overflow', '');
         }
 
-        function selectAmount(amount) {
+        function selectAmount(amount, el) {
             topUpAmount = amount;
             $('.amount-preset').removeClass('selected');
-            $(event.currentTarget).addClass('selected');
+            if (el) $(el).addClass('selected');
             $('#customAmount').val('');
         }
 
@@ -1718,7 +1661,7 @@
 
         // Initial setup
         $(document).ready(function() {
-            showPayMethod('card'); // Show card fields by default
+            showPayMethod('card');
 
             // Load real dashboard data from backend
             loadDashboardData();
@@ -1729,19 +1672,10 @@
         });
 
         // ── Live session state (replaces live-session.js) ─────────────────────
-        let _liveSessionData = null;      // set when a session is active
-        let _liveSessionInterval = null;  // ticks every second to update elapsed
-
-        /**
-         * Derive hourly rate from station string.
-         * "Station 01" … "Station 10" → ₱25 / hr
-         * "Station 11" … "Station 40" → ₱20 / hr
-         */
+        let _liveSessionData = null;      
+        let _liveSessionInterval = null;  
         function getRateForStation(stationStr) {
-            if (!stationStr) return 20;
-            const match = stationStr.match(/\d+/);
-            const num = match ? parseInt(match[0], 10) : 0;
-            return (num >= 1 && num <= 10) ? 25 : 20;
+            return 20;
         }
 
         function fmtTime(totalMs) {
@@ -1788,20 +1722,16 @@
 
             const el = id => document.getElementById(id);
 
-            // Game — plain text, dim if none
-            el('sessionGame').textContent = data.currentGame || '—';
-            el('sessionGame').className   = 'session-value' + (data.currentGame ? '' : '');
-
             // Station — green when assigned
             el('sessionStation').textContent = stLabel;
             el('sessionStation').className   = data.currentStation ? 'session-value active-station' : 'session-value';
 
-            // Rate
-            el('sessionRate').textContent = data.currentGame ? `₱${rate} / hr` : '—';
-            el('sessionRate').className   = data.currentGame ? 'session-value active-rate' : 'session-value';
+            // Rate — shown when a station is assigned
+            el('sessionRate').textContent = data.currentStation ? `₱${rate} / hr` : '—';
+            el('sessionRate').className   = data.currentStation ? 'session-value active-rate' : 'session-value';
 
-            // Start ticker if active
-            if (data.currentGame && data.sessionStartTime) {
+            // Start ticker if station assigned and session has a start time
+            if (data.currentStation && data.sessionStartTime) {
                 const startMs   = new Date(data.sessionStartTime).getTime();
                 const balanceMs = data.balance * 3600000 / rate; // balance ÷ rate → hours → ms
                 _liveSessionData = { startMs, balanceMs };
@@ -1832,7 +1762,7 @@
 
                         // Update remaining playtime in hero card
                         const remainingTime = `${data.remainingPlaytimeHours}h ${String(data.remainingPlaytimeMinutes).padStart(2, '0')}m`;
-                        $('#remainingTime').text(remainingTime);
+                            $('#remainingTime').text(remainingTime);
 
                         // Update live session card (always rendered)
                         _renderLiveSession(data);

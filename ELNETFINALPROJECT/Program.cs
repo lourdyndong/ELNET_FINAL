@@ -9,6 +9,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=accounts.db"));
 
+builder.Services.AddHostedService<ELNETFINALPROJECT.Services.StationTimerService>();
+
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -24,6 +26,8 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
+    db.Database.ExecuteSqlRaw("CREATE TABLE IF NOT EXISTS Transactions (Id INTEGER PRIMARY KEY AUTOINCREMENT, Username TEXT, Type TEXT, Amount DECIMAL, CreatedAt DATETIME, StationInfo TEXT);");
+    db.Database.ExecuteSqlRaw("UPDATE Accounts SET SessionHourlyRate = 20, DisplayName = Username;");
 }
 
 // Configure the HTTP request pipeline.

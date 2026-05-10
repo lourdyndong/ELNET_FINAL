@@ -1,5 +1,9 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
+    ViewData["Title"] = "Profile - GameTime";
+    Layout = null;
+}
+@{
+    // Profile is managed inside the Player Dashboard.
+    // This view simply redirects there.
+    Context.Response.Redirect("/Player/Dashboard");
 }

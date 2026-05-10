@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "GameTime Management System";
     Layout = null;
 }
@@ -52,13 +52,8 @@
             letter-spacing: 2px;
         }
 
-        .brand-white {
-            color: #ffffff;
-        }
-
-        .brand-green {
-            color: #00ff88;
-        }
+        .brand-white { color: #ffffff; }
+        .brand-green { color: #00ff88; }
 
         .nav-icon-wrap {
             display: flex;
@@ -90,15 +85,8 @@
         }
 
         @@keyframes pulse-dot {
-            0%, 100% {
-                box-shadow: 0 0 4px #00ff88;
-                opacity: 1;
-            }
-
-            50% {
-                box-shadow: 0 0 10px #00ff88;
-                opacity: 0.8;
-            }
+            0%, 100% { box-shadow: 0 0 4px #00ff88; opacity: 1; }
+            50%       { box-shadow: 0 0 10px #00ff88; opacity: 0.8; }
         }
 
         .nav-link {
@@ -107,12 +95,9 @@
             margin: 0 10px;
             transition: color 0.3s ease;
         }
+        .nav-link:hover { color: #00ff88 !important; }
 
-            .nav-link:hover {
-                color: #00ff88 !important;
-            }
-
-        /* Main Content Section */
+        /* Main Content */
         .landing-container {
             display: flex;
             flex-direction: column;
@@ -195,16 +180,12 @@
             outline: none;
             transition: all 0.3s ease;
         }
-
-            .password-input::placeholder {
-                color: #556677;
-            }
-
-            .password-input:focus {
-                border-color: #00ff88;
-                box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-                background: rgba(20, 35, 50, 0.95);
-            }
+        .password-input::placeholder { color: #556677; }
+        .password-input:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            background: rgba(20, 35, 50, 0.95);
+        }
 
         .password-toggle {
             position: absolute;
@@ -241,26 +222,8 @@
             gap: 10px;
             margin-bottom: 15px;
         }
-
-            .enter-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
-            }
-
-            .enter-btn:active {
-                transform: translateY(0);
-            }
-
-        .encrypted-note {
-            font-size: 12px;
-            color: #556677;
-            text-align: center;
-        }
-
-            .encrypted-note i {
-                color: #00ff88;
-                margin-right: 5px;
-            }
+        .enter-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3); }
+        .enter-btn:active { transform: translateY(0); }
 
         /* Team Section */
         .team-section {
@@ -300,26 +263,40 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
         }
+        .team-card:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-5px);
+            background: rgba(30, 45, 60, 0.8);
+        }
 
-            .team-card:hover {
-                border-color: rgba(0, 255, 136, 0.3);
-                transform: translateY(-5px);
-                background: rgba(30, 45, 60, 0.8);
-            }
-
+        /* Avatar — shows photo if src is set, initials fallback if not */
         .team-avatar {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
             border-radius: 50%;
             margin: 0 auto 20px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 28px;
             color: #0d1f2d;
             font-weight: 700;
+            border: 2px solid rgba(0,255,136,0.3);
         }
+
+        .team-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            border-radius: 50%;
+        }
+
+        /* Hide initials span when photo loads successfully */
+        .team-avatar img.loaded + .avatar-initials { display: none; }
 
         .team-name {
             font-size: 18px;
@@ -348,63 +325,34 @@
             display: none;
             position: fixed;
             z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
             align-items: center;
             justify-content: center;
         }
-
-            .support-modal.show {
-                display: flex;
-            }
+        .support-modal.show { display: flex; }
 
         .support-modal-content {
-            background: linear-gradient(135deg, rgba(13, 31, 45, 0.98) 0%, rgba(26, 47, 63, 0.98) 100%);
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            background: linear-gradient(135deg, rgba(13,31,45,0.98) 0%, rgba(26,47,63,0.98) 100%);
+            border: 1px solid rgba(0,255,136,0.3);
             border-radius: 12px;
             padding: 40px;
             max-width: 450px;
             text-align: center;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
             backdrop-filter: blur(10px);
             animation: slideIn 0.3s ease-out;
         }
 
         @@keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        .support-modal-content h2 {
-            color: #00ff88;
-            margin-bottom: 20px;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .support-modal-content p {
-            color: #b0b8c1;
-            margin-bottom: 10px;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        .support-email {
-            color: #00ff88;
-            font-weight: 600;
-            font-size: 18px;
-            margin: 20px 0;
-        }
+        .support-modal-content h2 { color: #00ff88; margin-bottom: 20px; font-size: 24px; font-weight: 700; }
+        .support-modal-content p  { color: #b0b8c1; margin-bottom: 10px; font-size: 16px; line-height: 1.6; }
+        .support-email { color: #00ff88; font-weight: 600; font-size: 18px; margin: 20px 0; }
 
         .modal-close-btn {
             background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
@@ -417,15 +365,11 @@
             margin-top: 20px;
             transition: all 0.3s ease;
         }
-
-            .modal-close-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
-            }
+        .modal-close-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,255,136,0.3); }
 
         /* Footer */
         .site-footer {
-            background: rgba(10, 18, 26, 0.95);
+            background: rgba(10,18,26,0.95);
             border-top: 1px solid rgba(255,255,255,0.07);
             padding: 18px 32px;
             display: flex;
@@ -435,83 +379,22 @@
             gap: 12px;
         }
 
-        .footer-left {
-            display: flex;
-            align-items: center;
-            gap: 48px;
-        }
+        .footer-left { display: flex; align-items: center; gap: 48px; }
+        .footer-stat { display: flex; flex-direction: column; gap: 4px; }
+        .footer-stat-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #556677; text-transform: uppercase; }
+        .footer-stat-value { display: flex; align-items: center; gap: 7px; font-size: 13px; color: #c0cad4; font-weight: 500; }
+        .footer-stat-value svg { flex-shrink: 0; }
 
-        .footer-stat {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
+        .footer-right { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #556677; }
+        .footer-right a { color: #7a8a99; text-decoration: none; transition: color 0.2s; }
+        .footer-right a:hover { color: #00ff88; }
+        .footer-dot { width: 3px; height: 3px; background: #3a4a5a; border-radius: 50%; display: inline-block; margin: 0 2px; }
 
-        .footer-stat-label {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            color: #556677;
-            text-transform: uppercase;
-        }
-
-        .footer-stat-value {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            font-size: 13px;
-            color: #c0cad4;
-            font-weight: 500;
-        }
-
-            .footer-stat-value svg {
-                flex-shrink: 0;
-            }
-
-        .footer-right {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            color: #556677;
-        }
-
-            .footer-right a {
-                color: #7a8a99;
-                text-decoration: none;
-                transition: color 0.2s;
-            }
-
-                .footer-right a:hover {
-                    color: #00ff88;
-                }
-
-        .footer-dot {
-            width: 3px;
-            height: 3px;
-            background: #3a4a5a;
-            border-radius: 50%;
-            display: inline-block;
-            margin: 0 2px;
-        }
-
-        /* Responsive */
         @@media (max-width: 768px) {
-            .hero-title {
-                font-size: 48px;
-            }
-
-            .hero-subtitle {
-                font-size: 16px;
-            }
-
-            .admin-access-box {
-                padding: 30px 20px;
-            }
-
-            .team-grid {
-                grid-template-columns: 1fr;
-            }
+            .hero-title { font-size: 48px; }
+            .hero-subtitle { font-size: 16px; }
+            .admin-access-box { padding: 30px 20px; }
+            .team-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -566,7 +449,8 @@
         </div>
 
         <!-- Admin Access Box -->
-        <form method="post" action="/Home/Login" class="admin-access-box">
+        <form asp-controller="Home" asp-action="Login" method="post" class="admin-access-box">
+            @Html.AntiForgeryToken()
             <label class="admin-label"><i class="bi bi-lock-fill"></i> Admin Access</label>
             <div class="password-input-wrapper">
                 <input type="password" name="password" id="adminPassword" class="password-input" placeholder="Enter Security Password" required>
@@ -584,9 +468,6 @@
                 <span>ENTER DASHBOARD</span>
                 <i class="bi bi-arrow-right"></i>
             </button>
-            <div class="encrypted-note">
-                <i class="bi bi-check-circle-fill"></i> Encrypted Connection: 256-bit
-            </div>
         </form>
     </div>
 
@@ -597,34 +478,44 @@
         </div>
         <div class="team-grid">
             <div class="team-card">
-                <div class="team-avatar">AR</div>
-                <div class="team-name">Alex Rivera</div>
-                <div class="team-role">Project Manager</div>
-                <div class="team-description">Orchestrates team workflows and ensures timely delivery of all sprint objectives.</div>
-            </div>
-            <div class="team-card">
-                <div class="team-avatar">JS</div>
-                <div class="team-name">Jordan Smith</div>
-                <div class="team-role">Lead Developer</div>
-                <div class="team-description">Architected core systems and develops the platform.</div>
-            </div>
-            <div class="team-card">
-                <div class="team-avatar">ML</div>
-                <div class="team-name">Morgan Lee</div>
+                <div class="team-avatar">
+                    <img src="~/img/russell.png" alt="Gillera, Russell Ray" onerror="this.style.display='none'" />
+                </div>
+                <div class="team-name">Gillera, Russell Ray</div>
                 <div class="team-role">Backend Developer</div>
                 <div class="team-description">Builds and maintains robust server-side infrastructure.</div>
             </div>
             <div class="team-card">
-                <div class="team-avatar">CP</div>
-                <div class="team-name">Casey Park</div>
-                <div class="team-role">Frontend Developer</div>
-                <div class="team-description">Creates responsive and seamless user interface experiences.</div>
+                <div class="team-avatar">
+                <img src="~/img/jerick.png" alt="Service, Jerick" onerror="this.style.display='none'" />
+                </div>
+                <div class="team-name">Service, Jerick</div>
+                <div class="team-role">Documentation</div>
+                <div class="team-description">Authors comprehensive guides and documentation for the platform.</div>
             </div>
             <div class="team-card">
-                <div class="team-avatar">TN</div>
-                <div class="team-name">Taylor Nguyen</div>
-                <div class="team-role">Documentation</div>
-                <div class="team-description">Authored comprehensive guides and API references for the platform.</div>
+                <div class="team-avatar">
+                <img src="~/img/lourdyn.png" alt="Verdida, Lourdyn Neil" onerror="this.style.display='none'" />
+                </div>
+                <div class="team-name">Verdida, Lourdyn Neil</div>
+                <div class="team-role">Team Project Manager</div>
+                <div class="team-description">Orchestrates team workflows and ensures timely delivery of all sprint objectives.</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">
+                <img src="~/img/euwen.png" alt="Villarin, Euwen Aldrich" onerror="this.style.display='none'" />
+                </div>
+                <div class="team-name">Villarin, Euwen Aldrich</div>
+                <div class="team-role">Lead Developer</div>
+                <div class="team-description">Architects core systems and develops the platform.</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">
+                <img src="~/img/felix.png" alt="Ybañez, Felix Vincent" onerror="this.style.display='none'" />
+                </div>
+                <div class="team-name">Ybañez, Felix Vincent</div>
+                <div class="team-role">Frontend Developer</div>
+                <div class="team-description">Creates responsive and seamless user interface experiences.</div>
             </div>
         </div>
     </div>
@@ -661,9 +552,9 @@
         <div class="footer-right">
             <span>&copy; 2026 GameTime Management System</span>
             <span class="footer-dot"></span>
-            <a href="/Home/Privacy">Terms</a>
+            <a asp-controller="Home" asp-action="Privacy">Terms</a>
             <span class="footer-dot"></span>
-            <a href="/Home/Privacy">Privacy</a>
+            <a asp-controller="Home" asp-action="Privacy">Privacy</a>
             <span class="footer-dot"></span>
             <span style="color: #4a5a6a;">v0.0.1-beta</span>
         </div>
@@ -674,9 +565,7 @@
         <div class="support-modal-content">
             <h2>Contact Us</h2>
             <p>For support and inquiries, please reach out to us:</p>
-            <div class="support-email">
-                GameTime@GameTime.com
-            </div>
+            <div class="support-email">GameTime@GameTime.com</div>
             <p style="font-size: 14px; color: #7a8a99;">We're here to help you get the most out of GameTime Management System.</p>
             <button class="modal-close-btn" onclick="closeSupportPopup()">Close</button>
         </div>
@@ -689,7 +578,6 @@
             const input = document.getElementById('adminPassword');
             const btn = event.target.closest('.password-toggle');
             const icon = btn.querySelector('i');
-
             if (input.type === 'password') {
                 input.type = 'text';
                 icon.classList.remove('bi-eye-fill');
@@ -701,33 +589,27 @@
             }
         }
 
-        // Dashboard entry is now handled by the form POST
+        function enterDashboard() {
+            const form = document.querySelector('.admin-access-box');
+            if (form) form.submit();
+        }
 
-        // Allow Enter key to submit
         document.getElementById('adminPassword').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                enterDashboard();
-            }
+            if (e.key === 'Enter') enterDashboard();
         });
 
-        // Support Modal Functions
         function showSupportPopup(event) {
             event.preventDefault();
-            const modal = document.getElementById('supportModal');
-            modal.classList.add('show');
+            document.getElementById('supportModal').classList.add('show');
         }
 
         function closeSupportPopup() {
-            const modal = document.getElementById('supportModal');
-            modal.classList.remove('show');
+            document.getElementById('supportModal').classList.remove('show');
         }
 
-        // Close modal when clicking outside of it
         window.onclick = function(event) {
             const modal = document.getElementById('supportModal');
-            if (event.target === modal) {
-                modal.classList.remove('show');
-            }
+            if (event.target === modal) modal.classList.remove('show');
         }
     </script>
 </body>

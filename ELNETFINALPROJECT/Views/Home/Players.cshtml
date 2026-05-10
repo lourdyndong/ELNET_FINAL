@@ -858,37 +858,7 @@
 <body>
 
     <!-- TOP NAV -->
-    <nav class="topnav">
-        <a class="topnav-brand" href="#">
-            <div class="brand-icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8h4M5 6v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                    <circle cx="10.5" cy="7" r="0.8" fill="currentColor" />
-                    <circle cx="12.5" cy="9" r="0.8" fill="currentColor" />
-                    <path d="M1 6C1 4.9 1.9 4 3 4h10C14.1 4 15 4.9 15 6v3c0 1.7-1.3 3-3 3H4C2.3 12 1 10.7 1 9V6z" stroke="currentColor" stroke-width="1.4" fill="none" />
-                </svg>
-            </div>
-            <span class="brand-label"><span>Game</span>Time</span>
-            <span class="admin-pill">Admin</span>
-        </a>
-        <div class="topnav-search">
-            <i class="bi bi-search search-icon"></i>
-            <input type="text" placeholder="Search players, stations..." />
-        </div>
-        <div class="topnav-right">
-            <div class="status-pill"><div class="status-dot"></div></div>
-            <div class="topnav-icon-btn">
-                <i class="bi bi-bell"></i>
-            </div>
-            <div class="user-chip">
-                <div class="user-avatar">A</div>
-                <div class="user-info">
-                    <div class="user-name">Admin</div>
-                    <div class="user-role">Manager</div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <partial name="_Header" />
 
     <div class="app-body">
         <!-- SIDEBAR -->
@@ -901,7 +871,7 @@
                 <div>
                     <div class="breadcrumb-row">
                         <i class="bi bi-house"></i>
-                        <a href="/Home/Dashboard">Dashboard</a>
+                        <a asp-controller="Home" asp-action="Dashboard">Dashboard</a>
                         <i class="bi bi-chevron-right"></i>
                         <span style="color:var(--text2);">Players</span>
                     </div>
@@ -1026,7 +996,6 @@
     </div>
 
     <script>
-        // ── State ──────────────────────────────────────────────────────────────────
         let players = [];
 
         // ── Bootstrap ──────────────────────────────────────────────────────────────
@@ -1044,7 +1013,6 @@
                 const res = await fetch('/Home/GetPlayers');
                 if (!res.ok) throw new Error('Server error ' + res.status);
                 const data = await res.json();
-                // GetPlayers returns { success, players } or bare array on error
                 players = data.success ? data.players : [];
                 renderPlayers();
                 updateStats();
@@ -1129,7 +1097,6 @@
             }
 
             tbody.innerHTML = filtered.map(p => {
-                // API returns camelCase: status = "Online" | "Offline", createdAt = ISO date
                 const isOnline   = p.status === 'Online';
                 const dateStr    = p.createdAt
                     ? new Date(p.createdAt).toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' })
@@ -1210,7 +1177,6 @@
 
         // ── Live stats sidebar ─────────────────────────────────────────────────────
         function updateStats() {
-            // "Online" matches the Status enum value stored in the DB
             const online = players.filter(p => p.status === 'Online').length;
             const total  = players.length;
             const cash   = players.reduce((s, p) => s + (p.balance ?? 0), 0);

@@ -27,8 +27,10 @@ function closeTopUp() {
 
 /**
  * Select a preset amount
+ * @param {number} amount - The preset amount value
+ * @param {HTMLElement} el - The clicked element (passed via onclick)
  */
-function selectAmount(amount) {
+function selectAmount(amount, el) {
     topUpAmount = amount;
     
     // Update UI
@@ -37,7 +39,7 @@ function selectAmount(amount) {
         preset.classList.remove('selected');
     });
     
-    event.currentTarget.classList.add('selected');
+    if (el) el.classList.add('selected');
     
     // Clear custom amount
     const customInput = document.getElementById('customAmount');
