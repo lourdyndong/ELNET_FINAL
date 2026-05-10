@@ -11,6 +11,7 @@ namespace ELNETFINALPROJECT.Data
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Station> Stations { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

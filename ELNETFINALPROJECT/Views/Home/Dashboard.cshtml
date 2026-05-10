@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Player Management - GameTime";
     Layout = null;
 }
@@ -771,18 +771,14 @@
                 <div class="breadcrumb-row">
                     <i class="bi bi-house"></i>
                     <a href="#">Dashboard</a>
-                    <i class="bi bi-chevron-right"></i>
-                    <span style="color:var(--text2);">Players</span>
                 </div>
                 <div class="page-header">
                     <div>
-                        <h1 class="page-title">Player Management</h1>
-                        <p class="page-sub">Monitor stations, manage players & sessions in real-time.</p>
+                        <h1 class="page-title">Dashboard Overview</h1>
+                        <p class="page-sub">Monitor gaming stations, earnings, and system performance.</p>
                     </div>
                     <div class="header-actions">
                         <button class="btn btn-ghost"><i class="bi bi-clock"></i> Live</button>
-                        <button class="btn btn-ghost"><i class="bi bi-funnel"></i> Filters</button>
-                        <button class="btn btn-primary" onclick="openRegisterModal()"><i class="bi bi-person-plus-fill"></i> Add Player</button>
                     </div>
                 </div>
             </div>
@@ -839,49 +835,7 @@
                 </div>
             </div>
 
-            <!-- Player Management Table -->
-            <div class="player-table-panel">
-                <div class="table-header">
-                    <div>
-                        <div class="section-title"><i class="bi bi-table"></i> Player Management</div>
-                        <div style="font-size:11px;color:var(--text3);margin-top:2px;">Full registry of all registered players</div>
-                    </div>
-                    <div class="table-actions">
-                        <div class="table-search">
-                            <i class="bi bi-search"></i>
-                            <input type="text" placeholder="Search players..." id="playerSearchInput" />
-                        </div>
-                        <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;"><i class="bi bi-funnel"></i> Filter</button>
-                        <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;"><i class="bi bi-download"></i> Export</button>
-                    </div>
-                </div>
-                <div class="table-tabs">
-                    <div class="tab active" onclick="filterPlayers('all')">All Players</div>
-                    <div class="tab" onclick="filterPlayers('online')">Online Now</div>
-                    <div class="tab" onclick="filterPlayers('verified')">Verified</div>
-                    <div class="tab" onclick="filterPlayers('inactive')">Inactive</div>
-                </div>
-                <div class="table-scroll">
-                    <table class="data-table" id="playersTable">
-                        <thead>
-                            <tr>
-                                <th>Player</th>
-                                <th>Email</th>
-                                <th>Status</th>
-                                <th>Balance</th>
-                                <th>Rank</th>
-                                <th>Sessions</th>
-                                <th>Joined</th>
-                                <th>Last Seen</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Players loaded via JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+
         </div>
 
         <!-- RIGHT PANEL -->
@@ -903,7 +857,7 @@
                             <div class="computer-icon-wrap">
                                 <i class="bi bi-display-fill"></i>
                             </div>
-                            <div class="computer-label">—</div>
+                            <div class="computer-label" id="det-station-label">—</div>
                             <div class="computer-sub">Click to reassign station</div>
                         </div>
                     </div>
@@ -914,27 +868,27 @@
                         <div class="detail-field">
                             <div class="field-label">Username</div>
                             <div class="field-value">
-                                <div class="field-value-inner"><i class="bi bi-person"></i> —</div>
+                                <div class="field-value-inner" id="det-username"><i class="bi bi-person"></i> <span>—</span></div>
                                 <i class="bi bi-pencil field-icon"></i>
                             </div>
                         </div>
                         <div class="detail-field">
                             <div class="field-label">Email</div>
                             <div class="field-value">
-                                <div class="field-value-inner"><i class="bi bi-envelope"></i> —</div>
+                                <div class="field-value-inner" id="det-email"><i class="bi bi-envelope"></i> <span>—</span></div>
                             </div>
                         </div>
                         <div class="detail-row">
                             <div class="detail-field">
                                 <div class="field-label">Balance</div>
-                                <div class="field-value" style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px;">
+                                <div class="field-value" id="det-balance" style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px;">
                                     —
                                 </div>
                             </div>
                             <div class="detail-field">
                                 <div class="field-label">Station</div>
                                 <div class="field-value" style="font-size:12px;">
-                                    <div class="field-value-inner"><i class="bi bi-display"></i> —</div>
+                                    <div class="field-value-inner" id="det-station"><i class="bi bi-display"></i> <span>—</span></div>
                                 </div>
                             </div>
                         </div>
@@ -946,15 +900,15 @@
                         <div class="session-panel">
                             <div class="session-row">
                                 <span class="session-row-label">Game</span>
-                                <span class="session-row-val">—</span>
+                                <span class="session-row-val" id="det-game">—</span>
                             </div>
                             <div class="session-row">
                                 <span class="session-row-label">Time Elapsed</span>
-                                <span class="session-row-val green">—</span>
+                                <span class="session-row-val green" id="det-elapsed">—</span>
                             </div>
                             <div class="session-row" style="margin-bottom:0;">
                                 <span class="session-row-label">Time Remaining</span>
-                                <span class="session-row-val">—</span>
+                                <span class="session-row-val" id="det-remaining">—</span>
                             </div>
                             <div class="time-bar"><div class="time-fill"></div></div>
                         </div>
@@ -962,10 +916,9 @@
 
                     <!-- Actions -->
                     <div class="detail-actions">
-                        <button class="btn-save"><i class="bi bi-floppy2-fill"></i> Save Changes</button>
                         <div class="detail-btn-row">
-                            <button class="btn-add-time"><i class="bi bi-plus-circle"></i> Add Time</button>
-                            <button class="btn-end-session"><i class="bi bi-stop-circle"></i> End Session</button>
+                            <button class="btn-add-time" onclick="addTimeCurrentStation()"><i class="bi bi-plus-circle"></i> Add Time</button>
+                            <button class="btn-end-session" onclick="endSessionCurrentStation()"><i class="bi bi-stop-circle"></i> End Session</button>
                         </div>
                     </div>
 
@@ -982,8 +935,10 @@
 <script>
     // Admin Dashboard - Real Data Loading & Management
     let allPlayers = [];
+    let allStations = [];
     let currentFilter = 'all';
     let autoRefreshInterval = null;
+    let selectedStationId = null;
 
     /**
      * Initialize dashboard - Load all data and start auto-refresh
@@ -1041,6 +996,7 @@
             
             const data = await response.json();
             if (data.success && data.stations) {
+                allStations = data.stations;
                 const grid = document.getElementById('pcGrid');
                 
                 grid.innerHTML = data.stations.map(station => {
@@ -1053,7 +1009,7 @@
                     const sessionText = station.sessionTime || '—';
 
                     return `
-                    <div class="station-card ${cardClass}">
+                    <div class="station-card ${cardClass}" onclick="showStationDetail(${station.stationId})">
                         <div class="station-top">
                             <span class="station-num">PC ${station.stationNumber}</span>
                             <span class="station-dot ${dotClass}"></span>
@@ -1102,7 +1058,7 @@
             if (!response.ok) throw new Error('Failed to load players');
             
             const data = await response.json();
-            allPlayers = data.success ? data.players : data;
+            allPlayers = (data.success && Array.isArray(data.players)) ? data.players : [];
             renderPlayersTable(allPlayers);
         } catch (error) {
             console.error('Error loading players:', error);
@@ -1268,6 +1224,116 @@
         if (newUsername && newUsername.trim()) {
             // You can implement a backend endpoint for this if needed
             alert('Edit functionality can be expanded to update more fields');
+        }
+    }
+
+    /**
+     * Show station details in the right panel when a PC is clicked
+     */
+    function showStationDetail(stationId) {
+        const station = allStations.find(s => s.stationId === stationId);
+        if (!station) return;
+        
+        document.getElementById('det-station-label').textContent = 'PC ' + station.stationNumber;
+        document.querySelector('#det-station span').textContent = 'PC ' + station.stationNumber;
+        
+        if (station.status === 'active') {
+            const player = allPlayers.find(p => p.username === station.playerName || p.displayName === station.playerName);
+            
+            document.querySelector('#det-username span').textContent = station.playerName || 'Guest';
+            document.getElementById('det-game').textContent = station.currentGame || 'Gaming';
+            document.getElementById('det-elapsed').textContent = station.sessionTime || '—';
+            
+            if (player) {
+                document.querySelector('#det-email span').textContent = player.email || '—';
+                document.getElementById('det-balance').textContent = '₱' + (player.balance || 0).toFixed(2);
+                
+                const remainingHours = (player.balance || 0) / 20;
+                const hours = Math.floor(remainingHours);
+                const minutes = Math.round((remainingHours - hours) * 60);
+                document.getElementById('det-remaining').textContent = `${hours}h ${minutes.toString().padStart(2, '0')}m`;
+            } else {
+                // Guest session
+                document.querySelector('#det-email span').textContent = '—';
+                
+                // Show paid amount as balance for guests
+                const paidAmount = (station.timePaid / 60) * 20;
+                document.getElementById('det-balance').textContent = '₱' + paidAmount.toFixed(2);
+                
+                const remainingMins = Math.max(0, station.timePaid - station.timeUsed);
+                const hours = Math.floor(remainingMins / 60);
+                const minutes = remainingMins % 60;
+                document.getElementById('det-remaining').textContent = `${hours}h ${minutes.toString().padStart(2, '0')}m`;
+            }
+        } else {
+            document.querySelector('#det-username span').textContent = '—';
+            document.querySelector('#det-email span').textContent = '—';
+            document.getElementById('det-balance').textContent = '—';
+            document.getElementById('det-game').textContent = '—';
+            document.getElementById('det-elapsed').textContent = '—';
+            document.getElementById('det-remaining').textContent = '—';
+        }
+
+        selectedStationId = stationId;
+    }
+
+    /**
+     * End session for the currently selected station
+     */
+    async function endSessionCurrentStation() {
+        if (!selectedStationId) return;
+        
+        const station = allStations.find(s => s.stationId === selectedStationId);
+        if (!station || station.status !== 'active') {
+            alert('No active session on this station');
+            return;
+        }
+
+        if (!confirm(`Are you sure you want to end the session for ${station.playerName || 'Guest'} on PC ${station.stationNumber}?`)) return;
+
+        try {
+            const response = await fetch('/Home/EndStationSession', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ stationId: selectedStationId })
+            });
+            
+            const result = await response.json();
+            if (result.success) {
+                alert('Session ended successfully');
+                await loadStationsStatus();
+                showStationDetail(selectedStationId);
+            } else {
+                alert('Failed to end session: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Error ending session:', error);
+            alert('Error ending session');
+        }
+    }
+
+    /**
+     * Add time (Top-up) for the player on the currently selected station
+     */
+    async function addTimeCurrentStation() {
+        if (!selectedStationId) return;
+        
+        const station = allStations.find(s => s.stationId === selectedStationId);
+        if (!station || station.status !== 'active') {
+            alert('No active session on this station');
+            return;
+        }
+
+        if (station.playerId) {
+            // Registered player - top up balance
+            await topUpPlayerBalance(station.playerId);
+            // Refresh detail panel after top-up
+            setTimeout(() => {
+                loadPlayersTable().then(() => showStationDetail(selectedStationId));
+            }, 500);
+        } else {
+            // Guest - maybe implement guest time addition?
+            alert('Add time for guests is currently manual. Please end and reassign with more time.');
         }
     }
 

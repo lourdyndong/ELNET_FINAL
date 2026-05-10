@@ -35,17 +35,76 @@
     </div>
     <div class="topnav-right">
         <div class="status-pill"><div class="status-dot"></div> All Systems Online</div>
-        <div class="topnav-icon-btn">
-            <i class="bi bi-bell"></i>
-            <span class="notif-badge">3</span>
-        </div>
-        <div class="user-chip">
+        
+        <style>
+            .user-chip { position: relative; cursor: pointer; user-select: none; }
+            .user-dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                margin-top: 8px;
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 8px 0;
+                min-width: 150px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+                z-index: 1000;
+            }
+            .user-dropdown-menu.show { display: block; }
+            .user-dropdown-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 16px;
+                color: var(--text);
+                text-decoration: none;
+                font-size: 13px;
+                transition: background 0.2s;
+            }
+            .user-dropdown-item:hover {
+                background: var(--bg4);
+                color: var(--green);
+            }
+            .user-dropdown-item i {
+                font-size: 14px;
+                color: var(--text3);
+            }
+            .user-dropdown-item:hover i {
+                color: var(--green);
+            }
+        </style>
+
+        <div class="user-chip" onclick="toggleUserDropdown(event)">
             <div class="user-avatar">@initials</div>
             <div class="user-info">
                 <div class="user-name">@userName</div>
                 <div class="user-role">@(userRole == "Admin" ? "Manager" : userRole)</div>
             </div>
             <i class="bi bi-chevron-down" style="font-size:10px;color:var(--text3);margin-left:2px;"></i>
+            
+            <div class="user-dropdown-menu" id="userDropdownMenu">
+                <a asp-controller="Home" asp-action="Logout" class="user-dropdown-item">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+            </div>
         </div>
     </div>
 </nav>
+
+<script>
+    function toggleUserDropdown(e) {
+        e.stopPropagation();
+        var menu = document.getElementById('userDropdownMenu');
+        if (menu) {
+            menu.classList.toggle('show');
+        }
+    }
+    document.addEventListener('click', function(e) {
+        var menu = document.getElementById('userDropdownMenu');
+        if (menu && menu.classList.contains('show')) {
+            menu.classList.remove('show');
+        }
+    });
+</script>

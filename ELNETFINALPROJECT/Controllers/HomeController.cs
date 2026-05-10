@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ELNETFINALPROJECT.Data;
 using ELNETFINALPROJECT.Models;
+using ELNETFINALPROJECT.Helpers;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace ELNETFINALPROJECT.Controllers
 {
@@ -11,6 +13,7 @@ namespace ELNETFINALPROJECT.Controllers
     {
         private readonly AppDbContext _context;
         private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration _config;
 
         public sealed class StationActionRequest
         {
@@ -24,21 +27,52 @@ namespace ELNETFINALPROJECT.Controllers
             public int MinutesPaid { get; set; } = 60;
         }
 
-        public HomeController(AppDbContext context, ILogger<HomeController> logger)
+        public sealed class AssignGuestRequest
+        {
+            public int StationId { get; set; }
+            public string GuestName { get; set; } = string.Empty;
+            public int MinutesPaid { get; set; } = 60;
+        }
+
+        public HomeController(AppDbContext context, ILogger<HomeController> logger, IConfiguration config)
         {
             _context = context;
             _logger = logger;
+            _config = config;
         }
+
+
+        private bool IsAdminAuthenticated()
+            => HttpContext.Session.GetString("IsAdmin") == "true";
+
+        private IActionResult RequireAdmin()
+        {
+            if (!IsAdminAuthenticated())
+                return RedirectToAction("Index");
+            return null!;
+        }
+
+        private IActionResult RequireAdminJson()
+        {
+            if (!IsAdminAuthenticated())
+                return Unauthorized(new { message = "Unauthorized. Please log in as admin." });
+            return null!;
+        }
+
+        // ── Pages ──────────────────────────────────────────────────────────────
 
         public IActionResult Index()
         {
             return View();
         }
 
+        // FIX: read password from config; protect with anti-forgery
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Login(string password)
         {
-            if (password == "admin123")
+            var adminPassword = _config["AdminPassword"] ?? "admin123";
+            if (password == adminPassword)
             {
                 HttpContext.Session.SetString("IsAdmin", "true");
                 return RedirectToAction("Dashboard");
@@ -47,12 +81,38 @@ namespace ELNETFINALPROJECT.Controllers
             return RedirectToAction("Index");
         }
 
-        private IActionResult RequireAdmin()
+        public IActionResult Dashboard()
         {
-            if (HttpContext.Session.GetString("IsAdmin") != "true")
-                return RedirectToAction("Index");
-            return null;
+            return RequireAdmin() ?? View();
         }
+
+        public IActionResult Players()
+        {
+            return RequireAdmin() ?? View();
+        }
+
+        public IActionResult Stations()
+        {
+            return RequireAdmin() ?? View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        // ── Helpers ────────────────────────────────────────────────────────────
 
         private void EnsureDefaultStationsExist()
         {
@@ -74,48 +134,73 @@ namespace ELNETFINALPROJECT.Controllers
             _context.SaveChanges();
         }
 
-        public IActionResult Dashboard()
+        private int CountPlayersByRank(string rankName)
         {
-            return RequireAdmin() ?? View();
+            return _context.Accounts
+                .Where(a => a.Role == "Player")
+                .AsEnumerable()
+                .Count(a => PlayerRankHelper.GetRank(a) == rankName);
         }
 
-        public IActionResult Players()
-        {
-            return RequireAdmin() ?? View();
-        }
+        // ── Player Registration ────────────────────────────────────────────────
 
+        /// <summary>Register a new player account (admin-only action).</summary>
         [HttpPost]
         public IActionResult RegisterPlayer([FromBody] Account account)
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
+            // Server-side validation using ModelState (per course Validation PDF)
             if (string.IsNullOrWhiteSpace(account.Username) || string.IsNullOrWhiteSpace(account.Password))
-            {
                 return BadRequest(new { message = "Username and Password are required." });
-            }
+
+            if (account.Password.Length < 6)
+                return BadRequest(new { message = "Password must be at least 6 characters." });
+
+            if (!string.IsNullOrWhiteSpace(account.Email) && !new System.ComponentModel.DataAnnotations.EmailAddressAttribute().IsValid(account.Email))
+                return BadRequest(new { message = "Invalid email format." });
 
             if (_context.Accounts.Any(a => a.Username == account.Username))
-            {
                 return BadRequest(new { message = "Username is already taken." });
-            }
 
             if (!string.IsNullOrWhiteSpace(account.Email) && _context.Accounts.Any(a => a.Email == account.Email))
-            {
                 return BadRequest(new { message = "Email is already registered." });
-            }
 
+            // Hash password before saving (security best practice)
+            account.Password = PasswordHelper.Hash(account.Password);
             account.Role = "Player";
             account.Status = "Offline";
             account.RegisteredDate = DateTime.Now;
             account.CreatedAt = DateTime.UtcNow;
+            account.SessionHourlyRate = 20m;
 
             _context.Accounts.Add(account);
             _context.SaveChanges();
 
+            // Record transaction if initial balance was set
+            if (account.Balance > 0)
+            {
+                _context.Transactions.Add(new Transaction {
+                    Username = account.Username,
+                    Type = "Registration",
+                    Amount = account.Balance,
+                    StationInfo = "Initial Balance"
+                });
+                _context.SaveChanges();
+            }
+
             return Ok(account);
         }
+
+        // ── Player Queries ─────────────────────────────────────────────────────
 
         [HttpGet]
         public IActionResult GetPlayers()
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 var players = _context.Accounts
@@ -138,7 +223,7 @@ namespace ELNETFINALPROJECT.Controllers
                     })
                     .ToList();
 
-                return Json(new { success = true, players = players });
+                return Json(new { success = true, players });
             }
             catch (Exception ex)
             {
@@ -147,50 +232,53 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Get admin dashboard statistics
-        /// </summary>
+        /// <summary>Get admin dashboard statistics.</summary>
         [HttpGet]
         public IActionResult GetAdminStats()
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
-                var totalPlayers = _context.Accounts.Count(a => a.Role == "Player");
-                var onlinePlayers = _context.Accounts.Count(a => a.Role == "Player" && a.Status == "Online");
-                var activeSessions = _context.Stations.Count(s => s.Status == "active");
+                var totalPlayers    = _context.Accounts.Count(a => a.Role == "Player");
+                var onlinePlayers   = _context.Accounts.Count(a => a.Role == "Player" && a.Status == "Online");
+                var activeSessions  = _context.Stations.Count(s => s.Status == "active");
                 var availableStations = _context.Stations.Count(s => s.Status == "available");
 
-                var totalRevenue = _context.Accounts
-                    .Where(a => a.Role == "Player")
+                // Revenue: Total money collected (from Transactions table)
+                // Note: SQLite does not support Sum on decimal; use AsEnumerable for client-side aggregation
+                var totalRevenue = _context.Transactions
                     .AsEnumerable()
-                    .Sum(a => a.Balance);
+                    .Sum(t => t.Amount);
 
+                // Today's Earnings: Money collected from top-ups and guests today
                 var today = DateTime.UtcNow.Date;
-                var todayEarnings = _context.Accounts
-                    .Where(a => a.Role == "Player" && a.LastLogin.HasValue && a.LastLogin.Value.Date == today)
+                var todayEarnings = _context.Transactions
                     .AsEnumerable()
-                    .Sum(a => a.Balance);
+                    .Where(t => t.CreatedAt.Date == today)
+                    .Sum(t => t.Amount);
 
                 var rankDistribution = new
                 {
-                    Legend = CountPlayersByRank("Legend"),
-                    Diamond = CountPlayersByRank("Diamond"),
+                    Legend   = CountPlayersByRank("Legend"),
+                    Diamond  = CountPlayersByRank("Diamond"),
                     Platinum = CountPlayersByRank("Platinum"),
-                    Gold = CountPlayersByRank("Gold"),
-                    Silver = CountPlayersByRank("Silver"),
-                    Bronze = CountPlayersByRank("Bronze")
+                    Gold     = CountPlayersByRank("Gold"),
+                    Silver   = CountPlayersByRank("Silver"),
+                    Bronze   = CountPlayersByRank("Bronze")
                 };
 
                 return Json(new
                 {
                     success = true,
-                    totalPlayers = totalPlayers,
-                    onlinePlayers = onlinePlayers,
-                    activeSessions = activeSessions,
-                    totalRevenue = totalRevenue,
-                    todayEarnings = todayEarnings,
-                    availableStations = availableStations,
-                    rankDistribution = rankDistribution
+                    totalPlayers,
+                    onlinePlayers,
+                    activeSessions,
+                    totalRevenue,
+                    todayEarnings,
+                    availableStations,
+                    rankDistribution
                 });
             }
             catch (Exception ex)
@@ -200,12 +288,13 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Get live gaming stations status
-        /// </summary>
+        /// <summary>Get live gaming stations status.</summary>
         [HttpGet]
         public IActionResult GetStationsStatus()
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 EnsureDefaultStationsExist();
@@ -242,15 +331,18 @@ namespace ELNETFINALPROJECT.Controllers
 
                     return new
                     {
-                        stationId = station.Id,
-                        stationNumber = station.StationNumber,
+                        stationId      = station.Id,
+                        stationNumber  = station.StationNumber,
                         status,
-                        occupied = status == "active",
-                        isPoweredOn = station.IsPoweredOn,
-                        isUnavailable = station.IsUnavailable,
-                        playerName = player != null ? (player.DisplayName ?? player.Username) : station.CurrentUser,
-                        currentGame = player?.CurrentGame,
-                        sessionTime = elapsedMinutes > 0 ? $"{elapsedMinutes} min" : null
+                        occupied       = status == "active",
+                        isPoweredOn    = station.IsPoweredOn,
+                        isUnavailable  = station.IsUnavailable,
+                        playerName     = player != null ? player.Username : station.CurrentUser,
+                        playerId       = station.CurrentPlayerId,
+                        currentGame    = player?.CurrentGame,
+                        sessionTime    = elapsedMinutes > 0 ? $"{elapsedMinutes} min" : null,
+                        timePaid       = station.TimePaidMinutes,
+                        timeUsed       = elapsedMinutes
                     };
                 }).ToList();
 
@@ -263,12 +355,13 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Initialize 40 default stations (call once on first setup)
-        /// </summary>
+        /// <summary>Initialize 40 default stations (call once on first setup).</summary>
         [HttpPost]
         public IActionResult InitializeDefaultStations()
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 if (_context.Stations.Any())
@@ -279,11 +372,11 @@ namespace ELNETFINALPROJECT.Controllers
                     _context.Stations.Add(new Station
                     {
                         StationNumber = i,
-                        Status = "offline",
-                        IsPoweredOn = false,
+                        Status        = "offline",
+                        IsPoweredOn   = false,
                         IsUnavailable = false,
-                        CurrentUser = null,
-                        CreatedAt = DateTime.UtcNow
+                        CurrentUser   = null,
+                        CreatedAt     = DateTime.UtcNow
                     });
                 }
 
@@ -297,19 +390,30 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Get all stations with current status
-        /// </summary>
+        /// <summary>Get all stations with current status.</summary>
         [HttpGet]
         public IActionResult GetAllStations()
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 EnsureDefaultStationsExist();
 
-                var stations = _context.Stations
-                    .OrderBy(s => s.StationNumber)
-                    .Select(s => new
+                var stationsDb = _context.Stations.OrderBy(s => s.StationNumber).ToList();
+                var activePlayerIds = stationsDb.Where(s => s.CurrentPlayerId.HasValue).Select(s => s.CurrentPlayerId.Value).ToList();
+                var players = _context.Accounts.Where(a => activePlayerIds.Contains(a.Id)).ToDictionary(a => a.Id);
+
+                var stations = new List<object>();
+                foreach (var s in stationsDb)
+                {
+                    int timePaid = s.TimePaidMinutes;
+                    if (s.CurrentPlayerId.HasValue && players.TryGetValue(s.CurrentPlayerId.Value, out var player))
+                    {
+                        timePaid = (int)((player.Balance / 20m) * 60m) + s.TimeUsedMinutes;
+                    }
+                    stations.Add(new
                     {
                         s.Id,
                         s.StationNumber,
@@ -317,20 +421,20 @@ namespace ELNETFINALPROJECT.Controllers
                         s.CurrentUser,
                         s.CurrentPlayerId,
                         s.TimeUsedMinutes,
-                        s.TimePaidMinutes,
+                        TimePaidMinutes = timePaid,
                         s.IsPoweredOn,
                         s.IsUnavailable,
                         s.SessionStartTime
-                    })
-                    .ToList();
+                    });
+                }
 
                 var stats = new
                 {
-                    total = stations.Count,
-                    active = stations.Count(s => s.Status == "active"),
-                    offline = stations.Count(s => s.Status == "offline"),
-                    available = stations.Count(s => s.Status == "available"),
-                    unavailable = stations.Count(s => s.IsUnavailable)
+                    total       = stationsDb.Count,
+                    active      = stationsDb.Count(s => s.Status == "active"),
+                    offline     = stationsDb.Count(s => s.Status == "offline"),
+                    available   = stationsDb.Count(s => s.Status == "available"),
+                    unavailable = stationsDb.Count(s => s.IsUnavailable)
                 };
 
                 return Json(new { success = true, stations, stats });
@@ -342,12 +446,15 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Add a new station
-        /// </summary>
+        // ── Station Management ─────────────────────────────────────────────────
+
+        /// <summary>Add a new station.</summary>
         [HttpPost]
         public IActionResult AddStation()
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 EnsureDefaultStationsExist();
@@ -357,10 +464,10 @@ namespace ELNETFINALPROJECT.Controllers
                 var station = new Station
                 {
                     StationNumber = nextStationNumber,
-                    Status = "offline",
-                    IsPoweredOn = false,
+                    Status        = "offline",
+                    IsPoweredOn   = false,
                     IsUnavailable = false,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt     = DateTime.UtcNow
                 };
 
                 _context.Stations.Add(station);
@@ -375,12 +482,13 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Remove a station permanently
-        /// </summary>
+        /// <summary>Remove a station permanently.</summary>
         [HttpPost]
         public IActionResult RemoveStation([FromBody] StationActionRequest request)
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 var station = _context.Stations.FirstOrDefault(s => s.Id == request.StationId);
@@ -395,6 +503,7 @@ namespace ELNETFINALPROJECT.Controllers
                     {
                         player.CurrentStation = null;
                         player.SessionStartTime = null;
+                        player.Status = "Offline";
                     }
                 }
 
@@ -410,31 +519,35 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Assign a player to a station (start session)
-        /// </summary>
+        /// <summary>Assign a registered player to a station (start session).</summary>
         [HttpPost]
         public IActionResult AssignPlayerToStation([FromBody] AssignStationRequest request)
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 var station = _context.Stations.FirstOrDefault(s => s.Id == request.StationId);
-                var player = _context.Accounts.FirstOrDefault(a => a.Id == request.PlayerId);
+                var player  = _context.Accounts.FirstOrDefault(a => a.Id == request.PlayerId);
 
                 if (station == null || player == null)
                     return Json(new { success = false, message = "Station or Player not found" });
 
-                station.Status = "active";
+                station.Status          = "active";
                 station.CurrentPlayerId = request.PlayerId;
-                station.CurrentUser = player.DisplayName ?? player.Username;
-                station.TimePaidMinutes = request.MinutesPaid;
+                station.CurrentUser     = player.Username;
+                
+                // If it's a registered player, calculate TimePaid based on their current balance
+                station.TimePaidMinutes = (int)((player.Balance / 20m) * 60m);
                 station.TimeUsedMinutes = 0;
-                station.IsPoweredOn = true;
+                station.IsPoweredOn     = true;
                 station.SessionStartTime = DateTime.UtcNow;
-                station.UpdatedAt = DateTime.UtcNow;
+                station.UpdatedAt       = DateTime.UtcNow;
 
-                player.CurrentStation = $"Station {station.StationNumber:D2}";
+                player.CurrentStation   = $"Station {station.StationNumber:D2}";
                 player.SessionStartTime = DateTime.UtcNow;
+                player.Status           = "Online";
 
                 _context.SaveChanges();
 
@@ -447,12 +560,59 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Mark a station as unavailable (hardware problem)
-        /// </summary>
+        /// <summary>Assign a GUEST (no account) to a station.</summary>
         [HttpPost]
-        public IActionResult MarkStationUnavailable([FromBody] StationActionRequest request)
+        public IActionResult AssignGuestToStation([FromBody] AssignGuestRequest request)
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(request.GuestName))
+                    return Json(new { success = false, message = "Guest name is required" });
+
+                var station = _context.Stations.FirstOrDefault(s => s.Id == request.StationId);
+
+                if (station == null)
+                    return Json(new { success = false, message = "Station not found" });
+
+                station.Status           = "active";
+                station.CurrentPlayerId  = null;
+                station.CurrentUser      = request.GuestName.Trim();
+                station.TimePaidMinutes  = request.MinutesPaid;
+                station.TimeUsedMinutes  = 0;
+                station.IsPoweredOn      = true;
+                station.SessionStartTime = DateTime.UtcNow;
+                station.UpdatedAt        = DateTime.UtcNow;
+
+                // Record transaction for guest payment
+                decimal guestPayment = (request.MinutesPaid / 60m) * 20m;
+                _context.Transactions.Add(new Transaction {
+                    Username = station.CurrentUser,
+                    Type = "Guest",
+                    Amount = guestPayment,
+                    StationInfo = $"PC {station.StationNumber}"
+                });
+
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = $"Guest '{request.GuestName}' assigned to station" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error assigning guest to station");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        /// <summary>Toggle a station as unavailable/available.</summary>
+        [HttpPost]
+        public IActionResult ToggleStationUnavailable([FromBody] StationActionRequest request)
+        {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 var station = _context.Stations.FirstOrDefault(s => s.Id == request.StationId);
@@ -460,32 +620,56 @@ namespace ELNETFINALPROJECT.Controllers
                 if (station == null)
                     return Json(new { success = false, message = "Station not found" });
 
-                station.IsUnavailable = true;
-                station.IsPoweredOn = false;
-                station.Status = "unavailable";
+                if (station.IsUnavailable)
+                {
+                    // Mark as available
+                    station.IsUnavailable = false;
+                    station.Status = station.IsPoweredOn ? "available" : "offline";
+                    station.UpdatedAt = DateTime.UtcNow;
+                    _context.SaveChanges();
+                    return Json(new { success = true, message = "Station marked available", isUnavailable = false });
+                }
+
+                // Mark as unavailable
+                // Clear any active player session
+                if (station.CurrentPlayerId.HasValue)
+                {
+                    var player = _context.Accounts.FirstOrDefault(a => a.Id == station.CurrentPlayerId.Value);
+                    if (player != null)
+                    {
+                        player.CurrentStation   = null;
+                        player.SessionStartTime = null;
+                        player.Status           = "Offline";
+                    }
+                }
+
+                station.IsUnavailable   = true;
+                station.IsPoweredOn     = false;
+                station.Status          = "unavailable";
                 station.CurrentPlayerId = null;
-                station.CurrentUser = null;
+                station.CurrentUser     = null;
                 station.TimePaidMinutes = 0;
                 station.TimeUsedMinutes = 0;
-                station.UpdatedAt = DateTime.UtcNow;
+                station.UpdatedAt       = DateTime.UtcNow;
 
                 _context.SaveChanges();
 
-                return Json(new { success = true, message = "Station marked unavailable" });
+                return Json(new { success = true, message = "Station marked unavailable", isUnavailable = true });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error marking station unavailable");
+                _logger.LogError(ex, "Error toggling station unavailable");
                 return Json(new { success = false, message = ex.Message });
             }
         }
 
-        /// <summary>
-        /// Toggle station power on/off
-        /// </summary>
+        /// <summary>Toggle station power on/off.</summary>
         [HttpPost]
         public IActionResult ToggleStationPower([FromBody] StationActionRequest request)
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 var station = _context.Stations.FirstOrDefault(s => s.Id == request.StationId);
@@ -497,9 +681,21 @@ namespace ELNETFINALPROJECT.Controllers
 
                 if (!station.IsPoweredOn)
                 {
-                    station.Status = "offline";
+                    // Power off — clear any session
+                    if (station.CurrentPlayerId.HasValue)
+                    {
+                        var player = _context.Accounts.FirstOrDefault(a => a.Id == station.CurrentPlayerId.Value);
+                        if (player != null)
+                        {
+                            player.CurrentStation   = null;
+                            player.SessionStartTime = null;
+                            player.Status           = "Offline";
+                        }
+                    }
+
+                    station.Status          = "offline";
                     station.CurrentPlayerId = null;
-                    station.CurrentUser = null;
+                    station.CurrentUser     = null;
                     station.TimePaidMinutes = 0;
                     station.TimeUsedMinutes = 0;
                 }
@@ -520,12 +716,13 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// End session on a station
-        /// </summary>
+        /// <summary>End session on a station.</summary>
         [HttpPost]
         public IActionResult EndStationSession([FromBody] StationActionRequest request)
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 var station = _context.Stations.FirstOrDefault(s => s.Id == request.StationId);
@@ -533,24 +730,33 @@ namespace ELNETFINALPROJECT.Controllers
                 if (station == null)
                     return Json(new { success = false, message = "Station not found" });
 
+                // FIX: update player stats before ending the session
                 if (station.CurrentPlayerId.HasValue)
                 {
                     var player = _context.Accounts.FirstOrDefault(a => a.Id == station.CurrentPlayerId.Value);
                     if (player != null)
                     {
-                        player.CurrentStation = null;
-                        player.SessionStartTime = null;
+                        // Calculate actual minutes played
+                        var minutesPlayed = station.SessionStartTime.HasValue
+                            ? (int)(DateTime.UtcNow - station.SessionStartTime.Value).TotalMinutes
+                            : station.TimeUsedMinutes;
+
+                        player.TotalSessions++;
+                        player.TotalPlaytimeMinutes += minutesPlayed;
+                        player.CurrentStation        = null;
+                        player.SessionStartTime      = null;
+                        player.Status                = "Offline";
                     }
                 }
 
-                station.Status = "offline";
-                station.CurrentPlayerId = null;
-                station.CurrentUser = null;
-                station.TimePaidMinutes = 0;
-                station.TimeUsedMinutes = 0;
-                station.IsPoweredOn = false;
+                station.Status           = "offline";
+                station.CurrentPlayerId  = null;
+                station.CurrentUser      = null;
+                station.TimePaidMinutes  = 0;
+                station.TimeUsedMinutes  = 0;
+                station.IsPoweredOn      = false;
                 station.SessionStartTime = null;
-                station.UpdatedAt = DateTime.UtcNow;
+                station.UpdatedAt        = DateTime.UtcNow;
 
                 _context.SaveChanges();
 
@@ -563,12 +769,15 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Get player activity log for today
-        /// </summary>
+        // ── Activity & Reporting ───────────────────────────────────────────────
+
+        /// <summary>Get player activity log for today.</summary>
         [HttpGet]
         public IActionResult GetActivityLog(int limit = 10)
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 var today = DateTime.UtcNow.Date;
@@ -580,15 +789,15 @@ namespace ELNETFINALPROJECT.Controllers
                     .Select(a => new
                     {
                         a.Id,
-                        username = a.DisplayName ?? a.Username,
-                        action = "Login",
+                        username  = a.Username,
+                        action    = "Login",
                         timestamp = a.LastLogin,
-                        game = a.CurrentGame ?? "None",
-                        duration = (DateTime.UtcNow - (a.SessionStartTime ?? a.LastLogin.Value)).TotalMinutes
+                        game      = a.CurrentGame ?? "None",
+                        duration  = (DateTime.UtcNow - (a.SessionStartTime ?? a.LastLogin!.Value)).TotalMinutes
                     })
                     .ToList();
 
-                return Json(new { success = true, activities = activities });
+                return Json(new { success = true, activities });
             }
             catch (Exception ex)
             {
@@ -597,17 +806,34 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Delete a player (admin action)
-        /// </summary>
+        // ── Player Admin Actions ───────────────────────────────────────────────
+
+        /// <summary>Delete a player (admin action).</summary>
         [HttpDelete]
         public IActionResult DeletePlayer(int playerId)
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 var player = _context.Accounts.FirstOrDefault(a => a.Id == playerId);
                 if (player == null)
                     return Json(new { success = false, message = "Player not found" });
+
+                // Free any station the player is using
+                var activeStation = _context.Stations.FirstOrDefault(s => s.CurrentPlayerId == playerId);
+                if (activeStation != null)
+                {
+                    activeStation.Status           = "offline";
+                    activeStation.CurrentPlayerId  = null;
+                    activeStation.CurrentUser      = null;
+                    activeStation.TimePaidMinutes  = 0;
+                    activeStation.TimeUsedMinutes  = 0;
+                    activeStation.IsPoweredOn      = false;
+                    activeStation.SessionStartTime = null;
+                    activeStation.UpdatedAt        = DateTime.UtcNow;
+                }
 
                 _context.Accounts.Remove(player);
                 _context.SaveChanges();
@@ -621,20 +847,30 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Update player balance (admin action)
-        /// </summary>
+        /// <summary>Update player balance (admin action).</summary>
         [HttpPost]
-        public IActionResult UpdatePlayerBalance(int playerId, decimal amount)
+        public IActionResult UpdatePlayerBalance([FromBody] TopUpRequest request)
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
-                var player = _context.Accounts.FirstOrDefault(a => a.Id == playerId);
+                var player = _context.Accounts.FirstOrDefault(a => a.Id == request.PlayerId);
                 if (player == null)
                     return Json(new { success = false, message = "Player not found" });
 
-                player.Balance = amount;
+                player.Balance += request.Amount;
                 _context.Accounts.Update(player);
+
+                // Record transaction
+                _context.Transactions.Add(new Transaction {
+                    Username = player.Username,
+                    Type = "TopUp",
+                    Amount = request.Amount,
+                    StationInfo = player.CurrentStation
+                });
+
                 _context.SaveChanges();
 
                 return Json(new { success = true, newBalance = player.Balance });
@@ -646,12 +882,18 @@ namespace ELNETFINALPROJECT.Controllers
             }
         }
 
-        /// <summary>
-        /// Reset player password (admin action)
-        /// </summary>
+        public class TopUpRequest {
+            public int PlayerId { get; set; }
+            public decimal Amount { get; set; }
+        }
+
+        /// <summary>Reset player password (admin action).</summary>
         [HttpPost]
         public IActionResult ResetPlayerPassword(int playerId, string newPassword)
         {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
             try
             {
                 if (string.IsNullOrWhiteSpace(newPassword))
@@ -661,7 +903,8 @@ namespace ELNETFINALPROJECT.Controllers
                 if (player == null)
                     return Json(new { success = false, message = "Player not found" });
 
-                player.Password = newPassword;
+                // FIX: hash the new password
+                player.Password = PasswordHelper.Hash(newPassword);
                 _context.Accounts.Update(player);
                 _context.SaveChanges();
 
@@ -672,43 +915,6 @@ namespace ELNETFINALPROJECT.Controllers
                 _logger.LogError(ex, "Error resetting password");
                 return Json(new { success = false, message = ex.Message });
             }
-        }
-
-        private int CountPlayersByRank(string rankName)
-        {
-            return _context.Accounts
-                .Where(a => a.Role == "Player")
-                .AsEnumerable()
-                .Count(a => GetPlayerRank(a) == rankName);
-        }
-
-        private string GetPlayerRank(Account account)
-        {
-            var accountAgeInDays = (DateTime.UtcNow - account.CreatedAt).TotalDays;
-
-            if (account.TotalSessions >= 100 && accountAgeInDays >= 90)
-                return "Legend";
-            if (account.TotalSessions >= 75 && accountAgeInDays >= 60)
-                return "Diamond";
-            if (account.TotalSessions >= 50 && accountAgeInDays >= 30)
-                return "Platinum";
-            if (account.TotalSessions >= 25 && accountAgeInDays >= 14)
-                return "Gold";
-            if (account.TotalSessions >= 10 && accountAgeInDays >= 7)
-                return "Silver";
-
-            return "Bronze";
-        }
-
-        public IActionResult Stations()
-        {
-            return RequireAdmin() ?? View();
-        }
-
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Index");
         }
     }
 }

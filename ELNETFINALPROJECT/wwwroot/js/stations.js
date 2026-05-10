@@ -69,7 +69,7 @@ function renderPCs() {
             </div>
             <div class="station-username">${pc.currentUser || '—'}</div>
             <div class="station-game">${statusLabel}</div>
-            ${pc.currentUser ? `<div class="station-time"><i class="bi bi-clock"></i> ${formatTime(pc.timePaid)}</div>` : ''}
+            ${pc.currentUser ? `<div class="station-time"><i class="bi bi-wallet2"></i> ₱${(((pc.timePaid - pc.timeUsed) / 60) * PESOS_PER_HOUR).toFixed(2)}</div>` : ''}
         </div>`;
     }).join('');
     updateStats();
@@ -95,8 +95,33 @@ function selectPC(pcId) {
     const pcTitle = document.getElementById('pcTitle'); if (pcTitle) pcTitle.textContent = `PC ${selectedPC.stationNumber} Management`;
     const pcStatus = document.getElementById('pcStatus'); if (pcStatus) pcStatus.textContent = selectedPC.status.charAt(0).toUpperCase() + selectedPC.status.slice(1);
     const pcCurrentUser = document.getElementById('pcCurrentUser'); if (pcCurrentUser) pcCurrentUser.textContent = selectedPC.currentUser || '—';
-    const pcTimeUsed = document.getElementById('pcTimeUsed'); if (pcTimeUsed) pcTimeUsed.textContent = selectedPC.currentUser ? `${formatTime(selectedPC.timeUsed)} / ${formatTime(selectedPC.timePaid)}` : '—';
+    const pcTimeUsed = document.getElementById('pcTimeUsed');
+    if (pcTimeUsed) {
+        if (selectedPC.currentUser) {
+            const remainingMins = selectedPC.timePaid - selectedPC.timeUsed;
+            const credits = (remainingMins / 60) * PESOS_PER_HOUR;
+            pcTimeUsed.textContent = `₱${credits.toFixed(2)}`;
+        } else {
+            pcTimeUsed.textContent = '—';
+        }
+    }
     const pcPowerBtn = document.getElementById('pcPowerBtn'); if (pcPowerBtn) pcPowerBtn.textContent = selectedPC.isPoweredOn ? '⏹ Power Off' : '▶ Power On';
+    const pcEndSessionBtn = document.getElementById('pcEndSessionBtn'); if (pcEndSessionBtn) pcEndSessionBtn.style.display = selectedPC.status === 'active' ? 'inline-block' : 'none';
+    
+    const pcToggleUnavailableText = document.getElementById('pcToggleUnavailableText'); if (pcToggleUnavailableText) pcToggleUnavailableText.textContent = selectedPC.unavailable ? 'Mark Available' : 'Mark Unavailable';
+    const pcToggleUnavailableIcon = document.getElementById('pcToggleUnavailableIcon'); if (pcToggleUnavailableIcon) pcToggleUnavailableIcon.className = selectedPC.unavailable ? 'bi bi-check-circle' : 'bi bi-exclamation-triangle';
+    const pcToggleUnavailableBtn = document.getElementById('pcToggleUnavailableBtn');
+    if (pcToggleUnavailableBtn) {
+        if (selectedPC.unavailable) {
+            pcToggleUnavailableBtn.style.background = 'rgba(0,255,136,0.1)';
+            pcToggleUnavailableBtn.style.borderColor = 'rgba(0,255,136,0.2)';
+            pcToggleUnavailableBtn.style.color = 'var(--green)';
+        } else {
+            pcToggleUnavailableBtn.style.background = 'rgba(255,77,77,0.1)';
+            pcToggleUnavailableBtn.style.borderColor = 'rgba(255,77,77,0.2)';
+            pcToggleUnavailableBtn.style.color = 'var(--red)';
+        }
+    }
     renderPCs();
 }
 
@@ -141,15 +166,15 @@ document.addEventListener('DOMContentLoaded', function(){
     const paymentInput = document.getElementById('paymentAmount');
     if (paymentInput) paymentInput.addEventListener('input', updatePaymentCalc);
 
-    // Process guest login
-    window.processGuestLogin = function(event) {
+    // Process guest login — FIX: persist to database
+    window.processGuestLogin = async function(event) {
         event.preventDefault();
         if (!selectedPC) return;
 
-        const guestNameEl = document.getElementById('guestName');
-        const paymentEl = document.getElementById('paymentAmount');
-        const errorEl = document.getElementById('guestError');
-        const guestName = guestNameEl ? guestNameEl.value.trim() : '';
+        const guestNameEl   = document.getElementById('guestName');
+        const paymentEl     = document.getElementById('paymentAmount');
+        const errorEl       = document.getElementById('guestError');
+        const guestName     = guestNameEl ? guestNameEl.value.trim() : '';
         const paymentAmount = paymentEl ? parseFloat(paymentEl.value) || 0 : 0;
 
         if (!guestName) {
@@ -162,15 +187,37 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         if (errorEl) errorEl.style.display = 'none';
 
-        // Update PC with guest session
-        selectedPC.currentUser = guestName;
-        selectedPC.timePaid = Math.floor((paymentAmount / PESOS_PER_HOUR) * 60);
-        selectedPC.timeUsed = 0;
-        selectedPC.status = 'active';
-        selectedPC.isPoweredOn = true;
+        const minutesPaid = Math.floor((paymentAmount / PESOS_PER_HOUR) * 60);
 
-        closeGuestLoginModal();
-        selectPC(selectedPC.id);
+        try {
+            const res = await fetch('/Home/AssignGuestToStation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    stationId:   selectedPC.id,
+                    guestName:   guestName,
+                    minutesPaid: minutesPaid
+                })
+            });
+            const result = await res.json();
+
+            if (result.success) {
+                // Update local state to match DB
+                selectedPC.currentUser = guestName;
+                selectedPC.timePaid    = minutesPaid;
+                selectedPC.timeUsed    = 0;
+                selectedPC.status      = 'active';
+                selectedPC.isPoweredOn = true;
+
+                closeGuestLoginModal();
+                selectPC(selectedPC.id);
+            } else {
+                if (errorEl) { errorEl.textContent = result.message || 'Error starting session.'; errorEl.style.display = 'block'; }
+            }
+        } catch (err) {
+            console.error('Guest login error:', err);
+            if (errorEl) { errorEl.textContent = 'Network error. Please try again.'; errorEl.style.display = 'block'; }
+        }
     };
 
     // Modal overlay click to close
@@ -234,10 +281,10 @@ window.toggleAllStations = function() {
     loadStationsFromDB().then(() => renderPCs());
 };
 
-// Admin action: mark selected PC unavailable (hardware/problem)
-window.markPCUnavailable = function() {
+// Admin action: toggle selected PC unavailable/available
+window.togglePCUnavailable = function() {
     if (!selectedPC) return;
-    fetch('/Home/MarkStationUnavailable', {
+    fetch('/Home/ToggleStationUnavailable', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stationId: selectedPC.id })
@@ -245,14 +292,18 @@ window.markPCUnavailable = function() {
     .then(r => r.json())
     .then(result => {
         if (result.success) {
-            selectedPC.unavailable = true;
-            selectedPC.isPoweredOn = false;
-            selectedPC.currentUser = null;
-            selectedPC.status = 'unavailable';
+            selectedPC.unavailable = result.isUnavailable;
+            if (result.isUnavailable) {
+                selectedPC.isPoweredOn = false;
+                selectedPC.currentUser = null;
+                selectedPC.status = 'unavailable';
+            } else {
+                selectedPC.status = selectedPC.isPoweredOn ? 'available' : 'offline';
+            }
             selectPC(selectedPC.id);
         }
     })
-    .catch(err => console.error('Mark unavailable error:', err));
+    .catch(err => console.error('Toggle unavailable error:', err));
 }
 
 // Admin action: remove selected station permanently
@@ -280,16 +331,79 @@ window.removeStation = function() {
     .catch(err => console.error('Remove station error:', err));
 }
 
-// Admin action: assign existing player to selected PC (simple assign)
-window.assignPlayerToPC = function(playerName, minutesPaid) {
+// Admin action: assign existing player to selected PC by name
+window.assignPlayerToPC = async function(playerName, minutesPaid) {
     if (!selectedPC) return;
-    // For now, use playerName as-is (you can later integrate with player picker UI)
-    selectedPC.currentUser = playerName;
-    selectedPC.timePaid = minutesPaid || 60;
-    selectedPC.timeUsed = 0;
-    selectedPC.status = 'active';
-    selectedPC.isPoweredOn = true;
-    selectPC(selectedPC.id);
+    if (!playerName || !playerName.trim()) return alert("Player name is required");
+
+    try {
+        const response = await fetch('/Home/GetPlayers');
+        const data = await response.json();
+        const players = data.success ? data.players : [];
+
+        const player = players.find(p => p.username.toLowerCase() === playerName.toLowerCase() || (p.displayName && p.displayName.toLowerCase() === playerName.toLowerCase()));
+        
+        if (!player) {
+            alert('Player not found. Please check the exact username.');
+            return;
+        }
+
+        const assignRes = await fetch('/Home/AssignPlayerToStation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                stationId: selectedPC.id,
+                playerId: player.id,
+                minutesPaid: minutesPaid || 60
+            })
+        });
+
+        const result = await assignRes.json();
+        if (result.success) {
+            alert('Player assigned successfully!');
+            document.getElementById('assignPlayerName').value = '';
+            loadStationsFromDB().then(() => {
+                const refreshed = pcList.find(p => p.id === selectedPC.id);
+                if (refreshed) selectPC(refreshed.id);
+            });
+        } else {
+            alert('Failed to assign player: ' + result.message);
+        }
+    } catch (e) {
+        console.error('Assign player error:', e);
+        alert('Error assigning player');
+    }
+}
+
+// Admin action: end player session
+window.endStationSession = async function() {
+    if (!selectedPC || selectedPC.status !== 'active') return;
+    if (!confirm(`End session for ${selectedPC.currentUser}?`)) return;
+
+    try {
+        const res = await fetch('/Home/EndStationSession', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ stationId: selectedPC.id })
+        });
+        const result = await res.json();
+        if (result.success) {
+            loadStationsFromDB().then(() => {
+                const refreshed = pcList.find(p => p.id === selectedPC.id);
+                if (refreshed) {
+                    selectedPC = refreshed;
+                    selectPC(refreshed.id);
+                } else {
+                    closePCManagement();
+                }
+            });
+        } else {
+            alert('Failed to end session: ' + result.message);
+        }
+    } catch (e) {
+        console.error('End session error:', e);
+        alert('Error ending session');
+    }
 }
 
 window.addStation = function() {

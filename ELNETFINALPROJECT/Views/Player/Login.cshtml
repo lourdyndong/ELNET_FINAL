@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Player Login - GameTime";
     Layout = null;
 }
@@ -565,7 +565,7 @@
             <div class="form-top-label">Welcome Back, Player</div>
             <h2 class="form-title">PLAYER LOGIN</h2>
 
-            <form id="loginForm">
+            <form asp-controller="Player" asp-action="Login" method="post" id="loginForm">
                 <!-- Error message -->
                 <div class="error-msg" id="errorMsg" style="display: none; color: #ff3355; margin-bottom: 16px; font-size: 13px; font-weight: 500; background: rgba(255, 51, 85, 0.1); padding: 10px; border-left: 3px solid #ff3355;">
                 </div>

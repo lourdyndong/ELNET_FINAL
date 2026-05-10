@@ -1,4 +1,4 @@
-namespace WebApplication1.Models
+namespace ELNETFINALPROJECT.Models
 {
     public class ErrorViewModel
     {

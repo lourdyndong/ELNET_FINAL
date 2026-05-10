@@ -1,12 +1,26 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ELNETFINALPROJECT.Models
 {
     public class Account
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email format")]
         public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Username is required")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 50 characters")]
         public string Username { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Password is required")]
+        [StringLength(256, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters")]
         public string Password { get; set; } = string.Empty;
+
+        [Range(0, double.MaxValue, ErrorMessage = "Balance cannot be negative")]
         public decimal Balance { get; set; }
+
         public string Role { get; set; } = string.Empty;
         public string Status { get; set; } = "Offline";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -24,6 +38,6 @@ namespace ELNETFINALPROJECT.Models
         public string? CurrentGame { get; set; }
         public string? CurrentStation { get; set; }
         public DateTime? SessionStartTime { get; set; }
-        public decimal SessionHourlyRate { get; set; } = 25m; // Default ₱25/hour
+        public decimal SessionHourlyRate { get; set; } = 20m; // Default ₱20/hour
     }
 }

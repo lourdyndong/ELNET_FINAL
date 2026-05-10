@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "GameTime Management System";
     Layout = null;
 }
@@ -566,7 +566,8 @@
         </div>
 
         <!-- Admin Access Box -->
-        <form method="post" action="/Home/Login" class="admin-access-box">
+        <form asp-controller="Home" asp-action="Login" method="post" class="admin-access-box">
+            @Html.AntiForgeryToken()
             <label class="admin-label"><i class="bi bi-lock-fill"></i> Admin Access</label>
             <div class="password-input-wrapper">
                 <input type="password" name="password" id="adminPassword" class="password-input" placeholder="Enter Security Password" required>
@@ -661,9 +662,9 @@
         <div class="footer-right">
             <span>&copy; 2026 GameTime Management System</span>
             <span class="footer-dot"></span>
-            <a href="/Home/Privacy">Terms</a>
+            <a asp-controller="Home" asp-action="Privacy">Terms</a>
             <span class="footer-dot"></span>
-            <a href="/Home/Privacy">Privacy</a>
+            <a asp-controller="Home" asp-action="Privacy">Privacy</a>
             <span class="footer-dot"></span>
             <span style="color: #4a5a6a;">v0.0.1-beta</span>
         </div>
