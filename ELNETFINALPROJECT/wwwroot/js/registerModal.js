@@ -1,70 +1,94 @@
-(function(){
-    // Ensure a global players array exists
-    window.players = window.players || [];
-    // Create helper functions on window so pages can call them
-    window.openRegisterModal = function() {
+/**
+ * registerModal.js
+ * Shared registration modal logic.
+ * Calls /Home/RegisterPlayer and dispatches 'playerRegistered' with the
+ * server-returned player object so any listening page can update its state.
+ *
+ * NOTE: Players.cshtml has its own inline registerPlayer() that already does
+ * this correctly. This file is for other pages (e.g. Dashboard) that embed
+ * the _RegisterModal partial and need the same behaviour without duplicating code.
+ * Do NOT load this script on Players.cshtml — it defines registerPlayer() inline.
+ */
+(function () {
+    // ── Modal open / close ─────────────────────────────────────────────────────
+    window.openRegisterModal = function () {
         const modal = document.getElementById('registerModal');
         if (!modal) return;
         modal.style.display = 'flex';
-        document.getElementById('regEmail').value = '';
-        document.getElementById('regUsername').value = '';
-        document.getElementById('regPassword').value = '';
-        document.getElementById('regBalance').value = '';
-        document.getElementById('regError').style.display = 'none';
-    };
-    window.closeRegisterModal = function() {
-        const modal = document.getElementById('registerModal');
-        if (!modal) return;
-        modal.style.display = 'none';
+        setValue('regEmail', '');
+        setValue('regUsername', '');
+        setValue('regPassword', '');
+        setValue('regBalance', '');
+        hide('regError');
     };
 
-    window.registerPlayer = function() {
-        const email = document.getElementById('regEmail').value.trim();
-        const username = document.getElementById('regUsername').value.trim();
-        const password = document.getElementById('regPassword').value;
-        const balance = parseFloat(document.getElementById('regBalance').value) || 0;
+    window.closeRegisterModal = function () {
+        const modal = document.getElementById('registerModal');
+        if (modal) modal.style.display = 'none';
+    };
+
+    // ── Registration (hits real backend) ──────────────────────────────────────
+    window.registerPlayer = async function () {
+        const email = (document.getElementById('regEmail')?.value ?? '').trim();
+        const username = (document.getElementById('regUsername')?.value ?? '').trim();
+        const password = document.getElementById('regPassword')?.value ?? '';
+        const balance = parseFloat(document.getElementById('regBalance')?.value) || 0;
         const errEl = document.getElementById('regError');
+
+        // Client-side validation
         if (!username) {
-            errEl.textContent = 'Username is required.';
-            errEl.style.display = 'block';
+            showError(errEl, 'Username is required.');
             return;
         }
         if (!password || password.length < 6) {
-            errEl.textContent = 'Password is required (minimum 6 characters).';
-            errEl.style.display = 'block';
+            showError(errEl, 'Password must be at least 6 characters.');
             return;
         }
-        errEl.style.display = 'none';
-        const now = new Date();
-        const id = (window._playerIdCounter = (window._playerIdCounter || 1001) + 1);
-        const newPlayer = {
-            id,
-            username,
-            email: email || '—',
-            // NOTE: frontend demo only — do not store plaintext passwords in production
-            password: password,
-            balance,
-            status: 'Offline',
-            registered: now.toLocaleDateString('en-PH', { year:'numeric', month:'short', day:'numeric' })
-        };
-        window.players.push(newPlayer);
-        // notify pages that subscribed
-        window.dispatchEvent(new CustomEvent('playerRegistered', { detail: newPlayer }));
-        // small UX feedback
-        try { window.alert('Player "' + username + '" registered (frontend demo only).'); } catch (e) {}
-        window.closeRegisterModal();
+        hide('regError');
+
+        try {
+            const res = await fetch('/Home/RegisterPlayer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, username, password, balance })
+            });
+
+            if (res.ok) {
+                const newPlayer = await res.json();
+                window.closeRegisterModal();
+                // Let listening pages react (e.g. reload their player table)
+                window.dispatchEvent(new CustomEvent('playerRegistered', { detail: newPlayer }));
+            } else {
+                const errData = await res.json().catch(() => ({}));
+                showError(errEl, errData.message || 'Error registering player.');
+            }
+        } catch {
+            showError(errEl, 'Network error — please try again.');
+        }
     };
 
-    // wire submit button
-    document.addEventListener('click', function(e){
-        if (e.target && e.target.id === 'regSubmitBtn') {
-            window.registerPlayer();
-        }
-    });
+    // ── Helpers ────────────────────────────────────────────────────────────────
+    function setValue(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+    }
+    function hide(id) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    }
+    function showError(el, msg) {
+        if (!el) return;
+        el.textContent = msg;
+        el.style.display = 'block';
+    }
 
-    // close modal on outside click
-    document.addEventListener('click', function(e){
+    // ── Wire submit button & outside-click close ───────────────────────────────
+    document.addEventListener('click', function (e) {
+        if (e.target?.id === 'regSubmitBtn') window.registerPlayer();
+
         const modal = document.getElementById('registerModal');
-        if (modal && modal.style.display === 'flex' && e.target === modal) window.closeRegisterModal();
+        if (modal && modal.style.display === 'flex' && e.target === modal) {
+            window.closeRegisterModal();
+        }
     });
 })();
