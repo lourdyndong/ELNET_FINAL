@@ -996,7 +996,6 @@
     </div>
 
     <script>
-        // ── State ──────────────────────────────────────────────────────────────────
         let players = [];
 
         // ── Bootstrap ──────────────────────────────────────────────────────────────
@@ -1014,7 +1013,6 @@
                 const res = await fetch('/Home/GetPlayers');
                 if (!res.ok) throw new Error('Server error ' + res.status);
                 const data = await res.json();
-                // GetPlayers returns { success, players } or bare array on error
                 players = data.success ? data.players : [];
                 renderPlayers();
                 updateStats();
@@ -1099,7 +1097,6 @@
             }
 
             tbody.innerHTML = filtered.map(p => {
-                // API returns camelCase: status = "Online" | "Offline", createdAt = ISO date
                 const isOnline   = p.status === 'Online';
                 const dateStr    = p.createdAt
                     ? new Date(p.createdAt).toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' })
@@ -1180,7 +1177,6 @@
 
         // ── Live stats sidebar ─────────────────────────────────────────────────────
         function updateStats() {
-            // "Online" matches the Status enum value stored in the DB
             const online = players.filter(p => p.status === 'Online').length;
             const total  = players.length;
             const cash   = players.reduce((s, p) => s + (p.balance ?? 0), 0);

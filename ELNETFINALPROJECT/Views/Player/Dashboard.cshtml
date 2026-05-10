@@ -1315,15 +1315,6 @@
                 <span class="topbar-section">Command Center</span>
                 <span class="topbar-title">Welcome back, Agent <span id="topbarName">@(ViewData["DisplayName"]?.ToString() ?? "Guest")</span></span>
             </div>
-            <div class="topbar-right">
-                <div class="topbar-status">
-                    <span class="topbar-status-dot"></span>
-                    Network Secure
-                </div>
-                <div class="topbar-divider"></div>
-                <span class="topbar-terminal">&gt;_</span>
-                <button class="topbar-icon info">i</button>
-            </div>
         </div>
 
         <!-- CONTENT -->
@@ -1457,9 +1448,6 @@
                         <div class="status-text-main">System Status: Optimal</div>
                         <div class="status-text-sub">All protocols are running normally</div>
                     </div>
-                </div>
-                <div class="status-right">
-                    v0.4 &nbsp;&nbsp; © 2024 GAMETIME MANAGEMENT SYSTEM
                 </div>
             </div>
 
@@ -1673,7 +1661,7 @@
 
         // Initial setup
         $(document).ready(function() {
-            showPayMethod('card'); // Show card fields by default
+            showPayMethod('card');
 
             // Load real dashboard data from backend
             loadDashboardData();
@@ -1684,14 +1672,8 @@
         });
 
         // ── Live session state (replaces live-session.js) ─────────────────────
-        let _liveSessionData = null;      // set when a session is active
-        let _liveSessionInterval = null;  // ticks every second to update elapsed
-
-        /**
-         * Derive hourly rate from station string.
-         * "Station 01" … "Station 10" → ₱25 / hr
-         * "Station 11" … "Station 40" → ₱20 / hr
-         */
+        let _liveSessionData = null;      
+        let _liveSessionInterval = null;  
         function getRateForStation(stationStr) {
             return 20;
         }
