@@ -1550,12 +1550,12 @@
                                 </div>
                                 <div class="card-field">
                                     <div class="card-field-label">Card Number</div>
-                                    <input type="text" class="modal-input" placeholder="**** **** **** 0000" maxlength="19" style="font-family:'JetBrains Mono',monospace;" />
+                                    <input type="text" id="cardNumber" class="modal-input" placeholder="**** **** **** 0000" maxlength="19" style="font-family:'JetBrains Mono',monospace;" oninput="formatCardNumber(this)" />
                                 </div>
                                 <div class="card-grid2">
                                     <div class="card-field">
                                         <div class="card-field-label">Expiry Date</div>
-                                        <input type="text" class="modal-input" placeholder="MM/YY" maxlength="5" style="font-family:'JetBrains Mono',monospace;" />
+                                        <input type="text" id="cardExpiry" class="modal-input" placeholder="MM/YY" maxlength="5" style="font-family:'JetBrains Mono',monospace;" oninput="formatExpiry(this)" />
                                     </div>
                                     <div class="card-field">
                                         <div class="card-field-label">CVV</div>
@@ -1659,6 +1659,21 @@
             $('#' + method + 'Fields').show();
         }
 
+        function formatCardNumber(input) {
+            let val = input.value.replace(/\D/g, ''); // Remove non-digits
+            let formatted = val.match(/.{1,4}/g);
+            input.value = formatted ? formatted.join(' ') : val;
+        }
+
+        function formatExpiry(input) {
+            let val = input.value.replace(/\D/g, ''); // Remove non-digits
+            if (val.length >= 3) {
+                input.value = val.substring(0, 2) + '/' + val.substring(2, 4);
+            } else {
+                input.value = val;
+            }
+        }
+
         // Initial setup
         $(document).ready(function() {
             showPayMethod('card');
@@ -1669,6 +1684,13 @@
 
             // Refresh dashboard data every 30 seconds
             setInterval(loadDashboardData, 30000);
+
+            // Close top-up modal on backdrop click
+            $('#topUpModal').on('click', function(e) {
+                if (e.target === this) {
+                    closeTopUp();
+                }
+            });
         });
 
         // ── Live session state ────────────────────────────────────────────────
