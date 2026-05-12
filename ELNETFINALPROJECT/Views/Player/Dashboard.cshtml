@@ -34,7 +34,6 @@
             --text2: #888888;
             --text3: #555555;
             --red: #e53935;
-            --amber: #ffaa00;
             --sidebar-w: 240px;
         }
 
@@ -141,15 +140,6 @@
             text-align: center;
         }
 
-        .ad-card-img {
-            width: 72px;
-            height: 72px;
-            border-radius: 6px;
-            object-fit: cover;
-            margin: 0 auto 8px;
-            display: block;
-            background: var(--bg4);
-        }
         /* Placeholder cat illustration using CSS */
         .ad-cat-placeholder {
             width: 72px;
@@ -328,75 +318,6 @@
             .topbar-title span {
                 color: var(--green);
             }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .topbar-status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
-            color: var(--text2);
-            font-weight: 500;
-        }
-
-        .topbar-status-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--green);
-            box-shadow: 0 0 6px var(--green);
-            animation: pulse 2s infinite;
-        }
-
-        @@keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.4;
-            }
-        }
-
-        .topbar-divider {
-            width: 1px;
-            height: 20px;
-            background: var(--border);
-        }
-
-        .topbar-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: var(--text2);
-            cursor: pointer;
-            transition: color 0.2s;
-            background: none;
-            border: none;
-        }
-
-            .topbar-icon.info {
-                background: var(--green);
-                color: #111;
-                font-weight: 700;
-                font-size: 13px;
-            }
-
-        .topbar-terminal {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            color: var(--text2);
-            cursor: pointer;
-        }
 
         /* ── CONTENT ── */
         .content {
@@ -843,13 +764,6 @@
             color: var(--text2);
         }
 
-        .status-right {
-            font-size: 11px;
-            color: var(--text3);
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 0.5px;
-        }
-
         /* ── TOP-UP MODAL ── */
         .modal-overlay {
             display: none;
@@ -1134,43 +1048,6 @@
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
-
-        .modal-summary {
-            background: #111820;
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 4px;
-            padding: 14px;
-            margin-top: 14px;
-        }
-
-        .modal-summary-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-            .modal-summary-row:last-child {
-                margin-bottom: 0;
-            }
-
-            .modal-summary-row span:first-child {
-                font-size: 10px;
-                color: rgba(255,255,255,0.35);
-                letter-spacing: 1px;
-                text-transform: uppercase;
-            }
-
-            .modal-summary-row span:last-child {
-                font-family: 'JetBrains Mono', monospace;
-                font-size: 14px;
-                font-weight: 600;
-                color: #fff;
-            }
-
-            .modal-summary-row span.green {
-                color: var(--green);
-            }
 
         .execute-btn {
             width: 100%;

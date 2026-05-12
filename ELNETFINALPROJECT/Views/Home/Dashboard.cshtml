@@ -87,13 +87,6 @@
             text-transform: uppercase;
         }
 
-        .topnav-search input::placeholder { color: var(--text3); }
-        .topnav-search input:focus { border-color: var(--border2); }
-        .search-icon {
-            position: absolute; left: 10px; top: 50%;
-            transform: translateY(-50%);
-            color: var(--text3); font-size: 14px;
-        }
         .topnav-right {
             margin-left: auto;
             display: flex;
@@ -117,28 +110,6 @@
             animation: pulse 2s infinite;
         }
         @@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
-        .topnav-icon-btn {
-            width: 34px; height: 34px;
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text2);
-            font-size: 15px;
-            position: relative;
-            transition: border-color 0.2s;
-        }
-        .topnav-icon-btn:hover { border-color: var(--border2); color: var(--text); }
-        .notif-badge {
-            position: absolute; top: -4px; right: -4px;
-            width: 16px; height: 16px;
-            background: var(--red);
-            border-radius: 50%;
-            font-size: 9px;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700;
-            color: #fff;
-        }
         .user-chip {
             display: flex; align-items: center; gap: 8px;
             background: var(--bg3);

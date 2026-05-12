@@ -223,13 +223,6 @@ function handleProfilePictureUpload(input) {
 }
 
 /**
- * Save profile changes
- */
-function saveProfile() {
-    alert('Profile save functionality - editing disabled in dashboard view');
-}
-
-/**
  * Update credentials (password)
  */
 function updateCredentials() {
