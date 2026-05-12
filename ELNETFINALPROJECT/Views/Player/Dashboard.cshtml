@@ -1671,36 +1671,62 @@
             setInterval(loadDashboardData, 30000);
         });
 
-        // ── Live session state (replaces live-session.js) ─────────────────────
-        let _liveSessionData = null;      
-        let _liveSessionInterval = null;  
-        function getRateForStation(stationStr) {
-            return 20;
-        }
+        // ── Live session state ────────────────────────────────────────────────
+        let _liveSessionData   = null;
+        let _liveSessionInterval = null;
 
+        const RATE = 20; // ₱20/hr flat
+
+        /**
+         * Format milliseconds as "Xh MMm SSs" for a live, ticking display.
+         * Shows seconds so the user can see it counting every second.
+         */
         function fmtTime(totalMs) {
             const totalSec = Math.max(0, Math.floor(totalMs / 1000));
             const h = Math.floor(totalSec / 3600);
             const m = Math.floor((totalSec % 3600) / 60);
-            return `${h}h ${String(m).padStart(2, '0')}m`;
+            const s = totalSec % 60;
+            return `${h}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
         }
 
-        /** Tick — updates elapsed & remaining every second */
+        /**
+         * Parse a UTC datetime string from ASP.NET (which omits the trailing "Z").
+         * Without this fix, new Date("2025-05-12T10:00:00") is treated as LOCAL time
+         * in most browsers, making the elapsed calculation wrong by the UTC offset
+         * (e.g. 8 hours off in the Philippines).
+         */
+        function parseUtcDate(str) {
+            if (!str) return null;
+            // Append "Z" if no timezone designator present
+            if (!/[Zz]$/.test(str) && !/[+\-]\d{2}:\d{2}$/.test(str)) {
+                str = str + 'Z';
+            }
+            return new Date(str);
+        }
+
+        /** Tick — updates elapsed & remaining every second without resetting on polls */
         function _tickLiveSession() {
             if (!_liveSessionData) return;
-            const elapsed = Date.now() - _liveSessionData.startMs;
-            const remaining = Math.max(0, _liveSessionData.balanceMs - elapsed);
 
-            const elEl = document.getElementById('sessionElapsed');
-            const remEl = document.getElementById('sessionRemaining');
-            if (elEl) {
-                elEl.textContent = fmtTime(elapsed);
-                elEl.className = 'session-value active-time';
-            }
-            if (remEl) {
-                remEl.textContent = fmtTime(remaining);
-                remEl.className = 'session-value active-time';
-            }
+            const now       = Date.now();
+            const elapsedMs = now - _liveSessionData.startMs;
+            // Remaining decreases in real-time since the last poll
+            const sincePoll   = now - _liveSessionData.pollMs;
+            const remainingMs = _liveSessionData.remainingAtPollMs - sincePoll;
+
+            const el = id => document.getElementById(id);
+
+            el('sessionElapsed').textContent   = fmtTime(elapsedMs);
+            el('sessionElapsed').className     = 'hero-session-value';
+            el('sessionRemaining').textContent = fmtTime(remainingMs);
+            el('sessionRemaining').className   = 'hero-session-value';
+
+            // Also update the hero "Remaining Play Time" text to stay in sync
+            const totalRemSec = Math.max(0, Math.floor(remainingMs / 1000));
+            const rH = Math.floor(totalRemSec / 3600);
+            const rM = Math.floor((totalRemSec % 3600) / 60);
+            const remTimeEl = document.getElementById('remainingTime');
+            if (remTimeEl) remTimeEl.textContent = `${rH}h ${String(rM).padStart(2, '0')}m`;
         }
 
         function _startLiveTicker() {
@@ -1713,62 +1739,80 @@
             _liveSessionData = null;
         }
 
-        /** Apply session data to the card DOM */
+        /** Apply fresh poll data — anchors remaining to current balance without resetting elapsed */
         function _renderLiveSession(data) {
-            const rate    = getRateForStation(data.currentStation);
             const stLabel = data.currentStation
                 ? 'PC ' + data.currentStation.replace(/\D/g, '').padStart(2, '0')
                 : '—';
 
             const el = id => document.getElementById(id);
 
-            // Station — green when assigned
             el('sessionStation').textContent = stLabel;
-            el('sessionStation').className   = data.currentStation ? 'session-value active-station' : 'session-value';
+            el('sessionStation').className   = data.currentStation ? 'hero-session-value' : 'hero-session-value';
 
-            // Rate — shown when a station is assigned
-            el('sessionRate').textContent = data.currentStation ? `₱${rate} / hr` : '—';
-            el('sessionRate').className   = data.currentStation ? 'session-value active-rate' : 'session-value';
+            el('sessionRate').textContent = data.currentStation ? `₱${RATE} / hr` : '—';
+            el('sessionRate').className   = data.currentStation ? 'hero-session-value' : 'hero-session-value';
 
-            // Start ticker if station assigned and session has a start time
             if (data.currentStation && data.sessionStartTime) {
-                const startMs   = new Date(data.sessionStartTime).getTime();
-                const balanceMs = data.balance * 3600000 / rate; // balance ÷ rate → hours → ms
-                _liveSessionData = { startMs, balanceMs };
-                _startLiveTicker();
-                _tickLiveSession(); // immediate first tick
+                // FIX 1: parse sessionStartTime as UTC (ASP.NET omits the "Z")
+                const startDate = parseUtcDate(data.sessionStartTime);
+                const startMs   = startDate.getTime();
+
+                // FIX 2: anchor remaining to the CURRENT balance at poll time,
+                //         not to elapsed — so re-polling never resets the countdown.
+                //         balance (₱) ÷ rate (₱/hr) × 3 600 000 ms/hr = remaining ms
+                const remainingAtPollMs = (data.balance / RATE) * 3600000;
+
+                if (_liveSessionData) {
+                    // Session already running — only update the balance anchor, keep startMs intact
+                    _liveSessionData.pollMs           = Date.now();
+                    _liveSessionData.remainingAtPollMs = remainingAtPollMs;
+                } else {
+                    // First render — initialise everything
+                    _liveSessionData = {
+                        startMs,
+                        pollMs: Date.now(),
+                        remainingAtPollMs
+                    };
+                    _startLiveTicker();
+                }
+
+                _tickLiveSession(); // immediate paint
             } else {
                 _stopLiveTicker();
-                el('sessionElapsed').textContent  = '0h 00m';
-                el('sessionElapsed').className    = 'session-value';
-                el('sessionRemaining').textContent = '0h 00m';
-                el('sessionRemaining').className  = 'session-value';
+                el('sessionElapsed').textContent   = '—';
+                el('sessionElapsed').className     = 'hero-session-value';
+                el('sessionRemaining').textContent = '—';
+                el('sessionRemaining').className   = 'hero-session-value';
             }
         }
 
         /**
-         * Load real dashboard data from backend
+         * Load real dashboard data from backend.
+         * Called on page load and every 30 s to re-anchor the balance.
          */
         function loadDashboardData() {
             fetch('/Player/GetDashboardData')
-                .then(response => response.json())
+                .then(r => r.json())
                 .then(data => {
-                    if (data.success) {
-                        // Update balance display
-                        $('#balanceDisplay').text('₱' + data.balance.toFixed(2));
+                    if (!data.success) return;
 
-                        // Update player rank
-                        $('#sidebarRank').text(data.playerRank);
+                    // Balance display
+                    $('#balanceDisplay').text('₱' + data.balance.toFixed(2));
 
-                        // Update remaining playtime in hero card
+                    // Player rank
+                    $('#sidebarRank').text(data.playerRank);
+
+                    // Remaining playtime hero card — only set from poll when no active session ticker
+                    if (!_liveSessionData) {
                         const remainingTime = `${data.remainingPlaytimeHours}h ${String(data.remainingPlaytimeMinutes).padStart(2, '0')}m`;
-                            $('#remainingTime').text(remainingTime);
-
-                        // Update live session card (always rendered)
-                        _renderLiveSession(data);
+                        $('#remainingTime').text(remainingTime);
                     }
+
+                    // Live session card
+                    _renderLiveSession(data);
                 })
-                .catch(error => console.error('Error loading dashboard data:', error));
+                .catch(err => console.error('Error loading dashboard data:', err));
         }
     </script>
 </body>

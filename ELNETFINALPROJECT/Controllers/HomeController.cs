@@ -34,6 +34,12 @@ namespace ELNETFINALPROJECT.Controllers
             public int MinutesPaid { get; set; } = 60;
         }
 
+        public class ReassignStationRequest
+        {
+            public int OldStationId { get; set; }
+            public int NewStationId { get; set; }
+        }
+
         public HomeController(AppDbContext context, ILogger<HomeController> logger, IConfiguration config)
         {
             _context = context;
@@ -245,6 +251,7 @@ namespace ELNETFINALPROJECT.Controllers
                 var onlinePlayers   = _context.Accounts.Count(a => a.Role == "Player" && a.Status == "Online");
                 var activeSessions  = _context.Stations.Count(s => s.Status == "active");
                 var availableStations = _context.Stations.Count(s => s.Status == "available");
+                var totalStations = _context.Stations.Count();
 
                 // Revenue: Total money collected (from Transactions table)
                 // Note: SQLite does not support Sum on decimal; use AsEnumerable for client-side aggregation
@@ -278,6 +285,7 @@ namespace ELNETFINALPROJECT.Controllers
                     totalRevenue,
                     todayEarnings,
                     availableStations,
+                    totalStations,
                     rankDistribution
                 });
             }
@@ -659,6 +667,70 @@ namespace ELNETFINALPROJECT.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error toggling station unavailable");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        /// <summary>Reassign a player to a different station.</summary>
+        [HttpPost]
+        public IActionResult ReassignStation([FromBody] ReassignStationRequest request)
+        {
+            var authCheck = RequireAdminJson();
+            if (authCheck != null) return authCheck;
+
+            try
+            {
+                var oldStation = _context.Stations.FirstOrDefault(s => s.Id == request.OldStationId);
+                var newStation = _context.Stations.FirstOrDefault(s => s.Id == request.NewStationId);
+
+                if (oldStation == null || newStation == null)
+                    return Json(new { success = false, message = "Station not found" });
+
+                if (oldStation.Status != "active")
+                    return Json(new { success = false, message = "Old station is not active" });
+
+                if (newStation.Status == "active")
+                    return Json(new { success = false, message = "New station is already occupied" });
+                
+                if (newStation.IsUnavailable)
+                    return Json(new { success = false, message = "New station is unavailable" });
+
+                // Transfer data
+                newStation.Status = "active";
+                newStation.CurrentPlayerId = oldStation.CurrentPlayerId;
+                newStation.CurrentUser = oldStation.CurrentUser;
+                newStation.TimePaidMinutes = oldStation.TimePaidMinutes;
+                newStation.TimeUsedMinutes = oldStation.TimeUsedMinutes;
+                newStation.IsPoweredOn = true;
+                newStation.SessionStartTime = oldStation.SessionStartTime;
+                newStation.UpdatedAt = DateTime.UtcNow;
+
+                // Clear old station
+                oldStation.Status = "available";
+                oldStation.CurrentPlayerId = null;
+                oldStation.CurrentUser = null;
+                oldStation.TimePaidMinutes = 0;
+                oldStation.TimeUsedMinutes = 0;
+                oldStation.IsPoweredOn = true;
+                oldStation.SessionStartTime = null;
+                oldStation.UpdatedAt = DateTime.UtcNow;
+
+                // Update player's current station
+                if (newStation.CurrentPlayerId.HasValue)
+                {
+                    var player = _context.Accounts.FirstOrDefault(a => a.Id == newStation.CurrentPlayerId.Value);
+                    if (player != null)
+                    {
+                        player.CurrentStation = $"Station {newStation.StationNumber:D2}";
+                    }
+                }
+
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Station reassigned successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reassigning station");
                 return Json(new { success = false, message = ex.Message });
             }
         }

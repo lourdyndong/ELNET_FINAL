@@ -899,17 +899,18 @@
                             </div>
                         </div>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Player</th>
-                                <th>ID</th>
-                                <th>Balance</th>
-                                <th>Status</th>
-                                <th>Registered</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                    <div style="max-height: 430px; overflow-y: auto;">
+                        <table>
+                            <thead style="position: sticky; top: 0; background: var(--card); z-index: 1; box-shadow: 0 1px 0 var(--border);">
+                                <tr>
+                                    <th>Player</th>
+                                    <th>ID</th>
+                                    <th>Balance</th>
+                                    <th>Status</th>
+                                    <th>Registered</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
                         <tbody id="playerTableBody">
                             <tr>
                                 <td colspan="6">
@@ -921,6 +922,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
 
@@ -1083,6 +1085,7 @@
             const lc       = filter.toLowerCase();
             const filtered = players.filter(p =>
                 (p.username || '').toLowerCase().includes(lc) ||
+                (p.email || '').toLowerCase().includes(lc) ||
                 String(p.id).includes(filter)
             );
 
@@ -1159,7 +1162,11 @@
             if (isNaN(amount) || amount < 0) return;
 
             try {
-                const res  = await fetch(`/Home/UpdatePlayerBalance?playerId=${id}&amount=${amount}`, { method: 'POST' });
+                const res  = await fetch('/Home/UpdatePlayerBalance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ playerId: id, amount: amount })
+                });
                 const data = await res.json();
                 if (data.success) {
                     const p = players.find(p => p.id === id);

@@ -64,17 +64,21 @@ Data/
   20260510034951_AddStationTable.cs
   20260510034951_AddStationTable.Designer.cs
   AppDbContextModelSnapshot.cs
-Helpers/PasswordHelper.cs
+Helpers/
+ PasswordHelper.cs
+ PlayerRankHelper.cs
 Models/
  Account.cs
  ErrorViewModel.cs
  Station.cs
+ Transaction.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  ELNETFINALPROJECT.AssemblyInfo.cs
  ELNETFINALPROJECT.GlobalUsings.g.cs
  ELNETFINALPROJECT.RazorAssemblyInfo.cs
 Program.cs
+Services/StationTimerService.cs
 
 [metadataReferences]
 <DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.4/ref/net10.0/
@@ -435,6 +439,7 @@ obj/Debug/net10.0/ELNETFINALPROJECT.GeneratedMSBuildEditorConfig.editorconfig
 [additionalFiles]
 Views/Home/
  Dashboard.cshtml
+ Error.cshtml
  Index.cshtml
  Players.cshtml
  Privacy.cshtml
@@ -456,6 +461,7 @@ Views/
 [dynamicFiles]
 Views/Home/
  Dashboard.cshtml
+ Error.cshtml
  Index.cshtml
  Players.cshtml
  Privacy.cshtml
